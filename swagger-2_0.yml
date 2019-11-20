@@ -1,0 +1,496 @@
+swagger: '2.0'
+info:
+  description: sms77.io Swagger API. Get your API-Key now at sms77.io.
+  version: 1.0.0
+  title: sms77.io API
+  termsOfService: 'http://sms77.io/de/unternehmen/agb/'
+  contact:
+    email: support@sms77.io
+    url: 'https://www.sms77.io/de/unternehmen/kontakt/'
+    name: Support
+  license:
+    name: Licensed by Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+host: gateway.sms77.io
+basePath: /api
+tags:
+  - name: sms
+    description: Text messages
+    externalDocs:
+      description: Learn more
+      url: 'http://sms77.io'
+schemes:
+  - https
+  - http
+paths:
+  /balance:
+    get: &balance
+      tags:
+        - balance
+      summary: 'Get account balance.'
+      description: 'Retrieves the account balance associated with the given API-Key.'
+      produces:
+        - text/plain
+      parameters:
+        - in: query
+          name: p
+          description: Your sms77 API-Key.
+          required: true
+          type: string
+      responses: &responses
+        '100': &res100
+          description: OK
+        '101': &res101
+          description: Some recipients failed.
+        '201': &res201
+          description: Country code invalid.
+        '202': &res202
+          description: Recipient number invalid.
+        '300': &res300
+          description: Authentification missing.
+        '301': &res301
+          description: Parameter to missing.
+        '304': &res304
+          description: Parameter type missing.
+        '305': &res305
+          description: Parameter text missing.
+        '306': &res306
+          description: Sender invalid.
+        '307': &res307
+          description: Parameter url missing.
+        '400': &res400
+          description: Invalid type.
+        '401': &res401
+          description: Parameter text too long.
+        '402': &res402
+          description: Reload lock.
+        '500': &res500
+          description: Not enough credits.
+        '600': &res600
+          description: Carrier failed.
+        '700': &res700
+          description: Unknown error.
+        '801': &res801
+          description: Logo file missing.
+        '802': &res802
+          description: Logo file not existent.
+        '803': &res803
+          description: Ring tone missing.
+        '900': &res900
+          description: Wrong authentification.
+        '901': &res901
+          description: Wrong message ID.
+        '902': &res902
+          description: API deactivated.
+        '903': &res903
+          description: IP not allowed.
+    post:
+      <<: *balance
+  /contacts:
+    get: &contacts
+      tags:
+        - contacts
+      summary: Get your contacts.
+      description: Retrieves/edits/deletes (the) contact(s) associated with the given API-Key.
+      produces:
+        - text/csv
+        - application/json
+      parameters:
+        - in: query
+          name: p
+          description: Your sms77 API-Key.
+          required: true
+          type: string
+        - in: query
+          name: action
+          description: Determines the action to execute.
+          required: true
+          type: string
+          enum:
+            - read
+            - write
+            - del
+        - in: query
+          name: json
+          description: Defines whether to return the response as JSON or plain text (CSV).
+          type: number
+          enum:
+            - 1
+            - 0
+      responses:
+        <<: *responses
+    post:
+      <<: *contacts
+  /lookup:
+    get: &lookup
+      tags:
+        - lookup
+      summary: Look up phone number.
+      description: Looks up the given mobile phone number and returns all publicly available information about it.
+      produces:
+        - application/json
+        - text/plain
+      parameters:
+        - in: query
+          name: p
+          description: Your sms77 API-Key.
+          required: true
+          type: string
+        - in: query
+          name: type
+          description: Allowed values are "cnam", "format", "hlr" and "mnp".
+          required: true
+          type: string
+        - in: query
+          name: number
+          description: The phone number to look up.
+          required: true
+          type: array
+          items:
+            type: string
+        - in: query
+          name: json
+          description: Determines whether the response shall be returned in JSON format. Does not work with type "format".
+          type: string
+      responses:
+        '100':
+          <<: *res100
+          examples:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                    enum:
+                      - 100
+                      - 202
+                      - 500
+                      - 600
+                  success:
+                    type: boolean
+                    description: Determines if the request was successful.,
+                  international:
+                    type: string
+                    description: The number formatted accordingly to the E.164 standard.
+                  international_formatted:
+                    type: string
+                    description: The number formatted accordingly to the E.164 standard in a human readable format.
+                  name:
+                    type: string
+                  Number:
+                    type: string
+                    description: The number formatted accordingly to the E.164 standard in a human readable format.
+                  national:
+                    type: string
+                    description: The number in a domestic number format.
+                  country_iso:
+                    type: string
+                    description: The two digit ISO 3166-1 alpha-2 country code.
+                  country_name:
+                    type: string
+                    description: The full english name if the number belonging country.
+                  country_code:
+                    type: string
+                    description: The area code of the number belonging country. This value is numeric.
+                  carrier:
+                    type: string
+                    description: The (former) mobile carrier the number got issued to on initial number release.
+                  status:
+                    type: string
+                  international_format_number:
+                    type: string
+                  national_format_number:
+                    type: string
+                  country_code_iso3:
+                    type: string
+                  country_prefix:
+                    type: string
+                  ported:
+                    type: string
+                    enum:
+                      - unknown
+                      - ported
+                      - not_ported
+                      - assumed_not_ported
+                      - assumed_ported
+                  current_carrier:
+                    schema:
+                      $ref: '#/definitions/Carrier'
+                  original_carrier:
+                    schema:
+                      $ref: '#/definitions/Carrier'
+                  lookup_outcome:
+                    type: string
+                  lookup_outcome_message:
+                    type: string
+                  valid_number:
+                    type: string
+                  reachable:
+                    type: string
+                    enum:
+                      - unknown
+                      - reachable
+                      - undeliverable
+                      - absent
+                      - bad_number
+                      - blacklisted
+                  roaming:
+                    schema:
+                      $ref: '#/definitions/Roaming'
+    post:
+      <<: *lookup
+  /pricing:
+    get: &pricing
+      tags:
+        - pricing
+      summary: Get pricing information.
+      description: Retrieves all pricing related information for the given options.
+      produces:
+        - application/json
+        - text/csv
+      parameters:
+        - in: query
+          name: p
+          description: Your sms77 API-Key.
+          required: true
+          type: string
+        - in: query
+          name: country
+          description: The countries ISO code to get pricings for. Allowed values are de, fr, at. Omit to show pricings for all channels.
+          type: string
+        - in: query
+          name: format
+          description: Determines the response format. Allowed values are json and csv. The default value is json.
+          type: string
+        - in: query
+          name: type
+          description: Sets the SMS type to get pricings for. Allowed values are "direct" and "economy". The default value is "direct".
+          type: string
+      responses:
+        '100':
+          <<: *res100
+          examples:
+            text/csv: >
+              countryCode,countryName,countryPrefix,mcc,mncs,networkName,price,features,comment
+              "DE";"Germany";"49";"262";"15";" (Airdata)";"0.075";"";""
+            application/json:
+              schema:
+                type: object
+                properties:
+                  countCountries:
+                    type: integer
+                    description: The number if countries in total.
+                  countNetworks:
+                    type: integer
+                    description: The number of total networks.
+                  countries:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        countryCode:
+                          type: string
+                          description: The countries ISO code.
+                        countryName:
+                          type: string
+                          description: The countries full name.
+                        countryPrefix:
+                          type: string
+                          description: The countries number prefix.
+                        networks:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              comment:
+                                description: Any information which might be of interest.
+                                type: string
+                              features:
+                                description: The features supported by this network.
+                                type: array
+                                items:
+                                  type: string
+                              networkName:
+                                type: string
+                                description: The full name of the carrier.
+                              mcc:
+                                type: string
+                                description: The mobile country code.
+                              mncs:
+                                description: The mobile network code(s).
+                                type: array
+                                items:
+                                  type: string
+                              price:
+                                type: number
+                                format: float
+    post:
+      <<: *pricing
+  /sms:
+    get: &sms
+      tags:
+        - sms
+      summary: Send a new sms
+      description: Sends a SMS.
+      produces:
+        - text/plain
+      parameters:
+        - in: query
+          name: p
+          description: Your sms77 API-Key.
+          required: true
+          type: string
+        - in: query
+          name: text
+          description: The actual text message to send.
+          required: true
+          type: string
+        - in: query
+          name: to
+          description: The recipient number or group name.
+          required: true
+          type: string
+      responses:
+        <<: *responses
+    post:
+      <<: *sms
+  /status:
+    get: &status
+      tags:
+        - status
+      summary: Retrieve the status for a sent SMS with the given ID.
+      description: Retrieve SMS status.
+      produces:
+        - text/plain
+      parameters:
+        - in: query
+          name: msg_id
+          description: The ID from the SMS.
+          required: true
+          type: string
+        - in: query
+          name: p
+          description: Your sms77 API-Key.
+          required: true
+          type: string
+      responses:
+        <<: *responses
+    post:
+      <<: *status
+  /validate_for_voice:
+    get: &validate_for_voice
+      tags:
+        - validate_for_voice
+      summary: Validate sender number.
+      description: Validates the given sender number. On success a code gets returned. The given number will get called an the received code has to be confirmed through the telephones keypad through DTMF.
+      produces:
+        - text/plain
+      parameters:
+        - in: query
+          name: p
+          description: Your sms77 API-Key.
+          required: true
+          type: string
+        - in: query
+          name: number
+          description: Determines the recipient. Can only be a number, not a contact from your address book.
+          required: true
+          type: string
+        - in: query
+          name: callback
+          description: The callback URL which gets queried right after validation.
+          type: string
+          format: uri
+      responses:
+        <<: *responses
+    post:
+      <<: *validate_for_voice
+  /voice:
+    get: &voice
+      tags:
+        - voice
+      summary: Get your contacts.
+      description: Retrieves/edits/deletes (the) contact(s) associated with the given API-Key.
+      produces:
+        - text/plain
+      parameters:
+        - in: query
+          name: p
+          description: Your sms77 API-Key.
+          required: true
+          type: string
+        - in: query
+          name: to
+          description: Determines the receiver. Must be a valid phone number or contact from the address book.
+          required: true
+          type: string
+        - in: query
+          name: text
+          description: The text to convert to a voice message. Accepts valid XML too.
+          type: string
+          required: true
+          maxLength: 10000
+        - in: query
+          name: xml
+          description: Decides whetherthe parameter "text" is plain text or XML. The default value is 0.
+          type: number
+          enum:
+            - 1
+            - 0
+        - in: query
+          name: from
+          description: Sets the sender. Must be a verificated sender. Use an inbound number of yours or one of ours.
+          type: string
+      responses:
+        <<: *responses
+    post:
+      <<: *voice
+securityDefinitions:
+  api_key:
+    type: apiKey
+    name: p
+    in: query
+externalDocs:
+  description: Find out more about sms77io.
+  url: 'http://sms77.io/de/entwickler/'
+definitions:
+  Carrier:
+    type: "object"
+    properties:
+      network_code:
+        type: "string"
+      name:
+        type: "string"
+      country:
+        type: "string"
+      network_type:
+        type: "string"
+        enum:
+          - fixed_line
+          - fixed_line_or_mobile
+          - mobile
+          - pager
+          - personal_number
+          - premium_rate
+          - shared_cost
+          - toll_free
+          - uan
+          - unknown
+          - voicemail
+          - voip
+  Roaming:
+    type: "object"
+    properties:
+      status:
+        type: "string"
+        enum:
+          - unknown
+          - roaming
+          - not_roaming
+      roaming_country_code:
+        type: "string"
+      roaming_network_code:
+        type: "string"
+      roaming_network_name:
+        type: "string"
