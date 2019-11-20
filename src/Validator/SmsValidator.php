@@ -1,18 +1,15 @@
 <?php
 declare(strict_types=1);
 
-namespace Sms77\Api;
+namespace Sms77\Api\Validator;
 
 use Exception;
 
-class Validator
+class SmsValidator extends BaseValidator implements ValidatorInterface
 {
-    /* @var array */
-    private $parameters;
-
     function __construct(array $parameters)
     {
-        $this->parameters = $parameters;
+        parent::__construct($parameters);
     }
 
     function validate(): void
