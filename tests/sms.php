@@ -1,17 +1,16 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\Sms77\Api;
-
+namespace Sms77\Tests;
 require_once '../vendor/autoload.php';
 
-use Sms77\Api\Api;
+use Sms77\Api\Client;
 
 $apiKey = getenv("SMS77_API_KEY");
-$api = new Api($apiKey);
+$api = new Client($apiKey);
 $recipient = getenv("SMS77_RECIPIENT");
 $text = "TEST " . time();
-$response = $api->send($recipient, $text, ["no_reload" => 1]);
+$response = $api->sms($recipient, $text, ["no_reload" => 1]);
 
 print_r($response);
 
