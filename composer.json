@@ -18,5 +18,8 @@
     "psr-4": {
       "Sms77\\Api\\": "src/"
     }
+  },
+  "require": {
+    "ext-ctype": "*"
   }
 }

@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 namespace Sms77\Api;
 
@@ -10,9 +9,9 @@ class Client
     /* @var string $apiKey */
     private $apiKey;
 
-    private const BASE_URI = 'https://gateway.sms77.io/api';
+    const BASE_URI = 'https://gateway.sms77.io/api';
 
-    public function __construct(string $apiKey)
+    public function __construct($apiKey)
     {
         $this->apiKey = $apiKey;
     }
@@ -23,7 +22,7 @@ class Client
     }
 
     /*TODO: add add validation*/
-    function contacts(string $action, array $extra = [])
+    function contacts($action, array $extra = [])
     {
         $required = [
             "action" => $action,
@@ -35,7 +34,7 @@ class Client
     }
 
     /*TODO: add add validation*/
-    function lookup(string $type, string $number, array $extra = [])
+    function lookup($type, $number, array $extra = [])
     {
         $required = [
             "type" => $type,
@@ -57,7 +56,7 @@ class Client
         return $this->request("pricing", $options);
     }
 
-    function sms(string $to, string $text, array $extra = [])
+    function sms($to, $text, array $extra = [])
     {
         $required = [
             "to" => $to,
@@ -72,7 +71,7 @@ class Client
     }
 
     /*TODO: add add validation*/
-    function status(string $msgId)
+    function status($msgId)
     {
         $required = [
             "msg_id" => $msgId,
@@ -84,7 +83,7 @@ class Client
     }
 
     /*TODO: add add validation*/
-    function validateForVoice(string $number, array $extra = [])
+    function validateForVoice($number, array $extra = [])
     {
         $required = [
             "number" => $number,
@@ -96,7 +95,7 @@ class Client
     }
 
     /*TODO: add add validation*/
-    function voice(string $to, string $text, array $extra = [])
+    function voice($to, $text, array $extra = [])
     {
         $required = [
             "to" => $to,
@@ -108,7 +107,7 @@ class Client
         return $this->request("voice", $options);
     }
 
-    private function request(string $path, $options = [])
+    private function request($path, $options = [])
     {
         $options = array_merge($options, ["p" => $this->apiKey]);
 
