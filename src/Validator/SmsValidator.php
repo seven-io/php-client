@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 namespace Sms77\Api\Validator;
 
@@ -12,7 +11,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
         parent::__construct($parameters);
     }
 
-    function validate(): void
+    function validate()
     {
         $this->debug();
         $this->delay();
@@ -32,14 +31,14 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
         $this->ttl();
     }
 
-    private function isValidBool($data): bool
+    private function isValidBool($data)
     {
         return 1 == $data || 0 == $data;
     }
 
-    function debug(): void
+    function debug()
     {
-        $debug = $this->parameters["debug"] ?? null;
+        $debug = isset($this->parameters["debug"]) ? $this->parameters["debug"] : null;
 
         if (null !== $debug) {
             if (!$this->isValidBool($debug)) {
@@ -48,9 +47,9 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
         }
     }
 
-    function delay(): void
+    function delay()
     {
-        $delay = $this->parameters["delay"] ?? null;
+        $delay = isset($this->parameters["delay"]) ? $this->parameters["delay"] : null;
 
 
         if (null !== $delay) {
@@ -87,20 +86,18 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
         }
     }
 
-    function details(): void
+    function details()
     {
-        $details = $this->parameters["details"] ?? null;
+        $details = isset($this->parameters["details"]) ? $this->parameters["details"] : null;
 
-        if (null !== $details) {
-            if (!$this->isValidBool($details)) {
-                throw new Exception("The parameter details can be either 1 or 0.");
-            }
+        if (null !== $details && !$this->isValidBool($details)) {
+            throw new Exception("The parameter details can be either 1 or 0.");
         }
     }
 
-    function label(): void
+    function label()
     {
-        $label = $this->parameters["label"] ?? null;
+        $label = isset($this->parameters["label"]) ? $this->parameters["label"] : null;
 
         //TODO: max length?! there must be one.
 
@@ -113,9 +110,9 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
         }
     }
 
-    function flash(): void
+    function flash()
     {
-        $flash = $this->parameters["flash"] ?? null;
+        $flash = isset($this->parameters["flash"]) ? $this->parameters["flash"] : null;
 
         if (null !== $flash) {
             if (!$this->isValidBool($flash)) {
@@ -129,9 +126,9 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
         }
     }
 
-    function from(): void
+    function from()
     {
-        $from = $this->parameters["from"] ?? null;
+        $from = isset($this->parameters["from"]) ? $this->parameters["from"] : null;
 
         if (null !== $from) {
             $length = strlen($from);
@@ -155,9 +152,9 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
         }
     }
 
-    function json(): void
+    function json()
     {
-        $json = $this->parameters["json"] ?? null;
+        $json = isset($this->parameters["json"]) ? $this->parameters["json"] : null;
 
         if (null !== $json) {
             if (!$this->isValidBool($json)) {
@@ -166,9 +163,9 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
         }
     }
 
-    function no_reload(): void
+    function no_reload()
     {
-        $noReload = $this->parameters["no_reload"] ?? null;
+        $noReload = isset($this->parameters["no_reload"]) ? $this->parameters["no_reload"] : null;
 
         if (null !== $noReload) {
             if (!$this->isValidBool($noReload)) {
@@ -177,9 +174,9 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
         }
     }
 
-    function performance_tracking(): void
+    function performance_tracking()
     {
-        $performanceTracking = $this->parameters["performance_tracking"] ?? null;
+        $performanceTracking = isset($this->parameters["performance_tracking"]) ? $this->parameters["performance_tracking"] : null;
 
         if (null !== $performanceTracking) {
             if (!$this->isValidBool($performanceTracking)) {
@@ -188,9 +185,9 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
         }
     }
 
-    function return_msg_id(): void
+    function return_msg_id()
     {
-        $returnMsgId = $this->parameters["return_msg_id"] ?? null;
+        $returnMsgId = isset($this->parameters["return_msg_id"]) ? $this->parameters["return_msg_id"] : null;
 
         if (null !== $returnMsgId) {
             if (!$this->isValidBool($returnMsgId)) {
@@ -199,9 +196,9 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
         }
     }
 
-    function ttl(): void
+    function ttl()
     {
-        $ttl = $this->parameters["ttl"] ?? null;
+        $ttl = isset($this->parameters["ttl"]) ? $this->parameters["ttl"] : null;
 
         if (null !== $ttl) {
             $ms = ["min" => 300000, "max" => 86400000];
@@ -216,9 +213,9 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
         }
     }
 
-    function text(): void
+    function text()
     {
-        $text = $this->parameters["text"] ?? null;
+        $text = isset($this->parameters["text"]) ? $this->parameters["text"] : null;
 
         if (null === $text) {
             throw new Exception("You cannot send an empty message.");
@@ -237,9 +234,9 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
         }
     }
 
-    function type(): void
+    function type()
     {
-        $type = $this->parameters["type"] ?? null;
+        $type = isset($this->parameters["type"]) ? $this->parameters["type"] : null;
 
         if (null !== $type) {
             $allowedTypes = ["economy", "direct"];
@@ -250,9 +247,9 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
         }
     }
 
-    function udh(): void
+    function udh()
     {
-        $udh = $this->parameters["udh"] ?? null;
+        $udh = isset($this->parameters["udh"]) ? $this->parameters["udh"] : null;
 
         if (null !== $udh) {
             if (!$this->isValidBool($udh)) {
@@ -265,9 +262,9 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
         }
     }
 
-    function unicode(): void
+    function unicode()
     {
-        $unicode = $this->parameters["unicode"] ?? null;
+        $unicode = isset($this->parameters["unicode"]) ? $this->parameters["unicode"] : null;
 
         if (null !== $unicode) {
             if (!$this->isValidBool($unicode)) {
@@ -280,9 +277,9 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
         }
     }
 
-    function utf8(): void
+    function utf8()
     {
-        $utf8 = $this->parameters["utf8"] ?? null;
+        $utf8 = isset($this->parameters["utf8"]) ? $this->parameters["utf8"] : null;
 
         if (null !== $utf8) {
             if (!$this->isValidBool($utf8)) {
