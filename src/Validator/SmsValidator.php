@@ -24,16 +24,12 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
         $this->performance_tracking();
         $this->return_msg_id();
         $this->text();
+        $this->to();
         $this->type();
         $this->udh();
         $this->unicode();
         $this->utf8();
         $this->ttl();
-    }
-
-    private function isValidBool($data)
-    {
-        return 1 == $data || 0 == $data;
     }
 
     function debug()
@@ -231,6 +227,15 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
 
         if ($maxTextLength < $length) {
             throw new Exception("The text can not be longer than $maxTextLength characters.");
+        }
+    }
+
+    function to()
+    {
+        $to = isset($this->parameters["to"]) ? $this->parameters["to"] : null;
+
+        if (null === $to) {
+            throw new Exception("You cannot send a message without specifying a recipient.");
         }
     }
 

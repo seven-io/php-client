@@ -21,7 +21,6 @@ class Client
         return $this->request("balance");
     }
 
-    /*TODO: add add validation*/
     function contacts($action, array $extra = [])
     {
         $required = [

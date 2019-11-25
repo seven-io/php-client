@@ -12,7 +12,7 @@ class BaseValidator
         $this->parameters = $parameters;
     }
 
-    private function isValidBool($data)
+    protected function isValidBool($data)
     {
         return 1 == $data || 0 == $data;
     }
