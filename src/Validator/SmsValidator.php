@@ -2,7 +2,8 @@
 
 namespace Sms77\Api\Validator;
 
-use Exception;
+use Sms77\Api\Exception\InvalidOptionalArgumentException;
+use Sms77\Api\Exception\InvalidRequiredArgumentException;
 
 class SmsValidator extends BaseValidator implements ValidatorInterface
 {
@@ -38,7 +39,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
 
         if (null !== $debug) {
             if (!$this->isValidBool($debug)) {
-                throw new Exception("The parameter debug can be either 1 or 0.");
+                throw new InvalidOptionalArgumentException("debug can be either 1 or 0.");
             }
         }
     }
@@ -46,7 +47,6 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
     function delay()
     {
         $delay = isset($this->parameters["delay"]) ? $this->parameters["delay"] : null;
-
 
         if (null !== $delay) {
             $dateFormat = "yyyy-mm-dd hh:ii";
@@ -59,24 +59,16 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
             $min = $parts[4];
 
             if (false === stripos($delay, "-")) {
-                if (!isValidUnixTimestamp($delay)) {
-                    throw new Exception("Delay must be a valid UNIX timestamp or in the format of $dateFormat.");
-                }
-
-                /*https://stackoverflow.com/questions/2524680/check-whether-the-string-is-a-unix-timestamp*/
-                function isValidUnixTimestamp($timestamp)
-                {
-                    return ((string)(int)$timestamp === $timestamp)
-                        && ($timestamp <= PHP_INT_MAX)
-                        && ($timestamp >= ~PHP_INT_MAX);
+                if (!$this->isValidUnixTimestamp($delay)) {
+                    throw new InvalidOptionalArgumentException("Delay must be a valid UNIX timestamp or in the format of $dateFormat.");
                 }
             } else {
                 if (!preg_match("/^([0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/", $hour . ":" . $min)) {
-                    throw new Exception("Invalid format for the date.");
+                    throw new InvalidOptionalArgumentException("date seems to have an invalid format.");
                 }
 
                 if (!checkdate($month, $day, $year)) {
-                    throw new Exception("Delay must be a valid UNIX timestamp or in the format of $dateFormat.");
+                    throw new InvalidOptionalArgumentException("Delay must be a valid UNIX timestamp or in the format of $dateFormat.");
                 }
             }
         }
@@ -87,21 +79,21 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
         $details = isset($this->parameters["details"]) ? $this->parameters["details"] : null;
 
         if (null !== $details && !$this->isValidBool($details)) {
-            throw new Exception("The parameter details can be either 1 or 0.");
+            throw new InvalidOptionalArgumentException("details can be either 1 or 0.");
         }
     }
 
     function label()
     {
-        $label = isset($this->parameters["label"]) ? $this->parameters["label"] : null;
-
         //TODO: max length?! there must be one.
+
+        $label = isset($this->parameters["label"]) ? $this->parameters["label"] : null;
 
         if (null !== $label) {
             $pattern = "/[0-9a-z\-@_.]/i";
 
             if (strlen($label) !== preg_match_all($pattern, $label)) {
-                throw new Exception("The label must match the regex pattern $pattern.");
+                throw new InvalidOptionalArgumentException("label must match the regex pattern $pattern.");
             }
         }
     }
@@ -112,11 +104,11 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
 
         if (null !== $flash) {
             if (!$this->isValidBool($flash)) {
-                throw new Exception("The parameter flash can be either 1 or 0.");
+                throw new InvalidOptionalArgumentException("flash can be either 1 or 0.");
             }
 
             if ("direct" != $this->parameters["type"] && $flash) {
-                throw new Exception("Only messages of type direct can be sent as flash messages.");
+                throw new InvalidOptionalArgumentException("Only messages of type direct can be sent as flash messages.");
             }
 
         }
@@ -135,15 +127,15 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
             $isNumeric = is_numeric($from);
 
             if ($length > $numericMax) {
-                throw new Exception("Sender name is too long as it exceeds $numericMax characters.");
+                throw new InvalidOptionalArgumentException("from is too long as it exceeds $numericMax characters.");
             }
 
             if ($length > $alphaNumericMax) {
                 if (!$isNumeric) {
-                    throw new Exception("Sender names longer than $alphaNumericMax characters must be numeric.");
+                    throw new InvalidOptionalArgumentException("from longer than $alphaNumericMax characters must be numeric.");
                 }
             } elseif (!$isNumeric || !ctype_alnum($from)) {
-                throw new Exception("Invalid sender.");
+                throw new InvalidOptionalArgumentException("from does not seem to be a valid sender.");
             }
         }
     }
@@ -154,7 +146,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
 
         if (null !== $json) {
             if (!$this->isValidBool($json)) {
-                throw new Exception("The parameter json can be either 1 or 0.");
+                throw new InvalidOptionalArgumentException("json can be either 1 or 0.");
             }
         }
     }
@@ -165,7 +157,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
 
         if (null !== $noReload) {
             if (!$this->isValidBool($noReload)) {
-                throw new Exception("The parameter no_reload can be either 1 or 0.");
+                throw new InvalidOptionalArgumentException("no_reload can be either 1 or 0.");
             }
         }
     }
@@ -176,7 +168,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
 
         if (null !== $performanceTracking) {
             if (!$this->isValidBool($performanceTracking)) {
-                throw new Exception("The parameter performance_tracking can be either 1 or 0.");
+                throw new InvalidOptionalArgumentException("performance_tracking can be either 1 or 0.");
             }
         }
     }
@@ -187,24 +179,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
 
         if (null !== $returnMsgId) {
             if (!$this->isValidBool($returnMsgId)) {
-                throw new Exception("The parameter return_msg_id can be either 1 or 0.");
-            }
-        }
-    }
-
-    function ttl()
-    {
-        $ttl = isset($this->parameters["ttl"]) ? $this->parameters["ttl"] : null;
-
-        if (null !== $ttl) {
-            $ms = ["min" => 300000, "max" => 86400000];
-
-            if ($ttl < $ms["min"]) {
-                throw new Exception("The minimum TTL is " . $ms["min"] . " .");
-            }
-
-            if ($ttl > $ms["max"]) {
-                throw new Exception("The maximum TTL is " . $ms["max"] . " .");
+                throw new InvalidOptionalArgumentException("return_msg_id can be either 1 or 0.");
             }
         }
     }
@@ -214,19 +189,19 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
         $text = isset($this->parameters["text"]) ? $this->parameters["text"] : null;
 
         if (null === $text) {
-            throw new Exception("You cannot send an empty message.");
+            throw new InvalidRequiredArgumentException("You cannot send an empty message.");
         }
 
         $length = strlen($text);
 
         if (!$length) {
-            throw new Exception("You cannot send an empty message.");
+            throw new InvalidRequiredArgumentException("You cannot send an empty message.");
         }
 
         $maxTextLength = 1520;
 
         if ($maxTextLength < $length) {
-            throw new Exception("The text can not be longer than $maxTextLength characters.");
+            throw new InvalidRequiredArgumentException("The text can not be longer than $maxTextLength characters.");
         }
     }
 
@@ -235,21 +210,31 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
         $to = isset($this->parameters["to"]) ? $this->parameters["to"] : null;
 
         if (null === $to) {
-            throw new Exception("You cannot send a message without specifying a recipient.");
+            throw new InvalidRequiredArgumentException("You cannot send a message without specifying a recipient.");
+        }
+    }
+
+    function ttl()
+    {
+        $ttl = isset($this->parameters["ttl"]) ? $this->parameters["ttl"] : null;
+
+        if (null !== $ttl) {
+            $min = 300000;
+            $max = 86400000;
+
+            if ($ttl < $min) {
+                throw new InvalidOptionalArgumentException("ttl must be at least $min.");
+            }
+
+            if ($ttl > $max) {
+                throw new InvalidOptionalArgumentException("ttl may not exceed $max.");
+            }
         }
     }
 
     function type()
     {
-        $type = isset($this->parameters["type"]) ? $this->parameters["type"] : null;
-
-        if (null !== $type) {
-            $allowedTypes = ["economy", "direct"];
-
-            if (!in_array($type, $allowedTypes)) {
-                throw new Exception("Type must be one of the following: " . join(",", $allowedTypes) . " .");
-            }
-        }
+        $this->throwOnOptionalBadType();
     }
 
     function udh()
@@ -258,11 +243,11 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
 
         if (null !== $udh) {
             if (!$this->isValidBool($udh)) {
-                throw new Exception("The parameter udh can be either 1 or 0.");
+                throw new InvalidOptionalArgumentException("udh can be either 1 or 0.");
             }
 
             if ("direct" != $this->parameters["type"] && $udh) {
-                throw new Exception("Only messages of type direct can be sent as udh messages.");
+                throw new InvalidOptionalArgumentException("Only messages of type direct can be sent as udh messages.");
             }
         }
     }
@@ -273,11 +258,11 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
 
         if (null !== $unicode) {
             if (!$this->isValidBool($unicode)) {
-                throw new Exception("The parameter unicode can be either 1 or 0.");
+                throw new InvalidOptionalArgumentException("unicode can be either 1 or 0.");
             }
 
             if ("direct" != $this->parameters["type"] && $unicode) {
-                throw new Exception("Only messages of type direct can be unicode encoded.");
+                throw new InvalidOptionalArgumentException("Only messages of type direct can be unicode encoded.");
             }
         }
     }
@@ -288,7 +273,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
 
         if (null !== $utf8) {
             if (!$this->isValidBool($utf8)) {
-                throw new Exception("The parameter utf8 can be either 1 or 0.");
+                throw new InvalidOptionalArgumentException("utf8 can be either 1 or 0.");
             }
         }
     }

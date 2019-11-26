@@ -2,7 +2,8 @@
 
 namespace Sms77\Api\Validator;
 
-use Exception;
+use Sms77\Api\Exception\InvalidOptionalArgumentException;
+use Sms77\Api\Exception\InvalidRequiredArgumentException;
 
 class VoiceValidator extends BaseValidator implements ValidatorInterface
 {
@@ -23,10 +24,8 @@ class VoiceValidator extends BaseValidator implements ValidatorInterface
     {
         $from = isset($this->parameters["from"]) ? $this->parameters["from"] : null;
 
-        if (null !== $from) {
-            if (!strlen($from)) {
-                throw new Exception("The parameter from may not be empty if set.");
-            }
+        if (null !== $from && !strlen($from)) {
+            throw new InvalidOptionalArgumentException("from may not be empty if set.");
         }
     }
 
@@ -35,7 +34,7 @@ class VoiceValidator extends BaseValidator implements ValidatorInterface
         $text = isset($this->parameters["text"]) ? $this->parameters["text"] : null;
 
         if (!isset($text) || !strlen($text)) {
-            throw new Exception("The required parameter text is missing.");
+            throw new InvalidRequiredArgumentException("text is missing.");
         }
     }
 
@@ -44,7 +43,7 @@ class VoiceValidator extends BaseValidator implements ValidatorInterface
         $to = isset($this->parameters["to"]) ? $this->parameters["to"] : null;
 
         if (!isset($to) || !strlen($to)) {
-            throw new Exception("The required parameter to is missing.");
+            throw new InvalidRequiredArgumentException("to is missing.");
         }
     }
 
@@ -53,7 +52,7 @@ class VoiceValidator extends BaseValidator implements ValidatorInterface
         $xml = isset($this->parameters["xml"]) ? $this->parameters["xml"] : null;
 
         if (!$this->isValidBool($xml)) {
-            throw new Exception("The parameter xml can be either 1 or 0.");
+            throw new InvalidOptionalArgumentException("xml can be either 1 or 0.");
         }
     }
 }

@@ -2,7 +2,8 @@
 
 namespace Sms77\Api\Validator;
 
-use Exception;
+use Sms77\Api\Exception\InvalidOptionalArgumentException;
+use Sms77\Api\Exception\InvalidRequiredArgumentException;
 
 class LookupValidator extends BaseValidator implements ValidatorInterface
 {
@@ -26,11 +27,11 @@ class LookupValidator extends BaseValidator implements ValidatorInterface
             $type = isset($this->parameters["type"]) ? $this->parameters["type"] : null;
 
             if ("mnp" !== $type) {
-                throw new Exception("The parameter json may only be set if type is set to mnp.");
+                throw new InvalidOptionalArgumentException("json may only be set if type is set to mnp.");
             }
 
             if (!$this->isValidBool($json)) {
-                throw new Exception("The parameter json can be either 1 or 0.");
+                throw new InvalidOptionalArgumentException("json can be either 1 or 0.");
             }
         }
     }
@@ -40,7 +41,7 @@ class LookupValidator extends BaseValidator implements ValidatorInterface
         $number = isset($this->parameters["number"]) ? $this->parameters["number"] : null;
 
         if (!isset($this->parameters["number"]) || !strlen($number)) {
-            throw new Exception("Required parameter number is missing.");
+            throw new InvalidRequiredArgumentException("number is missing.");
         }
     }
 
@@ -49,7 +50,7 @@ class LookupValidator extends BaseValidator implements ValidatorInterface
         $type = isset($this->parameters["type"]) ? $this->parameters["type"] : null;
 
         if (!in_array($type, ["cnam", "format", "hlr", "mnp"])) {
-            throw new Exception("Invalid required parameter type: $type.");
+            throw new InvalidRequiredArgumentException("type seems to have an invalid value: $type.");
         }
     }
 }

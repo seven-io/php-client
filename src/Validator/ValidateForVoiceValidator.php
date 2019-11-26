@@ -2,7 +2,8 @@
 
 namespace Sms77\Api\Validator;
 
-use Exception;
+use Sms77\Api\Exception\InvalidOptionalArgumentException;
+use Sms77\Api\Exception\InvalidRequiredArgumentException;
 
 class ValidateForVoiceValidator extends BaseValidator implements ValidatorInterface
 {
@@ -23,7 +24,7 @@ class ValidateForVoiceValidator extends BaseValidator implements ValidatorInterf
 
         if (null !== $callback) {
             if (filter_var($callback, FILTER_VALIDATE_URL)) {
-                throw new Exception("The optional parameter callback is not a valid URL.");
+                throw new InvalidOptionalArgumentException("callback is not a valid URL.");
             }
         }
     }
@@ -33,7 +34,7 @@ class ValidateForVoiceValidator extends BaseValidator implements ValidatorInterf
         $number = isset($this->parameters["number"]) ? $this->parameters["number"] : null;
 
         if (!strlen($number)) {
-            throw new Exception("The required parameter number is missing.");
+            throw new InvalidRequiredArgumentException("number is missing.");
         }
     }
 }

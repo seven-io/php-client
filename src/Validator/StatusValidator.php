@@ -2,7 +2,7 @@
 
 namespace Sms77\Api\Validator;
 
-use Exception;
+use Sms77\Api\Exception\InvalidRequiredArgumentException;
 
 class StatusValidator extends BaseValidator implements ValidatorInterface
 {
@@ -21,7 +21,7 @@ class StatusValidator extends BaseValidator implements ValidatorInterface
         $msgId = isset($this->parameters["msg_id"]) ? $this->parameters["msg_id"] : null;
 
         if (!strlen($msgId)) {
-            throw new Exception("The required parameter msg_id is missing.");
+            throw new InvalidRequiredArgumentException("msg_id is missing.");
         }
     }
 }
