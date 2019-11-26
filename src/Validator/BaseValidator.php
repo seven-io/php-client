@@ -40,7 +40,7 @@ class BaseValidator
     protected function isValidUnixTimestamp($timestamp)
     {
         /*https://stackoverflow.com/questions/2524680/check-whether-the-string-is-a-unix-timestamp*/
-        return ((string)(int)$timestamp === $timestamp)
+        return ((string)$timestamp === $timestamp)
             && ($timestamp <= PHP_INT_MAX)
             && ($timestamp >= ~PHP_INT_MAX);
     }

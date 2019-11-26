@@ -23,7 +23,7 @@ class ValidateForVoiceValidator extends BaseValidator implements ValidatorInterf
         $callback = isset($this->parameters["callback"]) ? $this->parameters["callback"] : null;
 
         if (null !== $callback) {
-            if (filter_var($callback, FILTER_VALIDATE_URL)) {
+            if (!filter_var($callback, FILTER_VALIDATE_URL)) {
                 throw new InvalidOptionalArgumentException("callback is not a valid URL.");
             }
         }

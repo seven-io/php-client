@@ -16,10 +16,17 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Sms77\\Api\\": "src/"
+      "Sms77\\Api\\": "src/",
+      "Sms77\\Tests\\": "tests/"
     }
   },
   "require": {
     "ext-ctype": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^8",
+    "ext-soap": "*",
+    "ext-simplexml": "*",
+    "ext-json": "*"
   }
 }

@@ -24,7 +24,7 @@ class Client
 
     function balance()
     {
-        return $this->request("balance");
+        return $this->request("balance", $this->buildOptions([]));
     }
 
     function contacts($action, array $extra = [])

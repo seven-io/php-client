@@ -22,7 +22,7 @@ class PricingValidator extends BaseValidator implements ValidatorInterface
     {
         $country = isset($this->parameters["country"]) ? $this->parameters["country"] : null;
 
-        if (!strlen($country)) {
+        if (null !== $country && !strlen($country)) {
             throw new InvalidOptionalArgumentException("country seems to be invalid: $country.");
         }
     }
@@ -31,7 +31,7 @@ class PricingValidator extends BaseValidator implements ValidatorInterface
     {
         $format = isset($this->parameters["format"]) ? $this->parameters["format"] : null;
 
-        if (!in_array($format, ["csv", "json"])) {
+        if (null !== $format && !in_array($format, ["csv", "json"])) {
             throw new InvalidOptionalArgumentException("format seems to be invalid: $format.");
         }
     }
