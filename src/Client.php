@@ -5,6 +5,7 @@ namespace Sms77\Api;
 use Sms77\Api\Validator\ContactsValidator;
 use Sms77\Api\Validator\LookupValidator;
 use Sms77\Api\Validator\SmsValidator;
+use Sms77\Api\Validator\StatusValidator;
 use Sms77\Api\Validator\ValidateForVoiceValidator;
 use Sms77\Api\Validator\VoiceValidator;
 
@@ -70,14 +71,13 @@ class Client
         return $this->request("sms", $options);
     }
 
-    /*TODO: add add validation*/
     function status($msgId)
     {
-        $required = [
+        $options = $this->buildOptions([
             "msg_id" => $msgId,
-        ];
+        ]);
 
-        $options = array_merge($required);
+        (new StatusValidator($options))->validate();
 
         return $this->request("status", $options);
     }
@@ -105,7 +105,7 @@ class Client
         return $this->request("voice", $options);
     }
 
-    private function buildOptions(array $required, array $extra)
+    private function buildOptions(array $required, array $extra = [])
     {
         $required = array_merge($required, [
             "p" => $this->apiKey
