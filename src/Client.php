@@ -5,6 +5,7 @@ namespace Sms77\Api;
 use Sms77\Api\Validator\ContactsValidator;
 use Sms77\Api\Validator\LookupValidator;
 use Sms77\Api\Validator\SmsValidator;
+use Sms77\Api\Validator\VoiceValidator;
 
 class Client
 {
@@ -92,15 +93,14 @@ class Client
         return $this->request("validate_for_voice", $options);
     }
 
-    /*TODO: add add validation*/
     function voice($to, $text, array $extra = [])
     {
-        $required = [
+        $options = $this->buildOptions([
             "to" => $to,
-            "text" => $text,
-        ];
+            "text" => $text
+        ], $extra);
 
-        $options = array_merge($required, $extra);
+        (new VoiceValidator($options))->validate();
 
         return $this->request("voice", $options);
     }
