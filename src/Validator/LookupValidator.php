@@ -49,8 +49,12 @@ class LookupValidator extends BaseValidator implements ValidatorInterface
     {
         $type = isset($this->parameters["type"]) ? $this->parameters["type"] : null;
 
-        if (!in_array($type, ["cnam", "format", "hlr", "mnp"])) {
-            throw new InvalidRequiredArgumentException("type seems to have an invalid value: $type.");
+        $types = ["cnam", "format", "hlr", "mnp"];
+
+        if (!in_array($type, $types)) {
+            $imploded = implode(",", $types);
+
+            throw new InvalidRequiredArgumentException("type $type is invalid. Valid types are: $imploded.");
         }
     }
 }
