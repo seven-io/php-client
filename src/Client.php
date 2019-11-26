@@ -4,6 +4,7 @@ namespace Sms77\Api;
 
 use Sms77\Api\Validator\ContactsValidator;
 use Sms77\Api\Validator\LookupValidator;
+use Sms77\Api\Validator\PricingValidator;
 use Sms77\Api\Validator\SmsValidator;
 use Sms77\Api\Validator\StatusValidator;
 use Sms77\Api\Validator\ValidateForVoiceValidator;
@@ -49,12 +50,11 @@ class Client
         return $this->request("lookup", $options);
     }
 
-    /*TODO: add add validation*/
     function pricing(array $extra = [])
     {
-        $required = [];
+        $options = $this->buildOptions([], $extra);
 
-        $options = array_merge($required, $extra);
+        (new PricingValidator($options))->validate();
 
         return $this->request("pricing", $options);
     }
