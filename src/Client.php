@@ -2,6 +2,8 @@
 
 namespace Sms77\Api;
 
+use Sms77\Api\Validator\ContactsValidator;
+use Sms77\Api\Validator\LookupValidator;
 use Sms77\Api\Validator\SmsValidator;
 
 class Client
@@ -23,24 +25,23 @@ class Client
 
     function contacts($action, array $extra = [])
     {
-        $required = [
+        $options = $this->buildOptions([
             "action" => $action,
-        ];
+        ], $extra);
 
-        $options = array_merge($required, $extra);
+        (new ContactsValidator($options))->validate();
 
         return $this->request("contacts", $options);
     }
 
-    /*TODO: add add validation*/
     function lookup($type, $number, array $extra = [])
     {
-        $required = [
+        $options = $this->buildOptions([
             "type" => $type,
             "number" => $number,
-        ];
+        ], $extra);
 
-        $options = array_merge($required, $extra);
+        (new LookupValidator($options))->validate();
 
         return $this->request("lookup", $options);
     }
@@ -57,15 +58,13 @@ class Client
 
     function sms($to, $text, array $extra = [])
     {
-        $required = [
+        $options = $this->buildOptions([
             "to" => $to,
             "text" => $text
-        ];
+        ], $extra);
 
-        $options = array_merge($required, $extra);
+        (new SmsValidator($options))->validate();
 
-        $validator = new SmsValidator($options);
-        $validator->validate();
         return $this->request("sms", $options);
     }
 
@@ -106,10 +105,17 @@ class Client
         return $this->request("voice", $options);
     }
 
+    private function buildOptions(array $required, array $extra)
+    {
+        $required = array_merge($required, [
+            "p" => $this->apiKey
+        ]);
+
+        return array_merge($required, $extra);
+    }
+
     private function request($path, $options = [])
     {
-        $options = array_merge($options, ["p" => $this->apiKey]);
-
         return file_get_contents(self::BASE_URI . "/" . $path . "?" . http_build_query($options));
     }
 }
