@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 namespace Sms77\Tests;
 require_once '../vendor/autoload.php';

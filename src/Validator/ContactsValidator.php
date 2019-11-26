@@ -2,7 +2,8 @@
 
 namespace Sms77\Api\Validator;
 
-use Exception;
+use Sms77\Api\Exception\InvalidOptionalArgumentException;
+use Sms77\Api\Exception\InvalidRequiredArgumentException;
 
 class ContactsValidator extends BaseValidator implements ValidatorInterface
 {
@@ -24,7 +25,7 @@ class ContactsValidator extends BaseValidator implements ValidatorInterface
         $actions = ["read", "write", "del"];
 
         if (!in_array($action, $actions)) {
-            throw new Exception("Unknown action $action.");
+            throw new InvalidRequiredArgumentException("Unknown action $action.");
         }
     }
 
@@ -34,7 +35,7 @@ class ContactsValidator extends BaseValidator implements ValidatorInterface
 
         if (null !== $json) {
             if (!$this->isValidBool($json)) {
-                throw new Exception("The parameter json can be either 1 or 0.");
+                throw new InvalidOptionalArgumentException("json can be either 1 or 0.");
             }
         }
     }

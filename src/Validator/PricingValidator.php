@@ -2,7 +2,7 @@
 
 namespace Sms77\Api\Validator;
 
-use Exception;
+use Sms77\Api\Exception\InvalidOptionalArgumentException;
 
 class PricingValidator extends BaseValidator implements ValidatorInterface
 {
@@ -23,7 +23,7 @@ class PricingValidator extends BaseValidator implements ValidatorInterface
         $country = isset($this->parameters["country"]) ? $this->parameters["country"] : null;
 
         if (!strlen($country)) {
-            throw new Exception("Invalid optional parameter country: $country.");
+            throw new InvalidOptionalArgumentException("country seems to be invalid: $country.");
         }
     }
 
@@ -32,16 +32,12 @@ class PricingValidator extends BaseValidator implements ValidatorInterface
         $format = isset($this->parameters["format"]) ? $this->parameters["format"] : null;
 
         if (!in_array($format, ["csv", "json"])) {
-            throw new Exception("Invalid optional parameter format: $format.");
+            throw new InvalidOptionalArgumentException("format seems to be invalid: $format.");
         }
     }
 
     function type()
     {
-        $type = isset($this->parameters["type"]) ? $this->parameters["type"] : null;
-
-        if (!in_array($type, ["direct", "economy"])) {
-            throw new Exception("Invalid optional parameter type: $type.");
-        }
+        $this->throwOnOptionalBadType();
     }
 }
