@@ -2,6 +2,8 @@
 
 namespace Sms77\Api\Validator;
 
+use Exception;
+
 class BaseValidator
 {
     /* @var array $parameters */
@@ -10,6 +12,10 @@ class BaseValidator
     function __construct(array $parameters)
     {
         $this->parameters = $parameters;
+
+        if (!isset($parameters["p"])) {
+            throw new Exception("The required parameter p is missing.");
+        }
     }
 
     protected function isValidBool($data)
