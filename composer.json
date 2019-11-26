@@ -21,7 +21,8 @@
     }
   },
   "require": {
-    "ext-ctype": "*"
+    "ext-ctype": "*",
+    "ext-curl": "*"
   },
   "require-dev": {
     "phpunit/phpunit": "^8",
