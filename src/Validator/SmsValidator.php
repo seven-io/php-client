@@ -104,11 +104,12 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
 
         if (null !== $flash) {
             if (!$this->isValidBool($flash)) {
-                throw new InvalidOptionalArgumentException("flash can be either 1 or 0.");
+                throw new InvalidOptionalArgumentException("Argument 'flash' can be either 1 or 0.");
             }
 
             if ("direct" != $this->parameters["type"] && $flash) {
-                throw new InvalidOptionalArgumentException("Only messages of type direct can be sent as flash messages.");
+                throw new InvalidOptionalArgumentException(
+                    "Only messages of type 'direct' can be sent as 'flash' messages.");
             }
 
         }
@@ -127,15 +128,16 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
             $isNumeric = is_numeric($from);
 
             if ($length > $numericMax) {
-                throw new InvalidOptionalArgumentException("from is too long as it exceeds $numericMax characters.");
+                throw new InvalidOptionalArgumentException("Argument 'from' may not exceed $numericMax chars.");
             }
 
-            if ($length > $alphaNumericMax) {
-                if (!$isNumeric) {
-                    throw new InvalidOptionalArgumentException("from longer than $alphaNumericMax characters must be numeric.");
-                }
-            } elseif (!$isNumeric || !ctype_alnum($from)) {
-                throw new InvalidOptionalArgumentException("from does not seem to be a valid sender.");
+            if ($length > $alphaNumericMax && !$isNumeric) {
+                throw new InvalidOptionalArgumentException(
+                    "Argument 'from' must be numeric. if > $alphaNumericMax chars.");
+            }
+
+            if (!ctype_alnum($from)) {
+                throw new InvalidOptionalArgumentException("Argument 'from' must be alphanumeric.");
             }
         }
     }
