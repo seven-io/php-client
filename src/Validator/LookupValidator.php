@@ -7,52 +7,47 @@ use Sms77\Api\Exception\InvalidRequiredArgumentException;
 
 class LookupValidator extends BaseValidator implements ValidatorInterface
 {
-    function __construct(array $parameters)
-    {
-        parent::__construct($parameters);
-    }
-
-    function validate()
+    public function validate()
     {
         $this->json();
         $this->number();
         $this->type();
     }
 
-    function json()
+    public function json()
     {
-        $json = isset($this->parameters["json"]) ? $this->parameters["json"] : null;
+        $json = isset($this->parameters['json']) ? $this->parameters['json'] : null;
 
         if (null !== $json) {
-            $type = isset($this->parameters["type"]) ? $this->parameters["type"] : null;
+            $type = isset($this->parameters['type']) ? $this->parameters['type'] : null;
 
-            if ("mnp" !== $type) {
-                throw new InvalidOptionalArgumentException("json may only be set if type is set to mnp.");
+            if ('mnp' !== $type) {
+                throw new InvalidOptionalArgumentException('json may only be set if type is set to mnp.');
             }
 
             if (!$this->isValidBool($json)) {
-                throw new InvalidOptionalArgumentException("json can be either 1 or 0.");
+                throw new InvalidOptionalArgumentException('json can be either 1 or 0.');
             }
         }
     }
 
-    function number()
+    public function number()
     {
-        $number = isset($this->parameters["number"]) ? $this->parameters["number"] : null;
+        $number = isset($this->parameters['number']) ? $this->parameters['number'] : null;
 
-        if (!isset($this->parameters["number"]) || !strlen($number)) {
-            throw new InvalidRequiredArgumentException("number is missing.");
+        if (!isset($this->parameters['number']) || '' === $number) {
+            throw new InvalidRequiredArgumentException('number is missing.');
         }
     }
 
-    function type()
+    public function type()
     {
-        $type = isset($this->parameters["type"]) ? $this->parameters["type"] : null;
+        $type = isset($this->parameters['type']) ? $this->parameters['type'] : null;
 
-        $types = ["cnam", "format", "hlr", "mnp"];
+        $types = ['cnam', 'format', 'hlr', 'mnp'];
 
-        if (!in_array($type, $types)) {
-            $imploded = implode(",", $types);
+        if (!in_array($type, $types, true)) {
+            $imploded = implode(',', $types);
 
             throw new InvalidRequiredArgumentException("type $type is invalid. Valid types are: $imploded.");
         }

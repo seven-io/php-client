@@ -7,12 +7,7 @@ use Sms77\Api\Exception\InvalidRequiredArgumentException;
 
 class VoiceValidator extends BaseValidator implements ValidatorInterface
 {
-    function __construct(array $parameters)
-    {
-        parent::__construct($parameters);
-    }
-
-    function validate()
+    public function validate()
     {
         $this->from();
         $this->text();
@@ -20,39 +15,39 @@ class VoiceValidator extends BaseValidator implements ValidatorInterface
         $this->xml();
     }
 
-    function from()
+    public function from()
     {
-        $from = isset($this->parameters["from"]) ? $this->parameters["from"] : null;
+        $from = isset($this->parameters['from']) ? $this->parameters['from'] : null;
 
-        if (null !== $from && !strlen($from)) {
-            throw new InvalidOptionalArgumentException("from may not be empty if set.");
+        if (null !== $from && '' === $from) {
+            throw new InvalidOptionalArgumentException('from may not be empty if set.');
         }
     }
 
-    function text()
+    public function text()
     {
-        $text = isset($this->parameters["text"]) ? $this->parameters["text"] : null;
+        $text = isset($this->parameters['text']) ? $this->parameters['text'] : null;
 
-        if (!isset($text) || !strlen($text)) {
-            throw new InvalidRequiredArgumentException("text is missing.");
+        if (!isset($text) || '' === $text) {
+            throw new InvalidRequiredArgumentException('text is missing.');
         }
     }
 
-    function to()
+    public function to()
     {
-        $to = isset($this->parameters["to"]) ? $this->parameters["to"] : null;
+        $to = isset($this->parameters['to']) ? $this->parameters['to'] : null;
 
-        if (!isset($to) || !strlen($to)) {
-            throw new InvalidRequiredArgumentException("to is missing.");
+        if (!isset($to) || '' === $to) {
+            throw new InvalidRequiredArgumentException('to is missing.');
         }
     }
 
-    function xml()
+    public function xml()
     {
-        $xml = isset($this->parameters["xml"]) ? $this->parameters["xml"] : null;
+        $xml = isset($this->parameters['xml']) ? $this->parameters['xml'] : null;
 
         if (!$this->isValidBool($xml)) {
-            throw new InvalidOptionalArgumentException("xml can be either 1 or 0.");
+            throw new InvalidOptionalArgumentException('xml can be either 1 or 0.');
         }
     }
 }

@@ -4,7 +4,7 @@ namespace Sms77\Tests\Client;
 
 class VoiceTest extends BaseTest
 {
-    function testVoice()
+    public function testVoice()
     {
         $voice = $this->client->voice($this->recipient, time());
 

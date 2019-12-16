@@ -4,11 +4,11 @@ namespace Sms77\Tests\Client;
 
 class BalanceTest extends BaseTest
 {
-    function testBalance()
+    public function testBalance()
     {
         $res = $this->client->balance();
-        $res = json_decode($res);
+        $res = json_decode($res, false);
 
-        $this->assertTrue(is_double($res));
+        $this->assertTrue(is_float($res));
     }
 }

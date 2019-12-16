@@ -4,17 +4,21 @@ namespace Sms77\Tests\Client;
 
 class PricingTest extends BaseTest
 {
-    function testPricing()
+    const COUNT_COUNTRIES = 'countCountries';
+    const COUNTRIES = 'countries';
+
+    public function testPricing()
     {
         $res = $this->client->pricing();
-        $res = json_decode($res);
+        $res = json_decode($res, false);
 
-        $this->assertObjectHasAttribute('countCountries', $res);
+        $this->assertObjectHasAttribute(self::COUNT_COUNTRIES, $res);
+        $this->assertObjectHasAttribute(self::COUNTRIES, $res);
         $this->assertObjectHasAttribute('countNetworks', $res);
-        $this->assertObjectHasAttribute('countries', $res);
 
-        $this->assertNotEquals(0, $res->countCountries);
+        $this->assertNotEquals(0, $res->{self::COUNT_COUNTRIES});
 
-        $this->assertEquals($res->countCountries, count($res->countries));
+        $this->assertEquals($res->{self::COUNT_COUNTRIES}, count($res->{self::COUNTRIES}));
+        $this->assertCount($res->{self::COUNT_COUNTRIES}, $res->{self::COUNTRIES});
     }
 }

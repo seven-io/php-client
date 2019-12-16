@@ -5,7 +5,7 @@ namespace Sms77\Tests\Client;
 use PHPUnit\Framework\TestCase;
 use Sms77\Api\Client;
 
-class BaseTest extends TestCase
+abstract class BaseTest extends TestCase
 {
     protected $client;
     protected $recipient;
@@ -15,7 +15,7 @@ class BaseTest extends TestCase
     {
         parent::__construct($name, $data, $dataName);
 
-        $this->client = new Client(getenv("SMS77_API_KEY"));
-        $this->recipient = getenv("SMS77_RECIPIENT");
+        $this->client = ClientFactory::Instance();
+        $this->recipient = getenv('SMS77_RECIPIENT');
     }
 }
