@@ -10,30 +10,30 @@ class BaseValidator
     /* @var array $parameters */
     protected $parameters;
 
-    protected $allowedTypes = ["direct", "economy"];
-
-    function __construct(array $parameters)
+    public function __construct(array $parameters)
     {
         $this->parameters = $parameters;
 
-        if (!isset($parameters["p"])) {
-            throw new InvalidRequiredArgumentException("p is missing.");
+        if (!isset($parameters['p'])) {
+            throw new InvalidRequiredArgumentException('p is missing.');
         }
     }
 
     protected function isValidBool($data)
     {
-        return 1 == $data || 0 == $data;
+        $data = (int)$data;
+
+        return 1 === $data || 0 === $data;
     }
 
     protected function throwOnOptionalBadType()
     {
-        $types = ["direct", "economy"];
+        $types = ['direct', 'economy'];
 
-        $type = isset($this->parameters["type"]) ? $this->parameters["type"] : null;
+        $type = isset($this->parameters['type']) ? $this->parameters['type'] : null;
 
-        if (null !== $type && !in_array($type, $types)) {
-            throw new InvalidOptionalArgumentException("type has invalid value $type. Allowed values are: " . join(",", $types) . ".");
+        if (null !== $type && !in_array($type, $types, true)) {
+            throw new InvalidOptionalArgumentException("type has invalid value $type. Allowed values are: " . implode(',', $types) . '.');
         }
     }
 
