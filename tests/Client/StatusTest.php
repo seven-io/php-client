@@ -2,12 +2,21 @@
 
 namespace Sms77\Tests\Client;
 
+use DateTime;
+use Sms77\Api\Constants;
+
 class StatusTest extends BaseTest
 {
     public function testStatus()
     {
-        $res = $this->client->status('77120101060');
+        $response = $this->client->status(getenv('SMS77_MSG_ID'));
 
-        $this->assertStringStartsWith('DELIVERED', $res);
+        $lines = explode(PHP_EOL, $response);
+        $status = $lines[0];
+        $timestamp = $lines[1];
+
+        $this->assertTrue(in_array($status, Constants::statusMessages));
+
+        $this->assertInstanceOf('DateTime', new DateTime($timestamp));
     }
 }

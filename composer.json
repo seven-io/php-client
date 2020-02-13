@@ -18,7 +18,7 @@
       "Sms77\\Tests\\": "tests/"
     }
   },
-  "description": "A simple PHP library for making CURL requests to sms77.io gateway.",
+  "description": "A simple PHP library for making CURL requests to the sms77.io gateway.",
   "homepage": "https://github.com/sms77io/php-api",
   "keywords": [
     "2fa",
@@ -34,7 +34,7 @@
     "ext-mbstring": "*"
   },
   "require-dev": {
-    "phpunit/phpunit": "^8",
+    "phpunit/phpunit": "5.7.27",
     "ext-soap": "*",
     "ext-simplexml": "*",
     "ext-json": "*"

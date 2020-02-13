@@ -8,7 +8,7 @@ class VoiceTest extends BaseTest
     {
         $voice = $this->client->voice($this->recipient, time());
 
-        $this->assertIsString($voice);
+        $this->assertTrue(is_string($voice));
 
         $voice = explode(PHP_EOL, $voice);
 
@@ -16,9 +16,9 @@ class VoiceTest extends BaseTest
         $this->assertEquals(self::SUCCESS_CODE, (int)$voice[0]);
 
         $this->assertArrayHasKey(1, $voice);
-        $this->assertIsInt((int)$voice[1]);
+        $this->assertTrue(is_integer((int)$voice[1]));
 
         $this->assertArrayHasKey(2, $voice);
-        $this->assertIsFloat((float)$voice[2]);
+        $this->assertTrue(is_float((float)$voice[2]));
     }
 }

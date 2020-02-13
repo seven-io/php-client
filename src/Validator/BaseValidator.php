@@ -2,6 +2,7 @@
 
 namespace Sms77\Api\Validator;
 
+use Sms77\Api\Constants;
 use Sms77\Api\Exception\InvalidOptionalArgumentException;
 use Sms77\Api\Exception\InvalidRequiredArgumentException;
 
@@ -28,7 +29,7 @@ class BaseValidator
 
     protected function throwOnOptionalBadType()
     {
-        $types = ['direct', 'economy'];
+        $types = Constants::types;
 
         $type = isset($this->parameters['type']) ? $this->parameters['type'] : null;
 

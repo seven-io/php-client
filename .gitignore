@@ -1,4 +1,4 @@
-/vendor/
+vendor/
 .env
-/.idea/
-sms77_api.http
+.idea/
+*.http

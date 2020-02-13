@@ -1,4 +1,12 @@
-# Sms77.io PHP API
+<p align='center'>
+    <img
+         width="400" 
+         height="79" 
+         src="https://www.sms77.io/wp-content/uploads/2019/07/sms77-Logo-400x79.png" alt="sms77io Logo"
+      />
+</p>
+
+<h1 align='center'>sms77io PHP API Client</h1>
 
 ## Installation
 
@@ -10,7 +18,7 @@ composer require sms77/api
 ```php
 use Sms77\Api\Client;
 $client = new Client('MYVERYSECRETAPIKEY1234!?');
-$client->sms('00491755523119', 'HI2U');
+$client->sms('+4901234567890', 'HI2U');
 ```
 
 #### Implemented Endpoints

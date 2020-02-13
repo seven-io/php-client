@@ -10,7 +10,7 @@ class ContactsTest extends BaseTest
 
         $contacts = explode(PHP_EOL, $contacts);
 
-        $this->assertIsArray($contacts);
+        $this->assertTrue(is_array($contacts));
     }
 
     public function testContactsJson()
@@ -19,6 +19,6 @@ class ContactsTest extends BaseTest
 
         $contacts = json_decode($contacts, false);
 
-        $this->assertIsArray($contacts);
+        $this->assertTrue(is_array($contacts));
     }
 }

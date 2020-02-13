@@ -12,13 +12,13 @@ final class ClientFactory
      */
     public static function Instance()
     {
-        static $inst = null;
+        static $instance = null;
 
-        if ($inst === null) {
-            $inst = new Client(getenv('SMS77_API_KEY'), 'php-api-test');
+        if ($instance === null) {
+            $instance = new Client(getenv('SMS77_API_KEY'), 'php-api-test');
         }
 
-        return $inst;
+        return $instance;
     }
 
     /**

@@ -10,13 +10,13 @@ class ValidateForVoiceTest extends BaseTest
         $voice = $this->client->validateForVoice($this->recipient, ['callback' => 'http://my.site/validate_for_voice']);
         $voice = json_decode($voice, false);
 
-        $this->assertIsObject($voice);
+        $this->assertTrue(is_object($voice));
 
         $this->assertObjectHasAttribute('success', $voice);
         $this->assertTrue($voice->success);
 
         $this->assertObjectHasAttribute('code', $voice);
-        $this->assertIsInt((int)$voice->code);
+        $this->assertTrue(is_integer((int)$voice->code));
 
         $this->assertObjectHasAttribute('error', $voice);
         $this->assertNull($voice->error);
@@ -28,13 +28,13 @@ class ValidateForVoiceTest extends BaseTest
         $voice = $this->client->validateForVoice($faultySenderNumber);
         $voice = json_decode($voice, false);
 
-        $this->assertIsObject($voice);
+        $this->assertTrue(is_object($voice));
 
         $this->assertObjectHasAttribute('error', $voice);
-        $this->assertIsString($voice->error);
+        $this->assertTrue(is_string($voice->error));
 
         $this->assertObjectHasAttribute('formatted_output', $voice);
-        $this->assertIsString($voice->formatted_output);
+        $this->assertTrue(is_string($voice->formatted_output));
 
         $this->assertObjectHasAttribute('id', $voice);
         $this->assertNull($voice->id);

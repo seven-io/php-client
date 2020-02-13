@@ -3,7 +3,6 @@
 namespace Sms77\Tests\Client;
 
 use PHPUnit\Framework\TestCase;
-use Sms77\Api\Client;
 
 abstract class BaseTest extends TestCase
 {
@@ -16,6 +15,7 @@ abstract class BaseTest extends TestCase
         parent::__construct($name, $data, $dataName);
 
         $this->client = ClientFactory::Instance();
+
         $this->recipient = getenv('SMS77_RECIPIENT');
     }
 }
