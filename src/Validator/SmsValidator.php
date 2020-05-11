@@ -5,10 +5,8 @@ namespace Sms77\Api\Validator;
 use Sms77\Api\Exception\InvalidOptionalArgumentException;
 use Sms77\Api\Exception\InvalidRequiredArgumentException;
 
-class SmsValidator extends BaseValidator implements ValidatorInterface
-{
-    public function validate()
-    {
+class SmsValidator extends BaseValidator implements ValidatorInterface {
+    public function validate() {
         $this->debug();
         $this->delay();
         $this->details();
@@ -28,8 +26,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
         $this->ttl();
     }
 
-    public function debug()
-    {
+    public function debug() {
         $debug = isset($this->parameters['debug']) ? $this->parameters['debug'] : null;
 
         if ((null !== $debug) && !$this->isValidBool($debug)) {
@@ -37,8 +34,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
         }
     }
 
-    public function delay()
-    {
+    public function delay() {
         $delay = isset($this->parameters['delay']) ? $this->parameters['delay'] : null;
 
         if (null !== $delay) {
@@ -48,7 +44,8 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
 
             if (false === strpos($delay, '-')) {
                 if (!$this->isValidUnixTimestamp($delay)) {
-                    throw new InvalidOptionalArgumentException("Delay must be a valid UNIX timestamp or in the format of $dateFormat.");
+                    throw new InvalidOptionalArgumentException(
+                        "Delay must be a valid UNIX timestamp or in the format of $dateFormat.");
                 }
             } else {
                 if (!preg_match('/^([0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]$/', $hour . ':' . $min)) {
@@ -56,14 +53,14 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
                 }
 
                 if (!checkdate($month, $day, $year)) {
-                    throw new InvalidOptionalArgumentException("Delay must be a valid UNIX timestamp or in the format of $dateFormat.");
+                    throw new InvalidOptionalArgumentException(
+                        "Delay must be a valid UNIX timestamp or in the format of $dateFormat.");
                 }
             }
         }
     }
 
-    public function details()
-    {
+    public function details() {
         $details = isset($this->parameters['details']) ? $this->parameters['details'] : null;
 
         if (null !== $details && !$this->isValidBool($details)) {
@@ -71,8 +68,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
         }
     }
 
-    public function label()
-    {
+    public function label() {
         //TODO: max length?! there must be one.
 
         $label = isset($this->parameters['label']) ? $this->parameters['label'] : null;
@@ -86,8 +82,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
         }
     }
 
-    public function flash()
-    {
+    public function flash() {
         $flash = isset($this->parameters['flash']) ? $this->parameters['flash'] : null;
 
         if (null !== $flash) {
@@ -103,8 +98,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
         }
     }
 
-    public function from()
-    {
+    public function from() {
         $from = isset($this->parameters['from']) ? $this->parameters['from'] : null;
 
         if (null !== $from) {
@@ -124,14 +118,14 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
                     "Argument 'from' must be numeric. if > $alphaNumericMax chars.");
             }
 
-            if (!ctype_alnum($from)) {
+            $allowedSpecialChars = ['/', ' ', '.', '-', '@', '_', '!', '(', ')', '+', '$', ',', '&',];
+            if (!ctype_alnum(str_ireplace($allowedSpecialChars, '', $from))) {
                 throw new InvalidOptionalArgumentException("Argument 'from' must be alphanumeric.");
             }
         }
     }
 
-    public function json()
-    {
+    public function json() {
         $json = isset($this->parameters['json']) ? $this->parameters['json'] : null;
 
         if ((null !== $json) && !$this->isValidBool($json)) {
@@ -139,8 +133,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
         }
     }
 
-    public function no_reload()
-    {
+    public function no_reload() {
         $noReload = isset($this->parameters['no_reload']) ? $this->parameters['no_reload'] : null;
 
         if ((null !== $noReload) && !$this->isValidBool($noReload)) {
@@ -148,17 +141,16 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
         }
     }
 
-    public function performance_tracking()
-    {
-        $performanceTracking = isset($this->parameters['performance_tracking']) ? $this->parameters['performance_tracking'] : null;
+    public function performance_tracking() {
+        $performanceTracking =
+            isset($this->parameters['performance_tracking']) ? $this->parameters['performance_tracking'] : null;
 
         if ((null !== $performanceTracking) && !$this->isValidBool($performanceTracking)) {
             throw new InvalidOptionalArgumentException('performance_tracking can be either 1 or 0.');
         }
     }
 
-    public function return_msg_id()
-    {
+    public function return_msg_id() {
         $returnMsgId = isset($this->parameters['return_msg_id']) ? $this->parameters['return_msg_id'] : null;
 
         if ((null !== $returnMsgId) && !$this->isValidBool($returnMsgId)) {
@@ -166,8 +158,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
         }
     }
 
-    public function text()
-    {
+    public function text() {
         $text = isset($this->parameters['text']) ? $this->parameters['text'] : null;
 
         if (null === $text) {
@@ -183,21 +174,21 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
         $maxTextLength = 1520;
 
         if ($maxTextLength < $length) {
-            throw new InvalidRequiredArgumentException("The text can not be longer than $maxTextLength characters.");
+            throw new InvalidRequiredArgumentException(
+                "The text can not be longer than $maxTextLength characters.");
         }
     }
 
-    public function to()
-    {
+    public function to() {
         $to = isset($this->parameters['to']) ? $this->parameters['to'] : null;
 
         if (null === $to) {
-            throw new InvalidRequiredArgumentException('You cannot send a message without specifying a recipient.');
+            throw new InvalidRequiredArgumentException(
+                'You cannot send a message without specifying a recipient.');
         }
     }
 
-    public function ttl()
-    {
+    public function ttl() {
         $ttl = isset($this->parameters['ttl']) ? $this->parameters['ttl'] : null;
 
         if (null !== $ttl) {
@@ -214,13 +205,11 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
         }
     }
 
-    public function type()
-    {
+    public function type() {
         $this->throwOnOptionalBadType();
     }
 
-    public function udh()
-    {
+    public function udh() {
         $udh = isset($this->parameters['udh']) ? $this->parameters['udh'] : null;
 
         if (null !== $udh) {
@@ -234,8 +223,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
         }
     }
 
-    public function unicode()
-    {
+    public function unicode() {
         $unicode = isset($this->parameters['unicode']) ? $this->parameters['unicode'] : null;
 
         if (null !== $unicode) {
@@ -249,8 +237,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface
         }
     }
 
-    public function utf8()
-    {
+    public function utf8() {
         $utf8 = isset($this->parameters['utf8']) ? $this->parameters['utf8'] : null;
 
         if ((null !== $utf8) && !$this->isValidBool($utf8)) {
