@@ -10,29 +10,45 @@ use Sms77\Api\Validator\StatusValidator;
 use Sms77\Api\Validator\ValidateForVoiceValidator;
 use Sms77\Api\Validator\VoiceValidator;
 
-class Client
-{
+class Client {
+    const BASE_URI = 'https://gateway.sms77.io/api';
     /* @var string $apiKey */
     private $apiKey;
-
     /* @var string $sendWith */
     private $sendWith;
 
-    const BASE_URI = 'https://gateway.sms77.io/api';
-
-    public function __construct($apiKey, $sendWith = 'php-api')
-    {
+    public function __construct($apiKey, $sendWith = 'php-api') {
         $this->apiKey = $apiKey;
         $this->sendWith = $sendWith;
     }
 
-    public function balance()
-    {
+    public function balance() {
         return $this->request('balance', $this->buildOptions([]));
     }
 
-    public function contacts($action, array $extra = [])
-    {
+    private function request($path, $options = []) {
+        $curl_get_contents = static function($url) {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            $output = curl_exec($ch);
+            curl_close($ch);
+            return $output;
+        };
+
+        return $curl_get_contents(self::BASE_URI . '/' . $path . '?' . http_build_query($options));
+    }
+
+    private function buildOptions(array $required, array $extra = []) {
+        $required = array_merge($required, [
+            'p' => $this->apiKey,
+            'sendwith' => '' === $this->sendWith ? 'unknown' : $this->sendWith,
+        ]);
+
+        return array_merge($required, $extra);
+    }
+
+    public function contacts($action, array $extra = []) {
         $options = $this->buildOptions([
             'action' => $action,
         ], $extra);
@@ -42,8 +58,7 @@ class Client
         return $this->request('contacts', $options);
     }
 
-    public function lookup($type, $number, array $extra = [])
-    {
+    public function lookup($type, $number, array $extra = []) {
         $options = $this->buildOptions([
             'type' => $type,
             'number' => $number,
@@ -54,8 +69,7 @@ class Client
         return $this->request('lookup', $options);
     }
 
-    public function pricing(array $extra = [])
-    {
+    public function pricing(array $extra = []) {
         $options = $this->buildOptions([], $extra);
 
         (new PricingValidator($options))->validate();
@@ -63,11 +77,10 @@ class Client
         return $this->request('pricing', $options);
     }
 
-    public function sms($to, $text, array $extra = [])
-    {
+    public function sms($to, $text, array $extra = []) {
         $options = $this->buildOptions([
             'to' => $to,
-            'text' => $text
+            'text' => $text,
         ], $extra);
 
         (new SmsValidator($options))->validate();
@@ -75,8 +88,7 @@ class Client
         return $this->request('sms', $options);
     }
 
-    public function status($msgId)
-    {
+    public function status($msgId) {
         $options = $this->buildOptions([
             'msg_id' => $msgId,
         ]);
@@ -86,8 +98,7 @@ class Client
         return $this->request('status', $options);
     }
 
-    public function validateForVoice($number, array $extra = [])
-    {
+    public function validateForVoice($number, array $extra = []) {
         $options = $this->buildOptions([
             'number' => $number,
         ], $extra);
@@ -97,39 +108,14 @@ class Client
         return $this->request('validate_for_voice', $options);
     }
 
-    public function voice($to, $text, array $extra = [])
-    {
+    public function voice($to, $text, array $extra = []) {
         $options = $this->buildOptions([
             'to' => $to,
-            'text' => $text
+            'text' => $text,
         ], $extra);
 
         (new VoiceValidator($options))->validate();
 
         return $this->request('voice', $options);
-    }
-
-    private function buildOptions(array $required, array $extra = [])
-    {
-        $required = array_merge($required, [
-            'p' => $this->apiKey,
-            'sendwith' => '' === $this->sendWith ? 'unknown' : $this->sendWith
-        ]);
-
-        return array_merge($required, $extra);
-    }
-
-    private function request($path, $options = [])
-    {
-        $curl_get_contents = static function ($url) {
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            $output = curl_exec($ch);
-            curl_close($ch);
-            return $output;
-        };
-
-        return $curl_get_contents(self::BASE_URI . '/' . $path . '?' . http_build_query($options));
     }
 }

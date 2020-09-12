@@ -2,17 +2,15 @@
 
 namespace Sms77\Api\Validator;
 
-use Sms77\Api\Constants;
+use Sms77\Api\Constant\SmsType;
 use Sms77\Api\Exception\InvalidOptionalArgumentException;
 use Sms77\Api\Exception\InvalidRequiredArgumentException;
 
-class BaseValidator
-{
+class BaseValidator {
     /* @var array $parameters */
     protected $parameters;
 
-    public function __construct(array $parameters)
-    {
+    public function __construct(array $parameters) {
         $this->parameters = $parameters;
 
         if (!isset($parameters['p'])) {
@@ -20,26 +18,28 @@ class BaseValidator
         }
     }
 
-    protected function isValidBool($data)
-    {
+    protected function isValidBool($data) {
         $data = (int)$data;
 
         return 1 === $data || 0 === $data;
     }
 
-    protected function throwOnOptionalBadType()
-    {
-        $types = Constants::types;
+    protected function throwOnOptionalBadType() {
+        $smsTypes = SmsType::values();
 
-        $type = isset($this->parameters['type']) ? $this->parameters['type'] : null;
+        $type = $this->fallback('type');
 
-        if (null !== $type && !in_array($type, $types, true)) {
-            throw new InvalidOptionalArgumentException("type has invalid value $type. Allowed values are: " . implode(',', $types) . '.');
+        if (null !== $type && !in_array($type, $smsTypes, true)) {
+            throw new InvalidOptionalArgumentException("type has invalid value $type. Allowed values are: " . implode(',', $smsTypes) . '.');
         }
     }
 
-    protected function isValidUnixTimestamp($timestamp)
-    {
+    protected function fallback($key, $fallback = null) {
+        return isset($this->parameters[$key])
+            ? $this->parameters[$key] : $fallback;
+    }
+
+    protected function isValidUnixTimestamp($timestamp) {
         /*https://stackoverflow.com/questions/2524680/check-whether-the-string-is-a-unix-timestamp*/
         return ((string)$timestamp === $timestamp)
             && ($timestamp <= PHP_INT_MAX)

@@ -5,23 +5,26 @@ namespace Sms77\Api\Validator;
 use Sms77\Api\Exception\InvalidOptionalArgumentException;
 use Sms77\Api\Exception\InvalidRequiredArgumentException;
 
-class LookupValidator extends BaseValidator implements ValidatorInterface
-{
-    public function validate()
-    {
+class LookupValidator extends BaseValidator implements ValidatorInterface {
+    const TYPE_CNAM = 'cnam';
+    const TYPE_FORMAT = 'format';
+    const TYPE_HLR = 'hlr';
+    const TYPE_MNP = 'mnp';
+    const TYPES = [self::TYPE_CNAM, self::TYPE_FORMAT, self::TYPE_HLR, self::TYPE_MNP,];
+
+    public function validate() {
         $this->json();
         $this->number();
         $this->type();
     }
 
-    public function json()
-    {
-        $json = isset($this->parameters['json']) ? $this->parameters['json'] : null;
+    public function json() {
+        $json = $this->fallback('json');
 
         if (null !== $json) {
-            $type = isset($this->parameters['type']) ? $this->parameters['type'] : null;
+            $type = $this->fallback('type');
 
-            if ('mnp' !== $type) {
+            if (self::TYPE_MNP !== $type) {
                 throw new InvalidOptionalArgumentException('json may only be set if type is set to mnp.');
             }
 
@@ -31,23 +34,19 @@ class LookupValidator extends BaseValidator implements ValidatorInterface
         }
     }
 
-    public function number()
-    {
-        $number = isset($this->parameters['number']) ? $this->parameters['number'] : null;
+    public function number() {
+        $number = $this->fallback('number', '');
 
-        if (!isset($this->parameters['number']) || '' === $number) {
+        if ('' === $number) {
             throw new InvalidRequiredArgumentException('number is missing.');
         }
     }
 
-    public function type()
-    {
-        $type = isset($this->parameters['type']) ? $this->parameters['type'] : null;
+    public function type() {
+        $type = $this->fallback('type');
 
-        $types = ['cnam', 'format', 'hlr', 'mnp'];
-
-        if (!in_array($type, $types, true)) {
-            $imploded = implode(',', $types);
+        if (!in_array($type, self::TYPES, true)) {
+            $imploded = implode(',', self::TYPES);
 
             throw new InvalidRequiredArgumentException("type $type is invalid. Valid types are: $imploded.");
         }

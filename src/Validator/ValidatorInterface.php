@@ -2,7 +2,6 @@
 
 namespace Sms77\Api\Validator;
 
-interface ValidatorInterface
-{
+interface ValidatorInterface {
     public function validate();
 }

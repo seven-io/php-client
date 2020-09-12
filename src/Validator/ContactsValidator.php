@@ -5,28 +5,24 @@ namespace Sms77\Api\Validator;
 use Sms77\Api\Exception\InvalidOptionalArgumentException;
 use Sms77\Api\Exception\InvalidRequiredArgumentException;
 
-class ContactsValidator extends BaseValidator implements ValidatorInterface
-{
-    public function validate()
-    {
+class ContactsValidator extends BaseValidator implements ValidatorInterface {
+    const ACTIONS = ['read', 'write', 'del'];
+
+    public function validate() {
         $this->action();
         $this->json();
     }
 
-    public function action()
-    {
-        $action = isset($this->parameters['action']) ? $this->parameters['action'] : null;
+    public function action() {
+        $action = $this->fallback('action');
 
-        $actions = ['read', 'write', 'del'];
-
-        if (!in_array($action, $actions, true)) {
+        if (!in_array($action, self::ACTIONS, true)) {
             throw new InvalidRequiredArgumentException("Unknown action $action.");
         }
     }
 
-    public function json()
-    {
-        $json = isset($this->parameters['json']) ? $this->parameters['json'] : null;
+    public function json() {
+        $json = $this->fallback('json');
 
         if ((null !== $json) && !$this->isValidBool($json)) {
             throw new InvalidOptionalArgumentException('json can be either 1 or 0.');

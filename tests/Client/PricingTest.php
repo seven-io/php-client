@@ -18,7 +18,6 @@ class PricingTest extends BaseTest
 
         $this->assertNotEquals(0, $res->{self::COUNT_COUNTRIES});
 
-        $this->assertEquals($res->{self::COUNT_COUNTRIES}, count($res->{self::COUNTRIES}));
         $this->assertCount($res->{self::COUNT_COUNTRIES}, $res->{self::COUNTRIES});
     }
 }

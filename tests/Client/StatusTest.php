@@ -3,7 +3,7 @@
 namespace Sms77\Tests\Client;
 
 use DateTime;
-use Sms77\Api\Constants;
+use Sms77\Api\Constant\StatusMessage;
 
 class StatusTest extends BaseTest
 {
@@ -15,7 +15,7 @@ class StatusTest extends BaseTest
         $status = $lines[0];
         $timestamp = $lines[1];
 
-        $this->assertTrue(in_array($status, Constants::statusMessages));
+        $this->assertTrue(in_array($status, StatusMessage::values()));
 
         $this->assertInstanceOf('DateTime', new DateTime($timestamp));
     }

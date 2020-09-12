@@ -1,9 +1,12 @@
 <?php
 
-namespace Sms77\Api;
+namespace Sms77\Api\Constant;
 
-abstract class SmsOptions
-{
+use Sms77\Api\Reflectable;
+
+class SmsOptions {
+    use Reflectable;
+
     const Debug = 'debug';
     const Delay = 'delay';
     const Details = 'details';
