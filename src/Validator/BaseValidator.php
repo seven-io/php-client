@@ -10,6 +10,10 @@ class BaseValidator {
     /* @var array $parameters */
     protected $parameters;
 
+    /**
+     * @param array $parameters
+     * @throws InvalidRequiredArgumentException
+     */
     public function __construct(array $parameters) {
         $this->parameters = $parameters;
 
@@ -18,12 +22,19 @@ class BaseValidator {
         }
     }
 
+    /**
+     * @param $data
+     * @return bool
+     */
     protected function isValidBool($data) {
         $data = (int)$data;
 
         return 1 === $data || 0 === $data;
     }
 
+    /**
+     * @throws InvalidOptionalArgumentException
+     */
     protected function throwOnOptionalBadType() {
         $smsTypes = SmsType::values();
 
@@ -34,11 +45,20 @@ class BaseValidator {
         }
     }
 
+    /**
+     * @param $key
+     * @param mixed|null $fallback
+     * @return mixed|null
+     */
     protected function fallback($key, $fallback = null) {
         return isset($this->parameters[$key])
             ? $this->parameters[$key] : $fallback;
     }
 
+    /**
+     * @param $timestamp
+     * @return bool
+     */
     protected function isValidUnixTimestamp($timestamp) {
         /*https://stackoverflow.com/questions/2524680/check-whether-the-string-is-a-unix-timestamp*/
         return ((string)$timestamp === $timestamp)

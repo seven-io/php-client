@@ -17,6 +17,10 @@ class SmsValidator extends BaseValidator implements ValidatorInterface {
     const TTL_MIN = 300000;
     const TTL_MAX = 86400000;
 
+    /**
+     * @throws InvalidOptionalArgumentException
+     * @throws InvalidRequiredArgumentException
+     */
     public function validate() {
         $this->debug();
         $this->delay();
@@ -37,6 +41,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface {
         $this->ttl();
     }
 
+    /** @throws InvalidOptionalArgumentException */
     public function debug() {
         $debug = $this->fallback('debug');
 
@@ -45,6 +50,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface {
         }
     }
 
+    /** @throws InvalidOptionalArgumentException */
     public function delay() {
         $delay = $this->fallback('delay');
 
@@ -70,6 +76,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface {
         }
     }
 
+    /** @throws InvalidOptionalArgumentException */
     public function details() {
         $details = $this->fallback('details');
 
@@ -78,6 +85,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface {
         }
     }
 
+    /** @throws InvalidOptionalArgumentException */
     public function flash() {
         $flash = $this->fallback('flash');
 
@@ -95,6 +103,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface {
         }
     }
 
+    /** @throws InvalidOptionalArgumentException */
     public function from() {
         $from = $this->fallback('from');
 
@@ -121,6 +130,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface {
         }
     }
 
+    /** @throws InvalidOptionalArgumentException */
     public function json() {
         $json = $this->fallback('json');
 
@@ -129,6 +139,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface {
         }
     }
 
+    /** @throws InvalidOptionalArgumentException */
     public function label() {
         //TODO: max length?! there must be one.
         $label = $this->fallback('label');
@@ -140,6 +151,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface {
         }
     }
 
+    /** @throws InvalidOptionalArgumentException */
     public function no_reload() {
         $noReload = $this->fallback('no_reload');
 
@@ -148,6 +160,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface {
         }
     }
 
+    /** @throws InvalidOptionalArgumentException */
     public function performance_tracking() {
         $performanceTracking = $this->fallback('performance_tracking');
 
@@ -156,6 +169,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface {
         }
     }
 
+    /** @throws InvalidOptionalArgumentException */
     public function return_msg_id() {
         $returnMsgId = $this->fallback('return_msg_id');
 
@@ -164,6 +178,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface {
         }
     }
 
+    /** @throws InvalidRequiredArgumentException */
     public function text() {
         $text = $this->fallback('text');
 
@@ -185,6 +200,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface {
         }
     }
 
+    /** @throws InvalidRequiredArgumentException */
     public function to() {
         if (null === $this->fallback('to')) {
             throw new InvalidRequiredArgumentException(
@@ -192,10 +208,12 @@ class SmsValidator extends BaseValidator implements ValidatorInterface {
         }
     }
 
+    /** @throws InvalidOptionalArgumentException */
     public function type() {
         $this->throwOnOptionalBadType();
     }
 
+    /** @throws InvalidOptionalArgumentException */
     public function udh() {
         $udh = $this->fallback('udh');
 
@@ -211,6 +229,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface {
         }
     }
 
+    /** @throws InvalidOptionalArgumentException */
     public function unicode() {
         $unicode = $this->fallback('unicode');
 
@@ -227,6 +246,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface {
         }
     }
 
+    /** @throws InvalidOptionalArgumentException */
     public function utf8() {
         $utf8 = $this->fallback('utf8');
 
@@ -235,6 +255,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface {
         }
     }
 
+    /** @throws InvalidOptionalArgumentException */
     public function ttl() {
         $ttl = $this->fallback('ttl');
 

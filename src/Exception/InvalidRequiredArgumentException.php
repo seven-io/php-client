@@ -9,6 +9,7 @@ class InvalidRequiredArgumentException extends Exception {
         parent::__construct($message, $code, $previous);
     }
 
+    /** @return string */
     public function __toString() {
         return __CLASS__ . ": [{$this->code}]: {$this->message}" . PHP_EOL;
     }

@@ -8,11 +8,18 @@ use Sms77\Api\Exception\InvalidRequiredArgumentException;
 class ContactsValidator extends BaseValidator implements ValidatorInterface {
     const ACTIONS = ['read', 'write', 'del'];
 
+    /**
+     * @throws InvalidOptionalArgumentException
+     * @throws InvalidRequiredArgumentException
+     */
     public function validate() {
         $this->action();
         $this->json();
     }
 
+    /**
+     * @throws InvalidRequiredArgumentException
+     */
     public function action() {
         $action = $this->fallback('action');
 
@@ -21,6 +28,9 @@ class ContactsValidator extends BaseValidator implements ValidatorInterface {
         }
     }
 
+    /**
+     * @throws InvalidOptionalArgumentException
+     */
     public function json() {
         $json = $this->fallback('json');
 
