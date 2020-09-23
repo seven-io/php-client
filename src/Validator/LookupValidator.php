@@ -12,12 +12,19 @@ class LookupValidator extends BaseValidator implements ValidatorInterface {
     const TYPE_MNP = 'mnp';
     const TYPES = [self::TYPE_CNAM, self::TYPE_FORMAT, self::TYPE_HLR, self::TYPE_MNP,];
 
+    /**
+     * @throws InvalidOptionalArgumentException
+     * @throws InvalidRequiredArgumentException
+     */
     public function validate() {
         $this->json();
         $this->number();
         $this->type();
     }
 
+    /**
+     * @throws InvalidOptionalArgumentException
+     */
     public function json() {
         $json = $this->fallback('json');
 
@@ -34,6 +41,9 @@ class LookupValidator extends BaseValidator implements ValidatorInterface {
         }
     }
 
+    /**
+     * @throws InvalidRequiredArgumentException
+     */
     public function number() {
         $number = $this->fallback('number', '');
 
@@ -42,6 +52,9 @@ class LookupValidator extends BaseValidator implements ValidatorInterface {
         }
     }
 
+    /**
+     * @throws InvalidRequiredArgumentException
+     */
     public function type() {
         $type = $this->fallback('type');
 

@@ -7,12 +7,18 @@ use Sms77\Api\Exception\InvalidOptionalArgumentException;
 class PricingValidator extends BaseValidator implements ValidatorInterface {
     const FORMATS = ['csv', 'json'];
 
+    /**
+     * @throws InvalidOptionalArgumentException
+     */
     public function validate() {
         $this->country();
         $this->format();
         $this->type();
     }
 
+    /**
+     * @throws InvalidOptionalArgumentException
+     */
     public function country() {
         $country = $this->fallback('country');
 
@@ -21,6 +27,9 @@ class PricingValidator extends BaseValidator implements ValidatorInterface {
         }
     }
 
+    /**
+     * @throws InvalidOptionalArgumentException
+     */
     public function format() {
         $format = $this->fallback('format');
 
@@ -29,6 +38,9 @@ class PricingValidator extends BaseValidator implements ValidatorInterface {
         }
     }
 
+    /**
+     * @throws InvalidOptionalArgumentException
+     */
     public function type() {
         $this->throwOnOptionalBadType();
     }
