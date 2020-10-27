@@ -14,16 +14,24 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Sms77\\Api\\": "src/",
       "Sms77\\Tests\\": "tests/"
     }
   },
-  "description": "A simple PHP library for making CURL requests to the sms77.io gateway.",
+  "config": {
+    "platform": {
+      "php": "5.6.40"
+    }
+  },
+  "description": "A simple PHP library for requesting the Sms77.io SMS gateway.",
   "homepage": "https://github.com/sms77io/php-api",
   "keywords": [
     "2fa",
     "sms",
-    "gateway"
+    "gateway",
+    "text2speech",
+    "hlr",
+    "cnam",
+    "mnp"
   ],
   "license": "MIT",
   "name": "sms77/api",

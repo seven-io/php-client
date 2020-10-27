@@ -61,7 +61,8 @@ class LookupValidator extends BaseValidator implements ValidatorInterface {
         if (!in_array($type, self::TYPES, true)) {
             $imploded = implode(',', self::TYPES);
 
-            throw new InvalidRequiredArgumentException("type $type is invalid. Valid types are: $imploded.");
+            throw new InvalidRequiredArgumentException(
+                "type $type is invalid. Valid types are: $imploded.");
         }
     }
 }

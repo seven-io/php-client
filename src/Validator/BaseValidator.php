@@ -5,6 +5,7 @@ namespace Sms77\Api\Validator;
 use Sms77\Api\Constant\SmsType;
 use Sms77\Api\Exception\InvalidOptionalArgumentException;
 use Sms77\Api\Exception\InvalidRequiredArgumentException;
+use Sms77\Api\Util;
 
 class BaseValidator {
     /* @var array $parameters */
@@ -14,22 +15,34 @@ class BaseValidator {
      * @param array $parameters
      * @throws InvalidRequiredArgumentException
      */
-    public function __construct(array $parameters) {
+    public function __construct(array $parameters = []) {
         $this->parameters = $parameters;
-
-        if (!isset($parameters['p'])) {
-            throw new InvalidRequiredArgumentException('p is missing.');
-        }
     }
 
     /**
-     * @param $data
+     * @param string $timestamp
      * @return bool
      */
-    protected function isValidBool($data) {
-        $data = (int)$data;
+    public function isValidUnixTimestamp($timestamp) {
+        return Util::isValidUnixTimestamp($timestamp);
+    }
 
-        return 1 === $data || 0 === $data;
+    /**
+     * @param string $date
+     * @return bool
+     */
+    public function isValidDate($date) {
+        return Util::isValidDate($date, 'Y-m-d');
+    }
+
+    /**
+     * @param mixed $string
+     * @return bool
+     */
+    protected function isValidBool($string) {
+        $string = (int)$string;
+
+        return 1 === $string || 0 === $string;
     }
 
     /**
@@ -41,7 +54,9 @@ class BaseValidator {
         $type = $this->fallback('type');
 
         if (null !== $type && !in_array($type, $smsTypes, true)) {
-            throw new InvalidOptionalArgumentException("type has invalid value $type. Allowed values are: " . implode(',', $smsTypes) . '.');
+            throw new InvalidOptionalArgumentException(
+                "type has invalid value $type. Allowed values are: "
+                . implode(',', $smsTypes) . '.');
         }
     }
 
@@ -53,16 +68,5 @@ class BaseValidator {
     protected function fallback($key, $fallback = null) {
         return isset($this->parameters[$key])
             ? $this->parameters[$key] : $fallback;
-    }
-
-    /**
-     * @param $timestamp
-     * @return bool
-     */
-    protected function isValidUnixTimestamp($timestamp) {
-        /*https://stackoverflow.com/questions/2524680/check-whether-the-string-is-a-unix-timestamp*/
-        return ((string)$timestamp === $timestamp)
-            && ($timestamp <= PHP_INT_MAX)
-            && ($timestamp >= ~PHP_INT_MAX);
     }
 }

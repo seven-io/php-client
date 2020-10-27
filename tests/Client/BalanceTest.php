@@ -7,8 +7,8 @@ class BalanceTest extends BaseTest
     public function testBalance()
     {
         $res = $this->client->balance();
-        $res = json_decode($res, false);
+        $res = json_decode($res);
 
-        $this->assertTrue(is_float($res));
+        self::assertTrue(is_float($res));
     }
 }
