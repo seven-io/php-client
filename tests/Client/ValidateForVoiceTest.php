@@ -1,51 +1,28 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Sms77\Tests\Client;
 
+class ValidateForVoiceTest extends BaseTest {
+    public function testVoice(): void {
+        $res = $this->client->validateForVoice($this->recipient,
+            ['callback' => 'http://my.site/validate_for_voice']);
 
-class ValidateForVoiceTest extends BaseTest
-{
-    public function testVoice()
-    {
-        $voice = $this->client->validateForVoice($this->recipient, ['callback' => 'http://my.site/validate_for_voice']);
-        $voice = json_decode($voice, false);
-
-        $this->assertTrue(is_object($voice));
-
-        $this->assertObjectHasAttribute('success', $voice);
-        $this->assertTrue($voice->success);
-
-        $this->assertObjectHasAttribute('code', $voice);
-        $this->assertTrue(is_integer((int)$voice->code));
-
-        $this->assertObjectHasAttribute('error', $voice);
-        $this->assertNull($voice->error);
+        self::assertIsObject($res);
+        self::assertIsBool($res->success);
+        self::assertIsInt($res->code);
+        self::assertGreaterThan(0, $res->code);
     }
 
-    public function testVoiceFaulty()
-    {
+    public function testVoiceFaulty(): void {
         $faultySenderNumber = '123';
         $voice = $this->client->validateForVoice($faultySenderNumber);
-        $voice = json_decode($voice, false);
 
-        $this->assertTrue(is_object($voice));
-
-        $this->assertObjectHasAttribute('error', $voice);
-        $this->assertTrue(is_string($voice->error));
-
-        $this->assertObjectHasAttribute('formatted_output', $voice);
-        $this->assertTrue(is_string($voice->formatted_output));
-
-        $this->assertObjectHasAttribute('id', $voice);
-        $this->assertNull($voice->id);
-
-        $this->assertObjectHasAttribute('sender', $voice);
-        $this->assertEquals($faultySenderNumber, $voice->sender);
-
-        $this->assertObjectHasAttribute('success', $voice);
-        $this->assertFalse($voice->success);
-
-        $this->assertObjectHasAttribute('voice', $voice);
-        $this->assertFalse($voice->voice);
+        self::assertIsObject($voice);
+        self::assertIsString($voice->error);
+        self::assertIsString($voice->formatted_output);
+        self::assertNull($voice->id);
+        self::assertEquals($faultySenderNumber, $voice->sender);
+        self::assertFalse($voice->success);
+        self::assertFalse($voice->voice);
     }
 }

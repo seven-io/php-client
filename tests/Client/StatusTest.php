@@ -1,22 +1,29 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Sms77\Tests\Client;
 
 use DateTime;
 use Sms77\Api\Constant\StatusMessage;
+use Sms77\Api\Response\Status;
 
-class StatusTest extends BaseTest
-{
-    public function testStatus()
-    {
-        $response = $this->client->status(getenv('SMS77_MSG_ID'));
+class StatusTest extends BaseTest {
+    public function testStatus(): void {
+        $status = new Status($this->status(false));
 
-        $lines = explode(PHP_EOL, $response);
-        $status = $lines[0];
-        $timestamp = $lines[1];
+        self::assertContains($status->status, StatusMessage::values());
 
-        $this->assertTrue(in_array($status, StatusMessage::values()));
+        self::assertInstanceOf('DateTime', new DateTime($status->dateTime));
+    }
 
-        $this->assertInstanceOf('DateTime', new DateTime($timestamp));
+    private function status(bool $json) {
+        return $this->client->status((int)getenv('SMS77_MSG_ID'), $json);
+    }
+
+    public function testStatusJson(): void {
+        $status = $this->status(true);
+
+        self::assertContains($status->status, StatusMessage::values());
+
+        self::assertInstanceOf('DateTime', new DateTime($status->dateTime));
     }
 }

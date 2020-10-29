@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Sms77\Api\Validator;
 
@@ -6,7 +6,10 @@ use Sms77\Api\Exception\InvalidOptionalArgumentException;
 use Sms77\Api\Exception\InvalidRequiredArgumentException;
 
 class ContactsValidator extends BaseValidator implements ValidatorInterface {
-    const ACTIONS = ['read', 'write', 'del'];
+    public const ACTION_READ = 'read';
+    public const ACTION_WRITE = 'write';
+    public const ACTION_DEL = 'del';
+    public const ACTIONS = [self::ACTION_READ, self::ACTION_DEL, self::ACTION_WRITE];
 
     /**
      * @throws InvalidOptionalArgumentException
@@ -17,25 +20,21 @@ class ContactsValidator extends BaseValidator implements ValidatorInterface {
         $this->json();
     }
 
-    /**
-     * @throws InvalidRequiredArgumentException
-     */
+    /** @throws InvalidRequiredArgumentException */
     public function action() {
         $action = $this->fallback('action');
 
-        if (!in_array($action, self::ACTIONS, true)) {
-            throw new InvalidRequiredArgumentException("Unknown action $action.");
+        if (!in_array($action, self::ACTIONS)) {
+            throw new InvalidRequiredArgumentException("Unknown action '$action'.");
         }
     }
 
-    /**
-     * @throws InvalidOptionalArgumentException
-     */
+    /** @throws InvalidOptionalArgumentException */
     public function json() {
         $json = $this->fallback('json');
 
-        if ((null !== $json) && !$this->isValidBool($json)) {
-            throw new InvalidOptionalArgumentException('json can be either 1 or 0.');
+        if (null !== $json && !$this->isValidBool($json)) {
+            throw new InvalidOptionalArgumentException('json must be 1 or 0.');
         }
     }
 }

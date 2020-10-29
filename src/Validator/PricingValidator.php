@@ -1,11 +1,12 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Sms77\Api\Validator;
 
 use Sms77\Api\Exception\InvalidOptionalArgumentException;
 
 class PricingValidator extends BaseValidator implements ValidatorInterface {
-    const FORMATS = ['csv', 'json'];
+    public const COUNTRY_MAX_LENGTH = 3;
+    public const FORMATS = ['csv', 'json'];
 
     /**
      * @throws InvalidOptionalArgumentException
@@ -20,10 +21,13 @@ class PricingValidator extends BaseValidator implements ValidatorInterface {
      * @throws InvalidOptionalArgumentException
      */
     public function country() {
-        $country = $this->fallback('country');
+        $country = $this->fallback('country', '');
 
-        if (null !== $country && '' === $country) {
-            throw new InvalidOptionalArgumentException("country seems to be invalid: $country.");
+        $len = strlen($country);
+        if ($len > self::COUNTRY_MAX_LENGTH) {
+            throw new InvalidOptionalArgumentException(
+                "'country' exceeded length limit: Received $len chars but expected max "
+                . self::COUNTRY_MAX_LENGTH);
         }
     }
 

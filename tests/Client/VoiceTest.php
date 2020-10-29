@@ -1,24 +1,37 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Sms77\Tests\Client;
 
-class VoiceTest extends BaseTest
-{
-    public function testVoice()
-    {
-        $voice = $this->client->voice($this->recipient, time());
+use Sms77\Api\Response\Voice;
 
-        $this->assertTrue(is_string($voice));
+class VoiceTest extends BaseTest {
+    public function testVoice(): void {
+        $res = $this->voice(false);
 
-        $voice = explode(PHP_EOL, $voice);
+        self::assertIsString($res);
 
-        $this->assertArrayHasKey(0, $voice);
-        $this->assertEquals(self::SUCCESS_CODE, (int)$voice[0]);
+        self::assertVoice(new Voice($res));
+    }
 
-        $this->assertArrayHasKey(1, $voice);
-        $this->assertTrue(is_integer((int)$voice[1]));
+    private function voice(bool $json) {
+        return $this->client->voice($this->recipient, time(), false, $json);
+    }
 
-        $this->assertArrayHasKey(2, $voice);
-        $this->assertTrue(is_float((float)$voice[2]));
+    private static function assertVoice(Voice $v): void {
+        self::assertEquals(100, $v->code);
+
+        self::assertIsInt($v->id);
+        self::assertGreaterThan(0, $v->id);
+
+        self::assertIsFloat($v->price);
+        self::assertGreaterThan(0, $v->price);
+    }
+
+    public function testVoiceJson(): void {
+        $res = $this->voice(true);
+
+        self::assertIsObject($res);
+        self::assertInstanceOf(Voice::class, $res);
+        self::assertVoice($res);
     }
 }

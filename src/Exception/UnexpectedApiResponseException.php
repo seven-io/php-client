@@ -4,7 +4,7 @@ namespace Sms77\Api\Exception;
 
 use Exception;
 
-class InvalidRequiredArgumentException extends Exception {
+class UnexpectedApiResponseException extends Exception {
     public function __construct($message, $code = 0, Exception $previous = null) {
         parent::__construct($message, $code, $previous);
     }

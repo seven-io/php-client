@@ -22,14 +22,3 @@ SMS77_API_KEY= SMS77_RECIPIENT= SMS77_MSG_ID= php vendor/bin/phpunit tests/Clien
 Make sure to fill in the values.
 SMS77_MSG_ID refers to a message ID sent from this particular API key.
 SMS77_RECIPIENT is the recipient of the test SMS.
-
-##### Implemented Endpoints
-
-- sms
-- status
-- balance
-- pricing
-- lookup
-- contacts
-- voice
-- validate_for_voice
