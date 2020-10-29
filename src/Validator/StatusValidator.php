@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Sms77\Api\Validator;
 
@@ -10,8 +10,8 @@ class StatusValidator extends BaseValidator implements ValidatorInterface {
     }
 
     public function msg_id() {
-        if ('' === $this->fallback('msg_id', '')) {
-            throw new InvalidRequiredArgumentException('Parameter "msg_id" is missing.');
+        if (!is_numeric($this->fallback('msg_id'))) {
+            throw new InvalidRequiredArgumentException('Parameter "msg_id" is invalid.');
         }
     }
 }

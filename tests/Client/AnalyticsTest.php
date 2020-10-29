@@ -1,31 +1,31 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Sms77\Tests\Client;
 
-use Sms77\Api\Analytics;
 use Sms77\Api\Validator\AnalyticsValidator;
 
 class AnalyticsTest extends BaseTest {
-    public function testAnalyticsParameterless() {
+    public function testAnalyticsParameterless(): void {
         $res = $this->client->analytics();
 
-        $res = json_decode($res);
+        self::assertIsArray($res);
 
-        self::assertTrue(is_array($res));
+        self::assertCount(31, $res);
 
-        self::assertTrue(array_key_exists(0, $res));
+        self::assertArrayHasKey(0, $res);
 
         $validator = new AnalyticsValidator(['p' => $this->client->getApiKey()]);
 
-        $analytics0 = new Analytics($res[0]);
+        $analytics0 = reset($res);
 
         self::assertTrue($validator->isValidDate($analytics0->date));
-        self::assertTrue(is_int($analytics0->economy));
-        self::assertTrue(is_int($analytics0->direct));
-        self::assertTrue(is_int($analytics0->voice));
-        self::assertTrue(is_int($analytics0->hlr));
-        self::assertTrue(is_int($analytics0->mnp));
-        self::assertTrue(is_int($analytics0->inbound));
-        self::assertTrue(is_float($analytics0->usage_eur));
+
+        self::assertIsInt($analytics0->economy);
+        self::assertIsInt($analytics0->direct);
+        self::assertIsInt($analytics0->voice);
+        self::assertIsInt($analytics0->hlr);
+        self::assertIsInt($analytics0->mnp);
+        self::assertIsInt($analytics0->inbound);
+        self::assertIsFloat($analytics0->usage_eur);
     }
 }

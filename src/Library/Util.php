@@ -1,27 +1,30 @@
-<?php
+<?php declare(strict_types=1);
 
-namespace Sms77\Api;
+namespace Sms77\Api\Library;
 
 use DateTime;
 
 class Util {
+    public static function toArrayOfObject(array $array, string $class): array {
+        foreach ($array as $k => $v) {
+            $array[$k] = new $class($v);
+        }
+
+        return $array;
+    }
+
     /**
-     * @param string $timestamp
+     * @param mixed $timestamp
      * @return bool
      */
-    public static function isValidUnixTimestamp($timestamp) {
+    public static function isUnixTimestamp($timestamp): bool {
         /*https://stackoverflow.com/questions/2524680/check-whether-the-string-is-a-unix-timestamp*/
         return ((string)$timestamp === $timestamp)
             && ($timestamp <= PHP_INT_MAX)
             && ($timestamp >= ~PHP_INT_MAX);
     }
 
-    /**
-     * @param string $date
-     * @param string $format
-     * @return bool
-     */
-    public static function isValidDate($date, $format) {
+    public static function isValidDate(string $date, string $format): bool {
         $dt = DateTime::createFromFormat($format, $date);
 
         return false !== $dt && !array_sum($dt::getLastErrors());

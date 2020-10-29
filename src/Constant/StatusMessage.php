@@ -1,19 +1,19 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Sms77\Api\Constant;
 
-use Sms77\Api\Reflectable;
+use Sms77\Api\Library\Reflectable;
 
 class StatusMessage {
     use Reflectable;
 
-    const Delivered = 'DELIVERED';
-    const NotDelivered = 'NOTDELIVERED';
-    const Buffered = 'BUFFERED';
-    const Transmitted = 'TRANSMITTED';
-    const Accepted = 'ACCEPTED';
-    const Expired = 'EXPIRED';
-    const Rejected = 'REJECTED';
-    const Failed = 'FAILED';
-    const Unknown = 'UNKNOWN';
+    public const Delivered = 'DELIVERED';
+    public const NotDelivered = 'NOTDELIVERED';
+    public const Buffered = 'BUFFERED';
+    public const Transmitted = 'TRANSMITTED';
+    public const Accepted = 'ACCEPTED';
+    public const Expired = 'EXPIRED';
+    public const Rejected = 'REJECTED';
+    public const Failed = 'FAILED';
+    public const Unknown = 'UNKNOWN';
 }

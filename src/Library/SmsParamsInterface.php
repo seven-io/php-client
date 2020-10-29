@@ -1,6 +1,6 @@
-<?php
+<?php declare(strict_types=1);
 
-namespace Sms77\Api;
+namespace Sms77\Api\Library;
 
 interface SmsParamsInterface {
     /** @return bool|null */

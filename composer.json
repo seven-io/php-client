@@ -1,57 +1,57 @@
 {
-  "authors": [
-    {
-      "name": "André Matthies",
-      "email": "a.matthies@sms77.io",
-      "homepage": "http://www.sms77.io",
-      "role": "Developer"
-    }
-  ],
-  "autoload": {
-    "psr-4": {
-      "Sms77\\Api\\": "src/"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Sms77\\Tests\\": "tests/"
-    }
-  },
-  "config": {
-    "platform": {
-      "php": "5.6.40"
-    }
-  },
-  "description": "A simple PHP library for requesting the Sms77.io SMS gateway.",
-  "homepage": "https://github.com/sms77io/php-api",
-  "keywords": [
-    "2fa",
-    "sms",
-    "gateway",
-    "text2speech",
-    "hlr",
-    "cnam",
-    "mnp"
-  ],
-  "license": "MIT",
-  "name": "sms77/api",
-  "require": {
-    "php": ">=5.6.0",
-    "ext-ctype": "*",
-    "ext-curl": "*",
-    "ext-mbstring": "*"
-  },
-  "require-dev": {
-    "phpunit/phpunit": "5.7.27",
-    "ext-soap": "*",
-    "ext-simplexml": "*",
-    "ext-json": "*"
-  },
-  "support": {
-    "email": "support@sms77.io",
-    "rss": "https://www.sms77.io/de/feed/",
-    "source": "https://github.com/sms77io/php-api",
-    "docs": "https://github.com/sms77io/php-api"
-  },
-  "type": "library"
+    "authors": [
+        {
+            "name": "André Matthies",
+            "email": "a.matthies@sms77.io",
+            "homepage": "http://www.sms77.io",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Sms77\\Api\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Sms77\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "platform": {
+            "php": "7.3"
+        }
+    },
+    "description": "A simple PHP library for requesting the Sms77.io SMS gateway.",
+    "homepage": "https://github.com/sms77io/php-api",
+    "keywords": [
+        "2fa",
+        "sms",
+        "gateway",
+        "text2speech",
+        "hlr",
+        "cnam",
+        "mnp"
+    ],
+    "license": "MIT",
+    "name": "sms77/api",
+    "require": {
+        "php": ">=7.3",
+        "ext-ctype": "*",
+        "ext-curl": "*",
+        "ext-mbstring": "*",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9",
+        "ext-soap": "*",
+        "ext-simplexml": "*"
+    },
+    "support": {
+        "email": "support@sms77.io",
+        "rss": "https://www.sms77.io/de/feed/",
+        "source": "https://github.com/sms77io/php-client",
+        "docs": "https://github.com/sms77io/php-client"
+    },
+    "type": "library"
 }

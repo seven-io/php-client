@@ -1,23 +1,32 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Sms77\Tests\Client;
 
-class PricingTest extends BaseTest
-{
-    const COUNT_COUNTRIES = 'countCountries';
-    const COUNTRIES = 'countries';
+use Sms77\Api\Response\Pricing;
 
-    public function testPricing()
-    {
+class PricingTest extends BaseTest {
+    public function testPricingGermany(): void {
+        /** @var Pricing $res */
+        $res = $this->client->pricing(true, 'de');
+
+        self::assertEquals(1, $res->countCountries);
+        self::assertGreaterThan(0, $res->countNetworks);
+        self::assertCount(1, $res->countries);
+    }
+
+    public function testPricingGermanyCsv(): void {
+        /** @var Pricing $res */
+        $res = $this->client->pricing(false, 'de');
+
+        self::assertIsString($res);
+    }
+
+    public function testPricing(): void {
+        /** @var Pricing $res */
         $res = $this->client->pricing();
-        $res = json_decode($res, false);
 
-        $this->assertObjectHasAttribute(self::COUNT_COUNTRIES, $res);
-        $this->assertObjectHasAttribute(self::COUNTRIES, $res);
-        $this->assertObjectHasAttribute('countNetworks', $res);
-
-        $this->assertNotEquals(0, $res->{self::COUNT_COUNTRIES});
-
-        $this->assertCount($res->{self::COUNT_COUNTRIES}, $res->{self::COUNTRIES});
+        self::assertGreaterThan(0, $res->countCountries);
+        self::assertGreaterThan(0, $res->countNetworks);
+        self::assertCount($res->countCountries, $res->countries);
     }
 }
