@@ -13,7 +13,9 @@ use Sms77\Api\Library\JsonObject;
 class LookupCnam extends JsonObject {
     public function __construct(?object $class = null) {
         /** @var self $class */
-        $class && $class->success = (bool)$class->success;
+        if ($class) {
+            $class->success = (bool)$class->success;
+        }
 
         parent::__construct($class);
     }

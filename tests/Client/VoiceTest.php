@@ -14,7 +14,7 @@ class VoiceTest extends BaseTest {
     }
 
     private function voice(bool $json) {
-        return $this->client->voice($this->recipient, time(), false, $json);
+        return $this->client->voice($this->recipient, (string)time(), false, $json);
     }
 
     private static function assertVoice(Voice $v): void {

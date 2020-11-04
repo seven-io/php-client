@@ -10,7 +10,9 @@ use Sms77\Api\Library\JsonObject;
 class ContactEdit extends JsonObject {
     public function __construct(?object $class = null) {
         /** @var self $class */
-        $class && $class->return = (int)$class->return;
+        if ($class) {
+            $class->return = (int)$class->return;
+        }
 
         parent::__construct($class);
     }

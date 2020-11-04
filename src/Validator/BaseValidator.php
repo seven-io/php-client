@@ -15,22 +15,18 @@ class BaseValidator {
         $this->parameters = $parameters;
     }
 
-    public function isValidUnixTimestamp(string $timestamp): bool {
-        return Util::isUnixTimestamp($timestamp);
-    }
-
     public function isValidDate(string $date): bool {
         return Util::isValidDate($date, 'Y-m-d');
     }
 
-    protected function isValidBool($string): bool {
+    public function isValidBool($string): bool {
         $string = (int)$string;
 
         return 1 === $string || 0 === $string;
     }
 
     /** @throws InvalidOptionalArgumentException */
-    protected function throwOnOptionalBadType(): void {
+    public function throwOnOptionalBadType(): void {
         $smsTypes = SmsType::values();
 
         $type = $this->fallback('type');
@@ -47,7 +43,7 @@ class BaseValidator {
      * @param mixed $fallback
      * @return mixed
      */
-    protected function fallback(string $key, $fallback = null) {
+    public function fallback(string $key, $fallback = null) {
         return $this->parameters[$key] ?? $fallback;
     }
 }

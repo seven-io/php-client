@@ -4,6 +4,7 @@ namespace Sms77\Api\Validator;
 
 use Sms77\Api\Exception\InvalidOptionalArgumentException;
 use Sms77\Api\Exception\InvalidRequiredArgumentException;
+use Sms77\Api\Library\Util;
 
 class ValidateForVoiceValidator extends BaseValidator implements ValidatorInterface {
     /**
@@ -19,7 +20,7 @@ class ValidateForVoiceValidator extends BaseValidator implements ValidatorInterf
     public function callback(): void {
         $callback = $this->fallback('callback');
 
-        if ((null !== $callback) && !filter_var($callback, FILTER_VALIDATE_URL)) {
+        if (null !== $callback && !Util::isValidUrl($callback)) {
             throw new InvalidOptionalArgumentException(
                 'Parameter "callback" is not a valid URL.');
         }

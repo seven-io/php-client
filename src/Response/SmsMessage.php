@@ -20,7 +20,9 @@ use Sms77\Api\Library\JsonObject;
 class SmsMessage extends JsonObject {
     public function __construct(?object $class = null) {
         /** @var self $class */
-        $class && $class->id = (int)$class->id;
+        if ($class) {
+            $class->id = (int)$class->id;
+        }
 
         parent::__construct($class);
     }

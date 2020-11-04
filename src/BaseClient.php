@@ -105,6 +105,8 @@ abstract class BaseClient {
         } catch (Exception $e) {
         }
 
+        var_dump($res);
+
         return $res;
     }
 

@@ -13,7 +13,9 @@ use Sms77\Api\Library\JsonObject;
 class LookupMnp extends JsonObject {
     public function __construct(?object $class = null) {
         /** @var self $class */
-        $class && $class->mnp = new Mnp($class->mnp);
+        if ($class) {
+            $class->mnp = new Mnp($class->mnp);
+        }
 
         parent::__construct($class);
     }

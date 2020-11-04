@@ -16,10 +16,8 @@ use Sms77\Api\Library\JsonObject;
 class ValidateForVoice extends JsonObject {
     public function __construct(?object $class = null) {
         /** @var self $class */
-        if ($class) {
-            if (property_exists($class, 'code')) {
-                $class->code = (int)$class->code;
-            }
+        if ($class && property_exists($class, 'code')) {
+            $class->code = (int)$class->code;
         }
 
         parent::__construct($class);

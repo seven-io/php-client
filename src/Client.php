@@ -3,6 +3,7 @@
 namespace Sms77\Api;
 
 use Sms77\Api\Constant\ContactsConstants;
+use Sms77\Api\Constant\HooksConstants;
 use Sms77\Api\Exception\InvalidOptionalArgumentException;
 use Sms77\Api\Exception\InvalidRequiredArgumentException;
 use Sms77\Api\Exception\UnexpectedApiResponseException;
@@ -22,8 +23,11 @@ use Sms77\Api\Response\Sms;
 use Sms77\Api\Response\Status;
 use Sms77\Api\Response\ValidateForVoice;
 use Sms77\Api\Response\Voice;
+use Sms77\Api\Response\WebhookAction;
+use Sms77\Api\Response\Webhooks;
 use Sms77\Api\Validator\AnalyticsValidator;
 use Sms77\Api\Validator\ContactsValidator;
+use Sms77\Api\Validator\HooksValidator;
 use Sms77\Api\Validator\LookupValidator;
 use Sms77\Api\Validator\PricingValidator;
 use Sms77\Api\Validator\SmsValidator;
@@ -88,6 +92,59 @@ class Client extends BaseClient {
         $method = ContactsConstants::ACTION_DEL === $action ? 'post' : 'get';
 
         return $this->$method('contacts', $options);
+    }
+
+    /**
+     * @param int|null $id
+     * @param string|null $target_url
+     * @param string|null $event_type
+     * @param string|null $request_method
+     * @return WebhookAction
+     * @throws InvalidRequiredArgumentException
+     */
+    public function unsubscribeWebhook(
+        ?int $id,
+        ?string $target_url = null,
+        ?string $event_type = null,
+        ?string $request_method = null): WebhookAction {
+        return new WebhookAction($this->hooks(HooksConstants::ACTION_UNSUBSCRIBE,
+            compact('id', 'target_url', 'event_type', 'request_method')));
+    }
+
+    /**
+     * @param string $action
+     * @param array $options
+     * @return mixed
+     * @throws InvalidRequiredArgumentException
+     */
+    private function hooks(string $action, array $options = []) {
+        $options['action'] = $action;
+
+        (new HooksValidator($options))->validate();
+
+        $method = HooksConstants::ACTION_READ === $action ? 'get' : 'post';
+
+        return $this->$method('hooks', $options);
+    }
+
+    /**
+     * @param string $target_url
+     * @param string $event_type
+     * @param string $request_method
+     * @return WebhookAction
+     * @throws InvalidRequiredArgumentException
+     */
+    public function subscribeWebhook(
+        string $target_url,
+        string $event_type,
+        string $request_method = HooksConstants::REQUEST_METHOD_DEFAULT): WebhookAction {
+        return new WebhookAction($this->hooks(HooksConstants::ACTION_SUBSCRIBE,
+            compact('target_url', 'event_type', 'request_method')));
+    }
+
+    /** @throws InvalidRequiredArgumentException */
+    public function getWebhooks(): Webhooks {
+        return new Webhooks($this->hooks(HooksConstants::ACTION_READ));
     }
 
     /**

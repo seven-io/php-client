@@ -6,6 +6,7 @@ use Sms77\Api\Constant\SmsConstants;
 use Sms77\Api\Constant\SmsType;
 use Sms77\Api\Exception\InvalidOptionalArgumentException;
 use Sms77\Api\Exception\InvalidRequiredArgumentException;
+use Sms77\Api\Library\Util;
 
 class SmsValidator extends BaseValidator implements ValidatorInterface {
     /**
@@ -50,7 +51,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface {
                 . SmsConstants::DELAY_DATE_FORMAT . '.';
 
             if (false === strpos($delay, '-')) {
-                if (!$this->isValidUnixTimestamp($delay)) {
+                if (!Util::isUnixTimestamp($delay)) {
                     throw new InvalidOptionalArgumentException($errorMsg);
                 }
             } else if (!preg_match(SmsConstants::DELAY_PATTERN, $delay)) {
