@@ -2,15 +2,11 @@
 
 namespace Sms77\Api\Validator;
 
+use Sms77\Api\Constant\ContactsConstants;
 use Sms77\Api\Exception\InvalidOptionalArgumentException;
 use Sms77\Api\Exception\InvalidRequiredArgumentException;
 
 class ContactsValidator extends BaseValidator implements ValidatorInterface {
-    public const ACTION_READ = 'read';
-    public const ACTION_WRITE = 'write';
-    public const ACTION_DEL = 'del';
-    public const ACTIONS = [self::ACTION_READ, self::ACTION_DEL, self::ACTION_WRITE];
-
     /**
      * @throws InvalidOptionalArgumentException
      * @throws InvalidRequiredArgumentException
@@ -24,7 +20,7 @@ class ContactsValidator extends BaseValidator implements ValidatorInterface {
     public function action(): void {
         $action = $this->fallback('action');
 
-        if (!in_array($action, self::ACTIONS)) {
+        if (!in_array($action, ContactsConstants::ACTIONS)) {
             throw new InvalidRequiredArgumentException("Unknown action '$action'.");
         }
     }

@@ -2,18 +2,11 @@
 
 namespace Sms77\Api\Validator;
 
+use Sms77\Api\Constant\LookupConstants;
 use Sms77\Api\Exception\InvalidOptionalArgumentException;
 use Sms77\Api\Exception\InvalidRequiredArgumentException;
 
 class LookupValidator extends BaseValidator implements ValidatorInterface {
-    public const TYPE_CNAM = 'cnam';
-    public const TYPE_FORMAT = 'format';
-    public const TYPE_HLR = 'hlr';
-    public const TYPE_MNP = 'mnp';
-    public const TYPES = [
-        self::TYPE_CNAM, self::TYPE_FORMAT, self::TYPE_HLR, self::TYPE_MNP,
-    ];
-
     public static function isValidMobileNetworkShortName(string $subject): bool {
         return 1 === preg_match('/d1|d2|o2|eplus|N\/A|int/', $subject);
     }
@@ -37,7 +30,7 @@ class LookupValidator extends BaseValidator implements ValidatorInterface {
         if (null !== $json) {
             $type = $this->fallback('type');
 
-            if (self::TYPE_MNP !== $type) {
+            if (LookupConstants::TYPE_MNP !== $type) {
                 throw new InvalidOptionalArgumentException('json may only be set if type is set to mnp.');
             }
 
@@ -64,8 +57,8 @@ class LookupValidator extends BaseValidator implements ValidatorInterface {
     public function type(): void {
         $type = $this->fallback('type');
 
-        if (!in_array($type, self::TYPES, true)) {
-            $imploded = implode(',', self::TYPES);
+        if (!in_array($type, LookupConstants::TYPES, true)) {
+            $imploded = implode(',', LookupConstants::TYPES);
 
             throw new InvalidRequiredArgumentException(
                 "type $type is invalid. Valid types are: $imploded.");

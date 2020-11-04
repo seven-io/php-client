@@ -2,24 +2,12 @@
 
 namespace Sms77\Api\Validator;
 
+use Sms77\Api\Constant\SmsConstants;
 use Sms77\Api\Constant\SmsType;
 use Sms77\Api\Exception\InvalidOptionalArgumentException;
 use Sms77\Api\Exception\InvalidRequiredArgumentException;
 
 class SmsValidator extends BaseValidator implements ValidatorInterface {
-    public const DELAY_DATE_FORMAT = 'yyyy-mm-dd hh:ii';
-    public const DELAY_PATTERN =
-        '/[\d]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][\d]|3[0-1]) (2[0-3]|[01][\d]):[0-5][\d]/';
-    public const LABEL_MAX_LENGTH = 100;
-    public const LABEL_PATTERN = "/[0-9a-z\-@_.]/i";
-    public const FROM_ALPHANUMERIC_MAX = 11;
-    public const FROM_NUMERIC_MAX = 16;
-    public const FROM_ALLOWED_CHARS =
-        ['/', ' ', '.', '-', '@', '_', '!', '(', ')', '+', '$', ',', '&',];
-    public const TEXT_MAX_LENGTH = 1520;
-    public const TTL_MIN = 300000;
-    public const TTL_MAX = 86400000;
-
     /**
      * @throws InvalidOptionalArgumentException
      * @throws InvalidRequiredArgumentException
@@ -59,13 +47,13 @@ class SmsValidator extends BaseValidator implements ValidatorInterface {
 
         if (null !== $delay) {
             $errorMsg = "Delay must be a valid UNIX timestamp or in the format of "
-                . self::DELAY_DATE_FORMAT . '.';
+                . SmsConstants::DELAY_DATE_FORMAT . '.';
 
             if (false === strpos($delay, '-')) {
                 if (!$this->isValidUnixTimestamp($delay)) {
                     throw new InvalidOptionalArgumentException($errorMsg);
                 }
-            } else if (!preg_match(self::DELAY_PATTERN, $delay)) {
+            } else if (!preg_match(SmsConstants::DELAY_PATTERN, $delay)) {
                 throw new InvalidOptionalArgumentException($errorMsg);
             }
         }
@@ -106,8 +94,8 @@ class SmsValidator extends BaseValidator implements ValidatorInterface {
         if (null !== $from) {
             $length = strlen($from);
 
-            $alphaNumericMax = self::FROM_ALPHANUMERIC_MAX;
-            $numericMax = self::FROM_NUMERIC_MAX;
+            $alphaNumericMax = SmsConstants::FROM_ALPHANUMERIC_MAX;
+            $numericMax = SmsConstants::FROM_NUMERIC_MAX;
 
             $isNumeric = is_numeric($from);
 
@@ -121,7 +109,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface {
                     "Argument 'from' must be numeric. if > $alphaNumericMax chars.");
             }
 
-            if (!ctype_alnum(str_ireplace(self::FROM_ALLOWED_CHARS, '', $from))) {
+            if (!ctype_alnum(str_ireplace(SmsConstants::FROM_ALLOWED_CHARS, '', $from))) {
                 throw new InvalidOptionalArgumentException(
                     "Argument 'from' must be alphanumeric.");
             }
@@ -142,14 +130,14 @@ class SmsValidator extends BaseValidator implements ValidatorInterface {
         $label = $this->fallback('label');
 
         if (null !== $label) {
-            if (mb_strlen($label) > self::LABEL_MAX_LENGTH) {
+            if (mb_strlen($label) > SmsConstants::LABEL_MAX_LENGTH) {
                 throw new InvalidOptionalArgumentException('label must not exceed "'
-                    . self::LABEL_MAX_LENGTH . '" characters in length.');
+                    . SmsConstants::LABEL_MAX_LENGTH . '" characters in length.');
             }
 
-            if (strlen($label) !== preg_match_all(self::LABEL_PATTERN, $label)) {
+            if (strlen($label) !== preg_match_all(SmsConstants::LABEL_PATTERN, $label)) {
                 throw new InvalidOptionalArgumentException(
-                    'label must match the regex pattern ' . self::LABEL_PATTERN . '.');
+                    'label must match the regex pattern ' . SmsConstants::LABEL_PATTERN);
             }
         }
     }
@@ -200,7 +188,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface {
                 'You cannot send an empty message.');
         }
 
-        $maxTextLength = self::TEXT_MAX_LENGTH;
+        $maxTextLength = SmsConstants::TEXT_MAX_LENGTH;
 
         if ($maxTextLength < $length) {
             throw new InvalidRequiredArgumentException(
@@ -271,8 +259,8 @@ class SmsValidator extends BaseValidator implements ValidatorInterface {
         $ttl = $this->fallback('ttl');
 
         if (null !== $ttl) {
-            $min = self::TTL_MIN;
-            $max = self::TTL_MAX;
+            $min = SmsConstants::TTL_MIN;
+            $max = SmsConstants::TTL_MAX;
 
             if ($ttl < $min) {
                 throw new InvalidOptionalArgumentException("ttl must be at least $min.");

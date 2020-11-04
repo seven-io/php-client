@@ -7,6 +7,6 @@ use Sms77\Api\Library\Reflectable;
 class SmsType {
     use Reflectable;
 
-    const Direct = 'direct';
-    const Economy = 'economy';
+    public const Direct = 'direct';
+    public const Economy = 'economy';
 }

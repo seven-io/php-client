@@ -7,7 +7,7 @@ use Sms77\Api\Library\Reflectable;
 class RoamingStatus {
     use Reflectable;
 
-    const Unknown = 'unknown';
-    const Roaming = 'roaming';
-    const NotRoaming = 'not_roaming';
+    public const Unknown = 'unknown';
+    public const Roaming = 'roaming';
+    public const NotRoaming = 'not_roaming';
 }

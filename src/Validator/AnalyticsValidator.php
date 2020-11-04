@@ -2,12 +2,10 @@
 
 namespace Sms77\Api\Validator;
 
+use Sms77\Api\Constant\AnalyticsConstants;
 use Sms77\Api\Exception\InvalidOptionalArgumentException;
 
 class AnalyticsValidator extends BaseValidator implements ValidatorInterface {
-    public const GROUP_BY = ['date', 'country', 'label', 'subaccount'];
-    public const SUBACCOUNTS = ['only_main', 'all'];
-
     /** @throws InvalidOptionalArgumentException */
     public function validate(): void {
         $this->end();
@@ -29,7 +27,7 @@ class AnalyticsValidator extends BaseValidator implements ValidatorInterface {
     public function group_by(): void {
         $groupBy = $this->fallback('group_by');
 
-        if (null !== $groupBy && !in_array($groupBy, self::GROUP_BY, true)) {
+        if (null !== $groupBy && !in_array($groupBy, AnalyticsConstants::GROUP_BY, true)) {
             throw new InvalidOptionalArgumentException("Unknown group_by $groupBy.");
         }
     }
@@ -49,7 +47,8 @@ class AnalyticsValidator extends BaseValidator implements ValidatorInterface {
 
         $subaccounts = $this->fallback('subaccounts', '');
 
-        if ('' !== $subaccounts && !in_array($subaccounts, self::SUBACCOUNTS)) {
+        if ('' !== $subaccounts
+            && !in_array($subaccounts, AnalyticsConstants::SUBACCOUNTS)) {
             if (is_numeric($subaccounts)) {
                 if (!is_int((int)$subaccounts)) {
                     $invalid = true;
@@ -60,7 +59,7 @@ class AnalyticsValidator extends BaseValidator implements ValidatorInterface {
         }
 
         if ($invalid) {
-            $imploded = implode(',', self::SUBACCOUNTS);
+            $imploded = implode(',', AnalyticsConstants::SUBACCOUNTS);
 
             throw new InvalidOptionalArgumentException(
                 "subaccounts '$subaccounts' is invalid. Valid types are: $imploded.");

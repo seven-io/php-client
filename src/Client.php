@@ -2,6 +2,7 @@
 
 namespace Sms77\Api;
 
+use Sms77\Api\Constant\ContactsConstants;
 use Sms77\Api\Exception\InvalidOptionalArgumentException;
 use Sms77\Api\Exception\InvalidRequiredArgumentException;
 use Sms77\Api\Exception\UnexpectedApiResponseException;
@@ -67,7 +68,7 @@ class Client extends BaseClient {
      * @throws InvalidRequiredArgumentException
      */
     public function deleteContact(int $id, bool $json = false) {
-        $res = $this->contacts(ContactsValidator::ACTION_DEL, ['id' => $id]);
+        $res = $this->contacts(ContactsConstants::ACTION_DEL, ['id' => $id]);
 
         return $json ? new ContactDelete($res) : $res;
     }
@@ -84,7 +85,7 @@ class Client extends BaseClient {
 
         (new ContactsValidator($options))->validate();
 
-        $method = ContactsValidator::ACTION_DEL === $action ? 'post' : 'get';
+        $method = ContactsConstants::ACTION_DEL === $action ? 'post' : 'get';
 
         return $this->$method('contacts', $options);
     }
@@ -96,7 +97,7 @@ class Client extends BaseClient {
      * @throws InvalidRequiredArgumentException
      */
     public function getContacts(bool $json = false) {
-        $res = $this->contacts(ContactsValidator::ACTION_READ, ['json' => $json]);
+        $res = $this->contacts(ContactsConstants::ACTION_READ, ['json' => $json]);
 
         return $json ? Util::toArrayOfObject($res, Contact::class) : $res;
     }
@@ -110,7 +111,7 @@ class Client extends BaseClient {
      */
     public function getContact(int $id, bool $json = false) {
         $res = $this->contacts(
-            ContactsValidator::ACTION_READ, ['json' => $json, 'id' => $id]);
+            ContactsConstants::ACTION_READ, ['json' => $json, 'id' => $id]);
 
         return $json ? Util::toArrayOfObject($res, Contact::class) : $res;
     }
@@ -122,7 +123,7 @@ class Client extends BaseClient {
      * @throws InvalidRequiredArgumentException
      */
     public function createContact(bool $json = false) {
-        $res = $this->contacts(ContactsValidator::ACTION_WRITE);
+        $res = $this->contacts(ContactsConstants::ACTION_WRITE);
 
         return $json ? new ContactCreate($res) : $res;
     }
@@ -134,7 +135,7 @@ class Client extends BaseClient {
      * @throws InvalidRequiredArgumentException
      */
     public function editContact(array $options = []) {
-        $res = $this->contacts(ContactsValidator::ACTION_WRITE, $options);
+        $res = $this->contacts(ContactsConstants::ACTION_WRITE, $options);
 
         return (bool)($options['json'] ?? false) ? new ContactEdit($res) : $res;
     }

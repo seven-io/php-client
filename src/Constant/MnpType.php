@@ -7,10 +7,10 @@ use Sms77\Api\Library\Reflectable;
 class MnpType {
     use Reflectable;
 
-    const D1 = 'd1';
-    const D2 = 'd2';
-    const O2 = 'o2';
-    const Eplus = 'eplus';
-    const NotAvailable = 'N/A';
-    const Int = 'int';
+    public const D1 = 'd1';
+    public const D2 = 'd2';
+    public const O2 = 'o2';
+    public const Eplus = 'eplus';
+    public const NotAvailable = 'N/A';
+    public const Int = 'int';
 }

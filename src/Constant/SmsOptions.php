@@ -7,21 +7,21 @@ use Sms77\Api\Library\Reflectable;
 class SmsOptions {
     use Reflectable;
 
-    const Debug = 'debug';
-    const Delay = 'delay';
-    const Details = 'details';
-    const Flash = 'flash';
-    const ForeignId = 'foreign_id';
-    const From = 'from';
-    const Json = 'json';
-    const Label = 'label';
-    const NoReload = 'no_reload';
-    const PerformanceTracking = 'performance_tracking';
-    const ReturnMsgId = 'return_msg_id';
-    const Text = 'text';
-    const To = 'to';
-    const Ttl = 'ttl';
-    const Udh = 'udh';
-    const Unicode = 'unicode';
-    const Utf8 = 'utf8';
+    public const Debug = 'debug';
+    public const Delay = 'delay';
+    public const Details = 'details';
+    public const Flash = 'flash';
+    public const ForeignId = 'foreign_id';
+    public const From = 'from';
+    public const Json = 'json';
+    public const Label = 'label';
+    public const NoReload = 'no_reload';
+    public const PerformanceTracking = 'performance_tracking';
+    public const ReturnMsgId = 'return_msg_id';
+    public const Text = 'text';
+    public const To = 'to';
+    public const Ttl = 'ttl';
+    public const Udh = 'udh';
+    public const Unicode = 'unicode';
+    public const Utf8 = 'utf8';
 }

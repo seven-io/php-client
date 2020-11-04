@@ -2,12 +2,10 @@
 
 namespace Sms77\Api\Validator;
 
+use Sms77\Api\Constant\PricingConstants;
 use Sms77\Api\Exception\InvalidOptionalArgumentException;
 
 class PricingValidator extends BaseValidator implements ValidatorInterface {
-    public const COUNTRY_MAX_LENGTH = 3;
-    public const FORMATS = ['csv', 'json'];
-
     /** @throws InvalidOptionalArgumentException */
     public function validate(): void {
         $this->country();
@@ -20,10 +18,10 @@ class PricingValidator extends BaseValidator implements ValidatorInterface {
         $country = $this->fallback('country', '');
 
         $len = strlen($country);
-        if ($len > self::COUNTRY_MAX_LENGTH) {
+        if ($len > PricingConstants::COUNTRY_MAX_LENGTH) {
             throw new InvalidOptionalArgumentException(
                 "'country' exceeded length limit: Received $len chars but expected max "
-                . self::COUNTRY_MAX_LENGTH);
+                . PricingConstants::COUNTRY_MAX_LENGTH);
         }
     }
 
@@ -31,7 +29,7 @@ class PricingValidator extends BaseValidator implements ValidatorInterface {
     public function format(): void {
         $format = $this->fallback('format');
 
-        if (null !== $format && !in_array($format, self::FORMATS)) {
+        if (null !== $format && !in_array($format, PricingConstants::FORMATS)) {
             throw new InvalidOptionalArgumentException("format seems to be invalid: $format.");
         }
     }
