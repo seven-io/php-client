@@ -6,14 +6,19 @@ use Sms77\Api\Exception\InvalidOptionalArgumentException;
 use Sms77\Api\Exception\InvalidRequiredArgumentException;
 
 class VoiceValidator extends BaseValidator implements ValidatorInterface {
-    public function validate() {
+    /**
+     * @throws InvalidOptionalArgumentException
+     * @throws InvalidRequiredArgumentException
+     */
+    public function validate(): void {
         $this->from();
         $this->text();
         $this->to();
         $this->xml();
     }
 
-    public function from() {
+    /** @throws InvalidOptionalArgumentException */
+    public function from(): void {
         $from = $this->fallback('from');
 
         if (null !== $from && '' === $from) {
@@ -21,19 +26,22 @@ class VoiceValidator extends BaseValidator implements ValidatorInterface {
         }
     }
 
-    public function text() {
+    /** @throws InvalidRequiredArgumentException */
+    public function text(): void {
         if ('' === $this->fallback('text', '')) {
             throw new InvalidRequiredArgumentException('text is missing.');
         }
     }
 
-    public function to() {
+    /** @throws InvalidRequiredArgumentException */
+    public function to(): void {
         if ('' === $this->fallback('to', '')) {
             throw new InvalidRequiredArgumentException('to is missing.');
         }
     }
 
-    public function xml() {
+    /** @throws InvalidOptionalArgumentException */
+    public function xml(): void {
         $xml = $this->fallback('xml', '');
 
         if (!$this->isValidBool($xml)) {

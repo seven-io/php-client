@@ -3,51 +3,35 @@
 namespace Sms77\Api\Library;
 
 interface SmsParamsInterface {
-    /** @return bool|null */
-    public function getDebug();
+    public function getDebug(): ?bool;
 
-    /** @return string|null */
-    public function getDelay();
+    public function getDelay(): ?string;
 
-    /** @return bool|null */
-    public function getDetails();
+    public function getDetails(): ?bool;
 
-    /** @return bool|null */
-    public function getFlash();
+    public function getFlash(): ?bool;
 
-    /** @return bool|null */
-    public function getForeignId();
+    public function getForeignId(): ?string;
 
-    /** @return string|null */
-    public function getFrom();
+    public function getFrom(): ?string;
 
-    /** @return bool|null */
-    public function getJson();
+    public function getJson(): ?bool;
 
-    /** @return bool|null */
-    public function getNoReload();
+    public function getNoReload(): ?bool;
 
-    /** @return bool|null */
-    public function getPerformanceTracking();
+    public function getPerformanceTracking(): ?bool;
 
-    /** @return bool|null */
-    public function getReturnMsgId();
+    public function getReturnMsgId(): ?bool;
 
-    /** @return string */
-    public function getText();
+    public function getText(): string;
 
-    /** @return string */
-    public function getTo();
+    public function getTo(): string;
 
-    /** @return int|null */
-    public function getTtl();
+    public function getTtl(): ?int;
 
-    /** @return string|null */
-    public function getUdh();
+    public function getUdh(): ?string;
 
-    /** @return bool|null */
-    public function getUnicode();
+    public function getUnicode(): ?bool;
 
-    /** @return bool|null */
-    public function getUtf8();
+    public function getUtf8(): ?bool;
 }

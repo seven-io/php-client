@@ -23,7 +23,7 @@
         }
     },
     "description": "A simple PHP library for requesting the Sms77.io SMS gateway.",
-    "homepage": "https://github.com/sms77io/php-api",
+    "homepage": "https://github.com/sms77io/php-client",
     "keywords": [
         "2fa",
         "sms",

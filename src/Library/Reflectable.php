@@ -6,7 +6,7 @@ use ReflectionClass;
 
 trait Reflectable {
     /** @return array */
-    public static function values() {
+    public static function values(): array {
         $reflector = new ReflectionClass(self::class);
         $constants = $reflector->getConstants();
         return array_values($constants);

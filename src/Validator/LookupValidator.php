@@ -22,7 +22,7 @@ class LookupValidator extends BaseValidator implements ValidatorInterface {
      * @throws InvalidOptionalArgumentException
      * @throws InvalidRequiredArgumentException
      */
-    public function validate() {
+    public function validate(): void {
         $this->json();
         $this->number();
         $this->type();
@@ -31,7 +31,7 @@ class LookupValidator extends BaseValidator implements ValidatorInterface {
     /**
      * @throws InvalidOptionalArgumentException
      */
-    public function json() {
+    public function json(): void {
         $json = $this->fallback('json');
 
         if (null !== $json) {
@@ -50,7 +50,7 @@ class LookupValidator extends BaseValidator implements ValidatorInterface {
     /**
      * @throws InvalidRequiredArgumentException
      */
-    public function number() {
+    public function number(): void {
         $number = $this->fallback('number', '');
 
         if ('' === $number) {
@@ -61,7 +61,7 @@ class LookupValidator extends BaseValidator implements ValidatorInterface {
     /**
      * @throws InvalidRequiredArgumentException
      */
-    public function type() {
+    public function type(): void {
         $type = $this->fallback('type');
 
         if (!in_array($type, self::TYPES, true)) {

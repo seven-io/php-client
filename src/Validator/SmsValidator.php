@@ -81,7 +81,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface {
     }
 
     /** @throws InvalidOptionalArgumentException */
-    public function flash() {
+    public function flash(): void {
         $flash = $this->fallback('flash');
 
         if ($flash) {

@@ -77,14 +77,12 @@ abstract class BaseClient {
         $url = self::BASE_URI . "/$path";
         $params = http_build_query($options);
         self::HTTP_GET === $method && $url .= "?$params";
-        var_dump("$method $params");
 
         $ch = curl_init($url);
 
         if (self::HTTP_POST === $method) {
             curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
             curl_setopt($ch, CURLOPT_POST, true);
-            //   $headers[] = 'Content-Type: multipart/form-data';
         }
 
         if (self::HTTP_DELETE === $method) {
@@ -106,8 +104,6 @@ abstract class BaseClient {
             $res = json_decode($res, false, 512, JSON_THROW_ON_ERROR);
         } catch (Exception $e) {
         }
-
-        var_dump($res); // TODO: remove before publish
 
         return $res;
     }

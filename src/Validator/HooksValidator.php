@@ -5,7 +5,7 @@ namespace Sms77\Api\Validator;
 use Sms77\Api\Exception\InvalidOptionalArgumentException;
 use Sms77\Api\Exception\InvalidRequiredArgumentException;
 
-class ContactsValidator extends BaseValidator implements ValidatorInterface {
+class HooksValidator extends BaseValidator implements ValidatorInterface {
     public const ACTION_READ = 'read';
     public const ACTION_WRITE = 'write';
     public const ACTION_DEL = 'del';

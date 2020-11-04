@@ -42,7 +42,12 @@ class BaseValidator {
         }
     }
 
-    protected function fallback($key, $fallback = null) {
+    /**
+     * @param string $key
+     * @param mixed $fallback
+     * @return mixed
+     */
+    protected function fallback(string $key, $fallback = null) {
         return $this->parameters[$key] ?? $fallback;
     }
 }

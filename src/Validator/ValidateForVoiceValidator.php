@@ -6,20 +6,27 @@ use Sms77\Api\Exception\InvalidOptionalArgumentException;
 use Sms77\Api\Exception\InvalidRequiredArgumentException;
 
 class ValidateForVoiceValidator extends BaseValidator implements ValidatorInterface {
-    public function validate() {
+    /**
+     * @throws InvalidOptionalArgumentException
+     * @throws InvalidRequiredArgumentException
+     */
+    public function validate(): void {
         $this->callback();
         $this->number();
     }
 
-    public function callback() {
+    /** @throws InvalidOptionalArgumentException */
+    public function callback(): void {
         $callback = $this->fallback('callback');
 
         if ((null !== $callback) && !filter_var($callback, FILTER_VALIDATE_URL)) {
-            throw new InvalidOptionalArgumentException('Parameter "callback" is not a valid URL.');
+            throw new InvalidOptionalArgumentException(
+                'Parameter "callback" is not a valid URL.');
         }
     }
 
-    public function number() {
+    /** @throws InvalidRequiredArgumentException */
+    public function number(): void {
         if ('' === $this->fallback('number', '')) {
             throw new InvalidRequiredArgumentException('Parameter "number" is missing.');
         }

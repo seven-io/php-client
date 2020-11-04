@@ -5,11 +5,11 @@ namespace Sms77\Api\Validator;
 use Sms77\Api\Exception\InvalidOptionalArgumentException;
 
 class AnalyticsValidator extends BaseValidator implements ValidatorInterface {
-    const GROUP_BY = ['date', 'country', 'label', 'subaccount'];
-    const SUBACCOUNTS = ['only_main', 'all'];
+    public const GROUP_BY = ['date', 'country', 'label', 'subaccount'];
+    public const SUBACCOUNTS = ['only_main', 'all'];
 
     /** @throws InvalidOptionalArgumentException */
-    public function validate() {
+    public function validate(): void {
         $this->end();
         $this->group_by();
         $this->start();
@@ -17,7 +17,7 @@ class AnalyticsValidator extends BaseValidator implements ValidatorInterface {
     }
 
     /** @throws InvalidOptionalArgumentException */
-    public function end() {
+    public function end(): void {
         $end = $this->fallback('end');
 
         if (null !== $end && !$this->isValidDate($end)) {
@@ -26,7 +26,7 @@ class AnalyticsValidator extends BaseValidator implements ValidatorInterface {
     }
 
     /** @throws InvalidOptionalArgumentException */
-    public function group_by() {
+    public function group_by(): void {
         $groupBy = $this->fallback('group_by');
 
         if (null !== $groupBy && !in_array($groupBy, self::GROUP_BY, true)) {
@@ -35,7 +35,7 @@ class AnalyticsValidator extends BaseValidator implements ValidatorInterface {
     }
 
     /** @throws InvalidOptionalArgumentException */
-    public function start() {
+    public function start(): void {
         $start = $this->fallback('start');
 
         if (null !== $start && !$this->isValidDate($start)) {
@@ -44,7 +44,7 @@ class AnalyticsValidator extends BaseValidator implements ValidatorInterface {
     }
 
     /** @throws InvalidOptionalArgumentException */
-    public function subaccounts() {
+    public function subaccounts(): void {
         $invalid = false;
 
         $subaccounts = $this->fallback('subaccounts', '');

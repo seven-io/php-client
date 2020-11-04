@@ -3,9 +3,12 @@
 
 ## Installation
 
-```shell script
-composer require sms77/api
+**Via Composer:**
+```shell script 
+composer require sms77/api 
 ```
+
+Alternatively you can [download as *.ZIP](https://github.com/sms77io/php-client/releases/latest "download as *.ZIP") if you don't use Composer.
 
 ### Usage
 ```php

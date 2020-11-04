@@ -3,180 +3,148 @@
 namespace Sms77\Api\Library;
 
 class SmsParams implements SmsParamsInterface {
-    protected $debug = 0;
-    protected $delay = 0;
-    protected $details = 0;
-    protected $flash = 0;
+    protected $debug = false;
+    protected $delay;
+    protected $details = false;
+    protected $flash = false;
     protected $foreign_id;
     protected $from;
-    protected $json = 0;
-    protected $no_reload = 0;
-    protected $performance_tracking = 0;
-    protected $return_msg_id = 0;
+    protected $json = false;
+    protected $no_reload = false;
+    protected $performance_tracking = false;
+    protected $return_msg_id = false;
     protected $text;
     protected $to;
     protected $ttl;
     protected $udh;
-    protected $unicode = 0;
-    protected $utf8 = 0;
+    protected $unicode = false;
+    protected $utf8 = false;
 
-    /** @inheritDoc */
-    public function getDebug() {
+    public function getDebug(): ?bool {
         return $this->debug;
     }
 
-    /** @param int $debug */
-    public function setDebug($debug) {
+    public function setDebug(bool $debug): void {
         $this->debug = $debug;
     }
 
-    /** @inheritDoc */
-    public function getDelay() {
+    public function getDelay(): ?string {
         return $this->delay;
     }
 
-    /** @param int $delay */
-    public function setDelay($delay) {
+    public function setDelay(?string $delay): void {
         $this->delay = $delay;
     }
 
-    /** @inheritDoc */
-    public function getDetails() {
+    public function getDetails(): ?bool {
         return $this->details;
     }
 
-    /** @param int $details */
-    public function setDetails($details) {
+    public function setDetails(bool $details): void {
         $this->details = $details;
     }
 
-    /** @inheritDoc */
-    public function getFlash() {
+    public function getFlash(): ?bool {
         return $this->flash;
     }
 
-    /** @param int $flash */
-    public function setFlash($flash) {
+    public function setFlash(bool $flash): void {
         $this->flash = $flash;
     }
 
-    /** @inheritDoc */
-    public function getForeignId() {
+    public function getForeignId(): ?string {
         return $this->foreign_id;
     }
 
-    /** @param mixed $foreign_id */
-    public function setForeignId($foreign_id) {
+    public function setForeignId(?string $foreign_id): void {
         $this->foreign_id = $foreign_id;
     }
 
-    /** @inheritDoc */
-    public function getFrom() {
+    public function getFrom(): ?string {
         return $this->from;
     }
 
-    /** @param mixed $from */
-    public function setFrom($from) {
+    public function setFrom(?string $from): void {
         $this->from = $from;
     }
 
-    /** @inheritDoc */
-    public function getJson() {
+    public function getJson(): ?bool {
         return $this->json;
     }
 
-    /** @param int $json */
-    public function setJson($json) {
+    public function setJson(bool $json): void {
         $this->json = $json;
     }
 
-    /** @inheritDoc */
-    public function getNoReload() {
+    public function getNoReload(): ?bool {
         return $this->no_reload;
     }
 
-    /** @param int $no_reload */
-    public function setNoReload($no_reload) {
+    public function setNoReload(bool $no_reload): void {
         $this->no_reload = $no_reload;
     }
 
-    /** @inheritDoc */
-    public function getPerformanceTracking() {
+    public function getPerformanceTracking(): ?bool {
         return $this->performance_tracking;
     }
 
-    /** @param int $performance_tracking */
-    public function setPerformanceTracking($performance_tracking) {
+    public function setPerformanceTracking(bool $performance_tracking): void {
         $this->performance_tracking = $performance_tracking;
     }
 
-    /** @inheritDoc */
-    public function getReturnMsgId() {
+    public function getReturnMsgId(): ?bool {
         return $this->return_msg_id;
     }
 
-    /** @param int $return_msg_id */
-    public function setReturnMsgId($return_msg_id) {
+    public function setReturnMsgId(bool $return_msg_id): void {
         $this->return_msg_id = $return_msg_id;
     }
 
-    /** @inheritDoc */
-    public function getText() {
+    public function getText(): string {
         return $this->text;
     }
 
-    /** @param string $text */
-    public function setText($text) {
+    public function setText(string $text): void {
         $this->text = $text;
     }
 
-    /** @inheritDoc */
-    public function getTo() {
+    public function getTo(): string {
         return $this->to;
     }
 
-    /** @param string $to */
-    public function setTo($to) {
+    public function setTo(?string $to): void {
         $this->to = $to;
     }
 
-    /** @inheritDoc */
-    public function getTtl() {
+    public function getTtl(): ?int {
         return $this->ttl;
     }
 
-    /** @param mixed $ttl */
-    public function setTtl($ttl) {
+    public function setTtl(int $ttl): void {
         $this->ttl = $ttl;
     }
 
-    /** @inheritDoc */
-    public function getUdh() {
+    public function getUdh(): ?string {
         return $this->udh;
     }
 
-    /** @param mixed $udh */
-    public function setUdh($udh) {
+    public function setUdh(?string $udh): void {
         $this->udh = $udh;
     }
 
-    /** @inheritDoc */
-    public function getUnicode() {
+    public function getUnicode(): ?bool {
         return $this->unicode;
     }
 
-    /** @param int $unicode */
-    public function setUnicode($unicode) {
+    public function setUnicode(bool $unicode): void {
         $this->unicode = $unicode;
     }
 
-    /** @inheritDoc */
-    public function getUtf8() {
+    public function getUtf8(): ?bool {
         return $this->utf8;
     }
 
-    /** @param int $utf8 */
-    public function setUtf8($utf8) {
+    public function setUtf8(bool $utf8): void {
         $this->utf8 = $utf8;
     }
 }

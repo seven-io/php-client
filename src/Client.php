@@ -253,6 +253,7 @@ class Client extends BaseClient {
      * @param int $msgId
      * @param bool $json
      * @return string|Status
+     * @throws InvalidRequiredArgumentException
      */
     public function status(int $msgId, bool $json = false) {
         $options = ['msg_id' => $msgId];
@@ -268,6 +269,8 @@ class Client extends BaseClient {
      * @param string $number
      * @param array $opts
      * @return ValidateForVoice
+     * @throws InvalidOptionalArgumentException
+     * @throws InvalidRequiredArgumentException
      */
     public function validateForVoice(string $number, array $opts = []): ValidateForVoice {
         $opts['number'] = $number;
@@ -283,6 +286,8 @@ class Client extends BaseClient {
      * @param bool $xml
      * @param bool $json
      * @return string|Voice
+     * @throws InvalidOptionalArgumentException
+     * @throws InvalidRequiredArgumentException
      */
     public function voice(
         string $to, string $text, bool $xml = false, bool $json = false) {
