@@ -4,6 +4,7 @@ namespace Sms77\Api;
 
 use Sms77\Api\Constant\ContactsConstants;
 use Sms77\Api\Constant\HooksConstants;
+use Sms77\Api\Constant\JournalConstants;
 use Sms77\Api\Exception\InvalidOptionalArgumentException;
 use Sms77\Api\Exception\InvalidRequiredArgumentException;
 use Sms77\Api\Exception\UnexpectedApiResponseException;
@@ -14,6 +15,11 @@ use Sms77\Api\Response\Contact;
 use Sms77\Api\Response\ContactCreate;
 use Sms77\Api\Response\ContactDelete;
 use Sms77\Api\Response\ContactEdit;
+use Sms77\Api\Response\JournalBase;
+use Sms77\Api\Response\JournalInbound;
+use Sms77\Api\Response\JournalOutbound;
+use Sms77\Api\Response\JournalReplies;
+use Sms77\Api\Response\JournalVoice;
 use Sms77\Api\Response\LookupCnam;
 use Sms77\Api\Response\LookupFormat;
 use Sms77\Api\Response\LookupHlr;
@@ -28,6 +34,7 @@ use Sms77\Api\Response\Webhooks;
 use Sms77\Api\Validator\AnalyticsValidator;
 use Sms77\Api\Validator\ContactsValidator;
 use Sms77\Api\Validator\HooksValidator;
+use Sms77\Api\Validator\JournalValidator;
 use Sms77\Api\Validator\LookupValidator;
 use Sms77\Api\Validator\PricingValidator;
 use Sms77\Api\Validator\SmsValidator;
@@ -195,6 +202,35 @@ class Client extends BaseClient {
         $res = $this->contacts(ContactsConstants::ACTION_WRITE, $options);
 
         return (bool)($options['json'] ?? false) ? new ContactEdit($res) : $res;
+    }
+
+    /**
+     * @param string $type
+     * @param array $options
+     * @return JournalBase[]
+     * @throws InvalidOptionalArgumentException|InvalidRequiredArgumentException
+     */
+    public function journal(string $type, array $options = []): array {
+        $options['type'] = $type;
+
+        (new JournalValidator($options))->validate();
+
+        switch ($type) {
+            case JournalConstants::TYPE_VOICE:
+                $class = JournalVoice::class;
+                break;
+            case JournalConstants::TYPE_OUTBOUND:
+                $class = JournalOutbound::class;
+                break;
+            case JournalConstants::TYPE_REPLIES:
+                $class = JournalReplies::class;
+                break;
+            default:
+                $class = JournalInbound::class;
+        }
+
+        return Util::toArrayOfObject(
+            $this->get(JournalConstants::ENDPOINT, $options), $class);
     }
 
     /**

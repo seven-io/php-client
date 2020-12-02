@@ -2,6 +2,7 @@
 
 namespace Sms77\Tests\Client;
 
+use DateTime;
 use PHPUnit\Framework\TestCase;
 use Sms77\Api\Client;
 
@@ -16,5 +17,24 @@ abstract class BaseTest extends TestCase {
         $this->client = new Client(getenv('SMS77_API_KEY'), 'php-api-test');
 
         $this->recipient = getenv('SMS77_RECIPIENT') ?? '+491771783130';
+    }
+
+    public static function assertIsNullOrLengthyString(?string $value): void {
+        self::assertTrue(is_null($value) || 0 < strlen($value));
+    }
+
+    public static function assertIsLengthyString(string $value): void {
+        self::assertTrue(0 < strlen($value));
+    }
+
+    public static function assertIsValidDateTime(string $dateTime): void {
+        $bool = null;
+
+        try {
+            $bool = new DateTime($dateTime);
+        } catch (\Exception $e) {
+        }
+
+        self::assertInstanceOf(DateTime::class, $bool);
     }
 }
