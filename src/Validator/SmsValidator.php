@@ -18,6 +18,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface {
         $this->delay();
         $this->details();
         $this->flash();
+        $this->foreign_id();
         $this->from();
         $this->json();
         $this->label();
@@ -84,6 +85,23 @@ class SmsValidator extends BaseValidator implements ValidatorInterface {
             if ($allowedType !== $this->fallback('type', $allowedType)) {
                 throw new InvalidOptionalArgumentException(
                     "Only '$allowedType' messages can be sent as 'flash' messages.");
+            }
+        }
+    }
+
+    /** @throws InvalidOptionalArgumentException */
+    public function foreign_id(): void {
+        $label = $this->fallback('foreign_id');
+
+        if (null !== $label) {
+            if (mb_strlen($label) > SmsConstants::FOREIGN_ID_MAX_LENGTH) {
+                throw new InvalidOptionalArgumentException('foreign_id must not exceed "'
+                    . SmsConstants::LABEL_MAX_LENGTH . '" characters in length.');
+            }
+
+            if (strlen($label) !== preg_match_all(SmsConstants::FOREIGN_ID_PATTERN, $label)) {
+                throw new InvalidOptionalArgumentException(
+                    'foreign_id must match the regex pattern ' . SmsConstants::LABEL_PATTERN);
             }
         }
     }
