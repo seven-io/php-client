@@ -10,7 +10,6 @@ class PricingValidator extends BaseValidator implements ValidatorInterface {
     public function validate(): void {
         $this->country();
         $this->format();
-        $this->type();
     }
 
     /** @throws InvalidOptionalArgumentException */
@@ -32,10 +31,5 @@ class PricingValidator extends BaseValidator implements ValidatorInterface {
         if (null !== $format && !in_array($format, PricingConstants::FORMATS)) {
             throw new InvalidOptionalArgumentException("format seems to be invalid: $format.");
         }
-    }
-
-    /** @throws InvalidOptionalArgumentException */
-    public function type(): void {
-        $this->throwOnOptionalBadType();
     }
 }

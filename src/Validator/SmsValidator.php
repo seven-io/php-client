@@ -3,7 +3,6 @@
 namespace Sms77\Api\Validator;
 
 use Sms77\Api\Constant\SmsConstants;
-use Sms77\Api\Constant\SmsType;
 use Sms77\Api\Exception\InvalidBooleanOptionException;
 use Sms77\Api\Exception\InvalidOptionalArgumentException;
 use Sms77\Api\Exception\InvalidRequiredArgumentException;
@@ -31,15 +30,11 @@ class SmsValidator extends BaseValidator implements ValidatorInterface {
      */
     public function validate(): void {
         $this->delay();
-        $this->flash();
         $this->foreign_id();
         $this->from();
         $this->label();
         $this->text();
         $this->to();
-        $this->type();
-        $this->udh();
-        $this->unicode();
         $this->ttl();
 
         parent::validate();
@@ -60,20 +55,6 @@ class SmsValidator extends BaseValidator implements ValidatorInterface {
             } else if (!preg_match(SmsConstants::DELAY_PATTERN, $delay)) {
                 throw new InvalidOptionalArgumentException($errorMsg);
             }
-        }
-    }
-
-    /** @throws InvalidOptionalArgumentException */
-    public function flash(): void {
-        if (!$this->fallback('flash')) {
-            return;
-        }
-
-        $allowedType = SmsType::Direct;
-
-        if ($allowedType !== $this->fallback('type', $allowedType)) {
-            throw new InvalidOptionalArgumentException(
-                "Only '$allowedType' messages can be sent as 'flash' messages.");
         }
     }
 
@@ -164,38 +145,6 @@ class SmsValidator extends BaseValidator implements ValidatorInterface {
         if (null === $this->fallback('to')) {
             throw new InvalidRequiredArgumentException(
                 'You cannot send a message without specifying a recipient.');
-        }
-    }
-
-    /** @throws InvalidOptionalArgumentException */
-    public function type(): void {
-        $this->throwOnOptionalBadType(); //TODO remove type here and in pricing
-    }
-
-    /** @throws InvalidOptionalArgumentException */
-    public function udh(): void {
-        $udh = $this->fallback('udh');
-
-        if (null !== $udh) {
-            $allowedType = SmsType::Direct;
-            if ($allowedType !== $this->parameters['type'] && $udh) {
-                throw new InvalidOptionalArgumentException(
-                    "Only messages of type '$allowedType' can be sent as udh messages.");
-            }
-        }
-    }
-
-    /** @throws InvalidOptionalArgumentException */
-    public function unicode(): void {
-        $unicode = $this->fallback('unicode');
-
-        if (null !== $unicode) {
-            $allowedType = SmsType::Direct;
-
-            if ($allowedType !== $this->parameters['type'] && $unicode) {
-                throw new InvalidOptionalArgumentException(
-                    "Only messages of type '$allowedType' can be unicode encoded.");
-            }
         }
     }
 

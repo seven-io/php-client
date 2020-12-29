@@ -3,6 +3,7 @@
 namespace Sms77\Tests\Client;
 
 use Sms77\Api\Constant\JournalConstants;
+use Sms77\Api\Constant\SmsConstants;
 use Sms77\Api\Constant\SmsType;
 use Sms77\Api\Exception\InvalidRequiredArgumentException;
 use Sms77\Api\Response\JournalBase;
@@ -50,7 +51,7 @@ class JournalTest extends BaseTest {
                 self::assertIsNullOrLengthyString($j->label);
                 self::assertIsNullOrLengthyString($j->latency);
                 self::assertIsNullOrLengthyString($j->mccmnc);
-                self::assertTrue(in_array($j->type, SmsType::values()));
+                self::assertEquals(SmsConstants::TYPE_DIRECT, $j->type);
             });
     }
 

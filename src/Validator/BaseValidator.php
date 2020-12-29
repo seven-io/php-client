@@ -2,9 +2,7 @@
 
 namespace Sms77\Api\Validator;
 
-use Sms77\Api\Constant\SmsType;
 use Sms77\Api\Exception\InvalidBooleanOptionException;
-use Sms77\Api\Exception\InvalidOptionalArgumentException;
 use Sms77\Api\Library\Util;
 
 abstract class BaseValidator {
@@ -57,19 +55,6 @@ abstract class BaseValidator {
         $string = (int)$string;
 
         return 1 === $string || 0 === $string;
-    }
-
-    /** @throws InvalidOptionalArgumentException */
-    public function throwOnOptionalBadType(): void {
-        $smsTypes = SmsType::values();
-
-        $type = $this->fallback('type');
-
-        if (null !== $type && !in_array($type, $smsTypes, true)) {
-            throw new InvalidOptionalArgumentException(
-                "type has invalid value $type. Allowed values are: "
-                . implode(',', $smsTypes) . '.');
-        }
     }
 
     /**
