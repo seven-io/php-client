@@ -30,11 +30,11 @@ $client->sms('+4901234567890', 'HI2U');
 
 
 <ul>
-    <li>analytics(array options, string $groupBy = 'date'): AbstractAnalytic[]</li>
-    <li>analyticsByCountry(array options): AnalyticByCountry[]</li>
-    <li>analyticsByDate(array options): AnalyticByDate[]</li>
-    <li>analyticsByLabel(array options): AnalyticByLabel[]</li>
-    <li>analyticsBySubaccount(array options): AnalyticBySubaccount[]</li>
+    <li>analytics(array options = [], string $groupBy = 'date'): AbstractAnalytic[]</li>
+    <li>analyticsByCountry(array options = []): AnalyticByCountry[]</li>
+    <li>analyticsByDate(array options = []): AnalyticByDate[]</li>
+    <li>analyticsByLabel(array options = []): AnalyticByLabel[]</li>
+    <li>analyticsBySubaccount(array options = []): AnalyticBySubaccount[]</li>
 </ul>
 </details>
 
@@ -54,10 +54,15 @@ $client->sms('+4901234567890', 'HI2U');
 <ul>
     <li>contacts(string $action, array $options = []): mixed</li>
     <li>createContact(bool $json = false): string|ContactCreate</li>
+    <li>createContactJson(): ContactCreate</li>
     <li>deleteContact(int $id, bool $json = false): int|ContactDelete</li>
-    <li>editContact(array $options = []): int|ContactEdit</li>
+    <li>deleteContactJson(int $id): ContactDelete</li>
+    <li>editContact(array $options): int|ContactEdit</li>
+    <li>editContactJson(array $options): ContactEdit</li>
     <li>getContact(int $id, bool $json = false): string|Contact[]</li>
+    <li>getContactJson(int $id): Contact[]</li>
     <li>getContacts(bool $json = false): string|Contact[]</li>
+    <li>getContactsJson(): Contact[]</li>
 </ul>
 </details>
 
@@ -93,6 +98,7 @@ $client->sms('+4901234567890', 'HI2U');
     <li>lookupCnam(string $number): LookupCnam</li>
     <li>lookupHlr(string $number): LookupHlr</li>
     <li>lookupMnp(string $number, bool $json = false): string|LookupMnp</li>
+    <li>lookupMnpJson(string $number): LookupMnp</li>
 </ul>
 </details>
 
@@ -101,6 +107,7 @@ $client->sms('+4901234567890', 'HI2U');
 
 <ul>
     <li>pricing(bool $json = true, string $country = ''): string|Pricing</li>
+    <li>pricingCsv(string $country = ''): string</li>
 </ul>
 </details>
 
@@ -109,6 +116,7 @@ $client->sms('+4901234567890', 'HI2U');
 
 <ul>
     <li>sms(string $to, string $text, array $options = []): string|Sms</li>
+    <li>smsJson(string $to, string $text, array $options = []): Sms</li>
 </ul>
 </details>
 
@@ -117,6 +125,7 @@ $client->sms('+4901234567890', 'HI2U');
 
 <ul>
     <li>status(int $msgId, bool $json = false): string|Status</li>
+    <li>statusJson(int $msgId): Status</li>
 </ul>
 </details>
 
@@ -133,6 +142,7 @@ $client->sms('+4901234567890', 'HI2U');
 
 <ul>
     <li>voice(string $to, string $text, bool $xml = false, bool $json = false): string|Voice</li>
+    <li>voiceJson(string $to, string $text, bool $xml = false): Voice</li>
 </ul>
 </details>
 

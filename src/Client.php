@@ -148,6 +148,16 @@ class Client extends BaseClient {
     }
 
     /**
+     * @param int $id
+     * @return ContactDelete
+     * @throws InvalidBooleanOptionException
+     * @throws InvalidRequiredArgumentException
+     */
+    public function deleteContactJson(int $id): ContactDelete {
+        return $this->deleteContact($id, true);
+    }
+
+    /**
      * @param string $action
      * @param array $options
      * @return mixed
@@ -218,6 +228,30 @@ class Client extends BaseClient {
     }
 
     /**
+     * @param int $id
+     * @param bool $json
+     * @return string|Contact[]
+     * @throws InvalidBooleanOptionException
+     * @throws InvalidRequiredArgumentException
+     */
+    public function getContact(int $id, bool $json = false) {
+        $res = $this->contacts(
+            ContactsConstants::ACTION_READ, ['json' => $json, 'id' => $id]);
+
+        return $json ? Util::toArrayOfObject($res, Contact::class) : $res;
+    }
+
+    /**
+     * @param int $id
+     * @return Contact[]
+     * @throws InvalidBooleanOptionException
+     * @throws InvalidRequiredArgumentException
+     */
+    public function getContactJson(int $id): array {
+        return $this->getContact($id);
+    }
+
+    /**
      * @param bool $json
      * @return string|Contact[]
      * @throws InvalidBooleanOptionException
@@ -230,17 +264,12 @@ class Client extends BaseClient {
     }
 
     /**
-     * @param int $id
-     * @param bool $json
-     * @return string|Contact[]
+     * @return Contact[]
      * @throws InvalidBooleanOptionException
      * @throws InvalidRequiredArgumentException
      */
-    public function getContact(int $id, bool $json = false) {
-        $res = $this->contacts(
-            ContactsConstants::ACTION_READ, ['json' => $json, 'id' => $id]);
-
-        return $json ? Util::toArrayOfObject($res, Contact::class) : $res;
+    public function getContactsJson(): array {
+        return $this->getContacts(true);
     }
 
     /**
@@ -256,15 +285,34 @@ class Client extends BaseClient {
     }
 
     /**
+     * @return ContactCreate
+     * @throws InvalidBooleanOptionException
+     * @throws InvalidRequiredArgumentException
+     */
+    public function createContactJson(): ContactCreate {
+        return $this->createContact(true);
+    }
+
+    /**
      * @param array $options
      * @return int|ContactEdit
      * @throws InvalidBooleanOptionException
      * @throws InvalidRequiredArgumentException
      */
-    public function editContact(array $options = []) {
+    public function editContact(array $options) {
         $res = $this->contacts(ContactsConstants::ACTION_WRITE, $options);
 
         return (bool)($options['json'] ?? false) ? new ContactEdit($res) : $res;
+    }
+
+    /**
+     * @param array $options
+     * @return ContactEdit
+     * @throws InvalidBooleanOptionException
+     * @throws InvalidRequiredArgumentException
+     */
+    public function editContactJson(array $options): ContactEdit {
+        return $this->editContact(array_merge($options, ['json' => 1]));
     }
 
     /**
@@ -419,6 +467,18 @@ class Client extends BaseClient {
     }
 
     /**
+     * @param string $number
+     * @return LookupMnp
+     * @throws InvalidBooleanOptionException
+     * @throws InvalidOptionalArgumentException
+     * @throws InvalidRequiredArgumentException
+     * @throws UnexpectedApiResponseException
+     */
+    public function lookupMnpJson(string $number): LookupMnp {
+        return $this->lookupMnp($number, true);
+    }
+
+    /**
      * @param bool $json
      * @param string $country
      * @return string|Pricing
@@ -432,6 +492,15 @@ class Client extends BaseClient {
         $res = $this->get('pricing', $options);
 
         return $json ? new Pricing($res) : $res;
+    }
+
+    /**
+     * @param string $country
+     * @return string
+     * @throws InvalidOptionalArgumentException
+     */
+    public function pricingCsv(string $country = ''): string {
+        return $this->pricing(false, $country);
     }
 
     /**
@@ -455,6 +524,19 @@ class Client extends BaseClient {
     }
 
     /**
+     * @param string $to
+     * @param string $text
+     * @param array $options
+     * @return Sms
+     * @throws InvalidRequiredArgumentException
+     * @throws InvalidOptionalArgumentException
+     * @throws InvalidBooleanOptionException
+     */
+    public function smsJson(string $to, string $text, array $options = []): Sms {
+        return $this->sms($to, $text, array_merge($options, ['json' => 1]));
+    }
+
+    /**
      * @param int $msgId
      * @param bool $json
      * @return string|Status
@@ -468,6 +550,15 @@ class Client extends BaseClient {
         $res = $this->get('status', $options);
 
         return $json ? new Status($res) : $res;
+    }
+
+    /**
+     * @param int $msgId
+     * @return Status
+     * @throws InvalidRequiredArgumentException
+     */
+    public function statusJson(int $msgId): Status {
+        return $this->status($msgId, true);
     }
 
     /**
@@ -508,5 +599,18 @@ class Client extends BaseClient {
         $res = $this->post('voice', $options);
 
         return $json ? new Voice($res) : $res;
+    }
+
+    /**
+     * @param string $to
+     * @param string $text
+     * @param bool $xml
+     * @return Voice
+     * @throws InvalidBooleanOptionException
+     * @throws InvalidOptionalArgumentException
+     * @throws InvalidRequiredArgumentException
+     */
+    public function voiceJson(string $to, string $text, bool $xml = false): Voice {
+        return $this->voice($to, $text, $xml, true);
     }
 }
