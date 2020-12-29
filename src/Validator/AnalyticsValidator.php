@@ -18,7 +18,7 @@ class AnalyticsValidator extends BaseValidator implements ValidatorInterface {
     public function end(): void {
         $end = $this->fallback('end');
 
-        if (null !== $end && !$this->isValidDate($end)) {
+        if (null !== $end && !self::isValidDate($end)) {
             throw new InvalidOptionalArgumentException('end is not a valid date.');
         }
     }
@@ -36,7 +36,7 @@ class AnalyticsValidator extends BaseValidator implements ValidatorInterface {
     public function start(): void {
         $start = $this->fallback('start');
 
-        if (null !== $start && !$this->isValidDate($start)) {
+        if (null !== $start && !self::isValidDate($start)) {
             throw new InvalidOptionalArgumentException('start is not a valid date.');
         }
     }

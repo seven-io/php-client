@@ -47,7 +47,7 @@ abstract class BaseValidator {
         throw new InvalidBooleanOptionException($k, $v);
     }
 
-    public function isValidDate(string $date): bool {
+    public static function isValidDate(string $date): bool {
         return Util::isValidDate($date, 'Y-m-d');
     }
 

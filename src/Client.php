@@ -2,14 +2,20 @@
 
 namespace Sms77\Api;
 
+use Sms77\Api\Constant\AnalyticsConstants;
 use Sms77\Api\Constant\ContactsConstants;
 use Sms77\Api\Constant\HooksConstants;
 use Sms77\Api\Constant\JournalConstants;
+use Sms77\Api\Exception\InvalidBooleanOptionException;
 use Sms77\Api\Exception\InvalidOptionalArgumentException;
 use Sms77\Api\Exception\InvalidRequiredArgumentException;
 use Sms77\Api\Exception\UnexpectedApiResponseException;
 use Sms77\Api\Library\Util;
-use Sms77\Api\Response\Analytic;
+use Sms77\Api\Response\AbstractAnalytic;
+use Sms77\Api\Response\AnalyticByCountry;
+use Sms77\Api\Response\AnalyticByDate;
+use Sms77\Api\Response\AnalyticByLabel;
+use Sms77\Api\Response\AnalyticBySubaccount;
 use Sms77\Api\Response\Balance;
 use Sms77\Api\Response\Contact;
 use Sms77\Api\Response\ContactCreate;
@@ -46,13 +52,62 @@ use UnexpectedValueException;
 class Client extends BaseClient {
     /**
      * @param array $options
-     * @return Analytic[]
+     * @param string $groupBy
+     * @return AbstractAnalytic[]
      * @throws InvalidOptionalArgumentException
      */
-    public function analytics(array $options = []): array {
+    public function analytics(
+        array $options = [], string $groupBy = AnalyticsConstants::GROUP_BY_DATE): array {
+        $options['group_by'] = $groupBy;
+
         (new AnalyticsValidator($options))->validate();
 
-        return Util::toArrayOfObject($this->get('analytics', $options), Analytic::class);
+        $class = AnalyticByDate::class;
+        if ($groupBy === AnalyticsConstants::GROUP_BY_COUNTRY) {
+            $class = AnalyticByCountry::class;
+        } elseif ($groupBy === AnalyticsConstants::GROUP_BY_LABEL) {
+            $class = AnalyticByLabel::class;
+        } elseif ($groupBy === AnalyticsConstants::GROUP_BY_SUBACCOUNT) {
+            $class = AnalyticBySubaccount::class;
+        }
+
+        return Util::toArrayOfObject($this->get('analytics', $options), $class);
+    }
+
+    /**
+     * @param array $options
+     * @return AnalyticByCountry[]
+     * @throws InvalidOptionalArgumentException
+     */
+    public function analyticsByCountry(array $options = []): array {
+        return $this->analytics($options, AnalyticsConstants::GROUP_BY_COUNTRY);
+    }
+
+    /**
+     * @param array $options
+     * @return AnalyticByDate[]
+     * @throws InvalidOptionalArgumentException
+     */
+    public function analyticsByDate(array $options = []): array {
+        return $this->analytics($options, AnalyticsConstants::GROUP_BY_DATE);
+    }
+
+    /**
+     * @param array $options
+     * @return AnalyticByLabel[]
+     * @throws InvalidOptionalArgumentException
+     */
+    public function analyticsByLabel(array $options = []): array {
+        return $this->analytics($options, AnalyticsConstants::GROUP_BY_LABEL);
+    }
+
+    /**
+     * @param array $options
+     * @return AnalyticBySubaccount[]
+     * @throws InvalidOptionalArgumentException
+     */
+    public function analyticsBySubaccount(array $options = []): array {
+        return $this->analytics($options, AnalyticsConstants::GROUP_BY_SUBACCOUNT);
     }
 
     /**
@@ -75,7 +130,7 @@ class Client extends BaseClient {
      * @param int $id
      * @param bool $json
      * @return int|ContactDelete
-     * @throws InvalidOptionalArgumentException
+     * @throws InvalidBooleanOptionException
      * @throws InvalidRequiredArgumentException
      */
     public function deleteContact(int $id, bool $json = false) {
@@ -85,10 +140,10 @@ class Client extends BaseClient {
     }
 
     /**
-     * @param $action
+     * @param string $action
      * @param array $options
      * @return mixed
-     * @throws InvalidOptionalArgumentException
+     * @throws InvalidBooleanOptionException
      * @throws InvalidRequiredArgumentException
      */
     private function contacts(string $action, array $options = []) {
@@ -157,7 +212,7 @@ class Client extends BaseClient {
     /**
      * @param bool $json
      * @return string|Contact[]
-     * @throws InvalidOptionalArgumentException
+     * @throws InvalidBooleanOptionException
      * @throws InvalidRequiredArgumentException
      */
     public function getContacts(bool $json = false) {
@@ -170,7 +225,7 @@ class Client extends BaseClient {
      * @param int $id
      * @param bool $json
      * @return string|Contact[]
-     * @throws InvalidOptionalArgumentException
+     * @throws InvalidBooleanOptionException
      * @throws InvalidRequiredArgumentException
      */
     public function getContact(int $id, bool $json = false) {
@@ -183,7 +238,7 @@ class Client extends BaseClient {
     /**
      * @param bool $json
      * @return string|ContactCreate
-     * @throws InvalidOptionalArgumentException
+     * @throws InvalidBooleanOptionException
      * @throws InvalidRequiredArgumentException
      */
     public function createContact(bool $json = false) {
@@ -195,7 +250,7 @@ class Client extends BaseClient {
     /**
      * @param array $options
      * @return int|ContactEdit
-     * @throws InvalidOptionalArgumentException
+     * @throws InvalidBooleanOptionException
      * @throws InvalidRequiredArgumentException
      */
     public function editContact(array $options = []) {
@@ -238,6 +293,7 @@ class Client extends BaseClient {
      * @return LookupFormat
      * @throws InvalidOptionalArgumentException
      * @throws InvalidRequiredArgumentException
+     * @throws InvalidBooleanOptionException
      */
     public function lookupFormat(string $number): LookupFormat {
         return new LookupFormat($this->lookup('format', $number));
@@ -248,7 +304,9 @@ class Client extends BaseClient {
      * @param $number
      * @param array $options
      * @return mixed
-     * @throws InvalidRequiredArgumentException|InvalidOptionalArgumentException
+     * @throws InvalidRequiredArgumentException
+     * @throws InvalidOptionalArgumentException
+     * @throws InvalidBooleanOptionException
      */
     private function lookup(string $type, string $number, array $options = []) {
         $options['number'] = $number;
@@ -262,6 +320,7 @@ class Client extends BaseClient {
     /**
      * @param string $number
      * @return LookupCnam
+     * @throws InvalidBooleanOptionException
      * @throws InvalidOptionalArgumentException
      * @throws InvalidRequiredArgumentException
      */
@@ -272,6 +331,7 @@ class Client extends BaseClient {
     /**
      * @param string $number
      * @return LookupHlr
+     * @throws InvalidBooleanOptionException
      * @throws InvalidOptionalArgumentException
      * @throws InvalidRequiredArgumentException
      */
@@ -283,6 +343,7 @@ class Client extends BaseClient {
      * @param string $number
      * @param bool $json
      * @return string|LookupMnp
+     * @throws InvalidBooleanOptionException
      * @throws InvalidOptionalArgumentException
      * @throws InvalidRequiredArgumentException
      * @throws UnexpectedApiResponseException
@@ -330,7 +391,9 @@ class Client extends BaseClient {
      * @param string $text
      * @param array $options
      * @return string|Sms
-     * @throws InvalidRequiredArgumentException|InvalidOptionalArgumentException
+     * @throws InvalidRequiredArgumentException
+     * @throws InvalidOptionalArgumentException
+     * @throws InvalidBooleanOptionException
      */
     public function sms(string $to, string $text, array $options = []) {
         $options['to'] = $to;
@@ -380,6 +443,7 @@ class Client extends BaseClient {
      * @param bool $xml
      * @param bool $json
      * @return string|Voice
+     * @throws InvalidBooleanOptionException
      * @throws InvalidOptionalArgumentException
      * @throws InvalidRequiredArgumentException
      */

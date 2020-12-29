@@ -24,7 +24,8 @@ abstract class BaseTest extends TestCase {
     }
 
     public static function assertIsLengthyString(string $value): void {
-        self::assertTrue(0 < strlen($value));
+        self::assertIsString($value);
+        self::assertNotEmpty($value);
     }
 
     public static function assertIsValidDateTime(string $dateTime): void {
