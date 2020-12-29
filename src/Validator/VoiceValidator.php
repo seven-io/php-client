@@ -2,19 +2,26 @@
 
 namespace Sms77\Api\Validator;
 
+use Sms77\Api\Exception\InvalidBooleanOptionException;
 use Sms77\Api\Exception\InvalidOptionalArgumentException;
 use Sms77\Api\Exception\InvalidRequiredArgumentException;
 
 class VoiceValidator extends BaseValidator implements ValidatorInterface {
+    public function __construct(array $parameters = []) {
+        parent::__construct($parameters, ['xml']);
+    }
+
     /**
      * @throws InvalidOptionalArgumentException
      * @throws InvalidRequiredArgumentException
+     * @throws InvalidBooleanOptionException
      */
     public function validate(): void {
         $this->from();
         $this->text();
         $this->to();
-        $this->xml();
+
+        parent::validate();
     }
 
     /** @throws InvalidOptionalArgumentException */
@@ -37,15 +44,6 @@ class VoiceValidator extends BaseValidator implements ValidatorInterface {
     public function to(): void {
         if ('' === $this->fallback('to', '')) {
             throw new InvalidRequiredArgumentException('to is missing.');
-        }
-    }
-
-    /** @throws InvalidOptionalArgumentException */
-    public function xml(): void {
-        $xml = $this->fallback('xml', '');
-
-        if (!$this->isValidBool($xml)) {
-            throw new InvalidOptionalArgumentException('xml can be either 1 or 0.');
         }
     }
 }

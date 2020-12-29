@@ -3,10 +3,15 @@
 namespace Sms77\Api\Validator;
 
 use Sms77\Api\Constant\LookupConstants;
+use Sms77\Api\Exception\InvalidBooleanOptionException;
 use Sms77\Api\Exception\InvalidOptionalArgumentException;
 use Sms77\Api\Exception\InvalidRequiredArgumentException;
 
 class LookupValidator extends BaseValidator implements ValidatorInterface {
+    public function __construct(array $parameters = []) {
+        parent::__construct($parameters, ['json']);
+    }
+
     public static function isValidMobileNetworkShortName(string $subject): bool {
         return 1 === preg_match('/d1|d2|o2|eplus|N\/A|int/', $subject);
     }
@@ -14,35 +19,31 @@ class LookupValidator extends BaseValidator implements ValidatorInterface {
     /**
      * @throws InvalidOptionalArgumentException
      * @throws InvalidRequiredArgumentException
+     * @throws InvalidBooleanOptionException
      */
     public function validate(): void {
         $this->json();
         $this->number();
         $this->type();
+
+        parent::validate();
     }
 
-    /**
-     * @throws InvalidOptionalArgumentException
-     */
+    /** @throws InvalidOptionalArgumentException */
     public function json(): void {
-        $json = $this->fallback('json');
+        if (null === $this->fallback('json')) {
+            return;
+        }
 
-        if (null !== $json) {
-            $type = $this->fallback('type');
+        $type = $this->fallback('type');
 
-            if (LookupConstants::TYPE_MNP !== $type) {
-                throw new InvalidOptionalArgumentException('json may only be set if type is set to mnp.');
-            }
-
-            if (!$this->isValidBool($json)) {
-                throw new InvalidOptionalArgumentException('json can be either 1 or 0.');
-            }
+        if (LookupConstants::TYPE_MNP !== $type) {
+            throw new InvalidOptionalArgumentException(
+                'json may only be set if type is set to mnp.');
         }
     }
 
-    /**
-     * @throws InvalidRequiredArgumentException
-     */
+    /** @throws InvalidRequiredArgumentException */
     public function number(): void {
         $number = $this->fallback('number', '');
 
@@ -51,9 +52,7 @@ class LookupValidator extends BaseValidator implements ValidatorInterface {
         }
     }
 
-    /**
-     * @throws InvalidRequiredArgumentException
-     */
+    /** @throws InvalidRequiredArgumentException */
     public function type(): void {
         $type = $this->fallback('type');
 

@@ -1,0 +1,1 @@
+C:37:"PHPUnit\Runner\DefaultTestResultCache":161:{a:2:{s:7:"defects";a:1:{s:45:"Sms77\Tests\Client\SmsTest::testSmsBadOptions";i:3;}s:5:"times";a:1:{s:45:"Sms77\Tests\Client\SmsTest::testSmsBadOptions";d:0.18;}}}

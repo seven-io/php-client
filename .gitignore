@@ -2,3 +2,4 @@ vendor/
 .env
 .idea/
 *.http
+.phpunit.result.cache
