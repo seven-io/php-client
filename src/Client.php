@@ -35,8 +35,8 @@ use Sms77\Api\Response\Sms;
 use Sms77\Api\Response\Status;
 use Sms77\Api\Response\ValidateForVoice;
 use Sms77\Api\Response\Voice;
-use Sms77\Api\Response\WebhookAction;
-use Sms77\Api\Response\Webhooks;
+use Sms77\Api\Response\HookAction;
+use Sms77\Api\Response\Hooks;
 use Sms77\Api\Validator\AnalyticsValidator;
 use Sms77\Api\Validator\ContactsValidator;
 use Sms77\Api\Validator\HooksValidator;
@@ -126,6 +126,14 @@ class Client extends BaseClient {
         return $json ? new Balance($res) : $res;
     }
 
+    public function balanceFloat(): float {
+        return $this->balance();
+    }
+
+    public function balanceJson(): Balance {
+        return $this->balance(true);
+    }
+
     /**
      * @param int $id
      * @param bool $json
@@ -146,7 +154,7 @@ class Client extends BaseClient {
      * @throws InvalidBooleanOptionException
      * @throws InvalidRequiredArgumentException
      */
-    private function contacts(string $action, array $options = []) {
+    public function contacts(string $action, array $options = []) {
         $options['action'] = $action;
 
         (new ContactsValidator($options))->validate();
@@ -161,15 +169,15 @@ class Client extends BaseClient {
      * @param string|null $target_url
      * @param string|null $event_type
      * @param string|null $request_method
-     * @return WebhookAction
+     * @return HookAction
      * @throws InvalidRequiredArgumentException
      */
-    public function unsubscribeWebhook(
+    public function unsubscribeHook(
         ?int $id,
         ?string $target_url = null,
         ?string $event_type = null,
-        ?string $request_method = null): WebhookAction {
-        return new WebhookAction($this->hooks(HooksConstants::ACTION_UNSUBSCRIBE,
+        ?string $request_method = null): HookAction {
+        return new HookAction($this->hooks(HooksConstants::ACTION_UNSUBSCRIBE,
             compact('id', 'target_url', 'event_type', 'request_method')));
     }
 
@@ -179,7 +187,7 @@ class Client extends BaseClient {
      * @return mixed
      * @throws InvalidRequiredArgumentException
      */
-    private function hooks(string $action, array $options = []) {
+    public function hooks(string $action, array $options = []) {
         $options['action'] = $action;
 
         (new HooksValidator($options))->validate();
@@ -193,20 +201,20 @@ class Client extends BaseClient {
      * @param string $target_url
      * @param string $event_type
      * @param string $request_method
-     * @return WebhookAction
+     * @return HookAction
      * @throws InvalidRequiredArgumentException
      */
-    public function subscribeWebhook(
+    public function subscribeHook(
         string $target_url,
         string $event_type,
-        string $request_method = HooksConstants::REQUEST_METHOD_DEFAULT): WebhookAction {
-        return new WebhookAction($this->hooks(HooksConstants::ACTION_SUBSCRIBE,
+        string $request_method = HooksConstants::REQUEST_METHOD_DEFAULT): HookAction {
+        return new HookAction($this->hooks(HooksConstants::ACTION_SUBSCRIBE,
             compact('target_url', 'event_type', 'request_method')));
     }
 
     /** @throws InvalidRequiredArgumentException */
-    public function getWebhooks(): Webhooks {
-        return new Webhooks($this->hooks(HooksConstants::ACTION_READ));
+    public function getHooks(): Hooks {
+        return new Hooks($this->hooks(HooksConstants::ACTION_READ));
     }
 
     /**
@@ -308,7 +316,7 @@ class Client extends BaseClient {
      * @throws InvalidOptionalArgumentException
      * @throws InvalidBooleanOptionException
      */
-    private function lookup(string $type, string $number, array $options = []) {
+    public function lookup(string $type, string $number, array $options = []) {
         $options['number'] = $number;
         $options['type'] = $type;
 

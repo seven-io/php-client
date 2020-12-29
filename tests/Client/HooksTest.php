@@ -4,19 +4,19 @@ namespace Sms77\Tests\Client;
 
 use Sms77\Api\Constant\HooksConstants;
 use Sms77\Api\Library\Util;
-use Sms77\Api\Response\WebhookAction;
+use Sms77\Api\Response\HookAction;
 
 class HooksTest extends BaseTest {
-    public function testGetWebhooks(): void {
-        $res = $this->client->getWebhooks();
+    public function testGetHooks(): void {
+        $res = $this->client->getHooks();
 
         self::assertIsBool($res->success);
         self::assertIsArray($res->hooks);
 
         if (!count($res->hooks)) {
-            $this->testSubscribeWebhook(false);
+            $this->testSubscribeHook(false);
 
-            $res = $this->client->getWebhooks();
+            $res = $this->client->getHooks();
         }
 
         self::assertArrayHasKey(0, $res->hooks);
@@ -30,14 +30,15 @@ class HooksTest extends BaseTest {
         self::assertTrue(Util::isValidUrl($hook->target_url));
     }
 
-    public function testSubscribeWebhook(bool $delete = true): ?int {
-        $res = $this->client->subscribeWebhook(
-            'http://ho.ok/' . uniqid('', true), HooksConstants::EVENT_TYPE_SMS_INBOUND);
+    public function testSubscribeHook(bool $delete = true): ?int {
+        $res = $this->client->subscribeHook(
+            'http://ho.ok/' . uniqid('', true),
+            HooksConstants::EVENT_TYPE_SMS_INBOUND);
 
         self::assertActionResponse($res, false);
 
         if ($delete) {
-            $this->testUnsubscribeWebhook($res->id);
+            $this->testUnsubscribeHook($res->id);
 
             return null;
         }
@@ -45,7 +46,7 @@ class HooksTest extends BaseTest {
         return $res->id;
     }
 
-    private static function assertActionResponse(WebhookAction $a, bool $unsubscription): void {
+    private static function assertActionResponse(HookAction $a, bool $unsubscription): void {
         self::assertIsBool($a->success);
 
         if ($a->success // no id on error
@@ -54,14 +55,14 @@ class HooksTest extends BaseTest {
         }
     }
 
-    public function testUnsubscribeWebhook(?int $id = null): void {
+    public function testUnsubscribeHook(?int $id = null): void {
         if (!$id) {
-            $res = $this->client->getWebhooks();
+            $res = $this->client->getHooks();
 
             $id = count($res->hooks)
-                ? $res->hooks[0]->id : $this->testSubscribeWebhook(false);
+                ? $res->hooks[0]->id : $this->testSubscribeHook(false);
         }
 
-        self::assertActionResponse($this->client->unsubscribeWebhook($id), true);
+        self::assertActionResponse($this->client->unsubscribeHook($id), true);
     }
 }

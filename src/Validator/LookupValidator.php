@@ -13,7 +13,7 @@ class LookupValidator extends BaseValidator implements ValidatorInterface {
     }
 
     public static function isValidMobileNetworkShortName(string $subject): bool {
-        return 1 === preg_match('/d1|d2|o2|eplus|N\/A|int/', $subject);
+        return in_array($subject, LookupConstants::MNP_TYPES);
     }
 
     /**

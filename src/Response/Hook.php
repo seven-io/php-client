@@ -5,16 +5,17 @@ namespace Sms77\Api\Response;
 use Sms77\Api\Library\JsonObject;
 
 /**
- * @property bool success
- * @property Webhook[] hooks
+ * @property int id
+ * @property string target_url
+ * @property string event_type
+ * @property string request_method
+ * @property string created
  */
-class Webhooks extends JsonObject {
+class Hook extends JsonObject {
     public function __construct(?object $class = null) {
         /** @var self $class */
         if ($class) {
-            foreach ($class->hooks as $k => $v) {
-                $class->hooks[$k] = new Webhook($v);
-            }
+            $class->id = (int)$class->id;
         }
 
         parent::__construct($class);

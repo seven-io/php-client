@@ -8,5 +8,5 @@ use Sms77\Api\Library\JsonObject;
  * @property int id
  * @property bool success
  */
-class WebhookAction extends JsonObject {
+class HookAction extends JsonObject {
 }
