@@ -297,6 +297,46 @@ class Client extends BaseClient {
     }
 
     /**
+     * @param array $options
+     * @return JournalInbound[]
+     * @throws InvalidOptionalArgumentException
+     * @throws InvalidRequiredArgumentException
+     */
+    public function journalInbound(array $options = []): array {
+        return $this->journal(JournalConstants::TYPE_INBOUND, $options);
+    }
+
+    /**
+     * @param array $options
+     * @return JournalOutbound[]
+     * @throws InvalidOptionalArgumentException
+     * @throws InvalidRequiredArgumentException
+     */
+    public function journalOutbound(array $options = []): array {
+        return $this->journal(JournalConstants::TYPE_OUTBOUND, $options);
+    }
+
+    /**
+     * @param array $options
+     * @return JournalReplies[]
+     * @throws InvalidOptionalArgumentException
+     * @throws InvalidRequiredArgumentException
+     */
+    public function journalReplies(array $options = []): array {
+        return $this->journal(JournalConstants::TYPE_REPLIES, $options);
+    }
+
+    /**
+     * @param array $options
+     * @return JournalVoice[]
+     * @throws InvalidOptionalArgumentException
+     * @throws InvalidRequiredArgumentException
+     */
+    public function journalVoice(array $options = []): array {
+        return $this->journal(JournalConstants::TYPE_VOICE, $options);
+    }
+
+    /**
      * @param string $number
      * @return LookupFormat
      * @throws InvalidOptionalArgumentException
