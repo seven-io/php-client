@@ -10,6 +10,7 @@ use Sms77\Api\Exception\InvalidBooleanOptionException;
 use Sms77\Api\Exception\InvalidOptionalArgumentException;
 use Sms77\Api\Exception\InvalidRequiredArgumentException;
 use Sms77\Api\Exception\UnexpectedApiResponseException;
+use Sms77\Api\Params\SmsParamsInterface;
 use Sms77\Api\Library\Util;
 use Sms77\Api\Response\AbstractAnalytic;
 use Sms77\Api\Response\AnalyticByCountry;
@@ -504,36 +505,29 @@ class Client extends BaseClient {
     }
 
     /**
-     * @param string $to
-     * @param string $text
-     * @param array $options
+     * @param SmsParamsInterface $p
      * @return string|Sms
      * @throws InvalidRequiredArgumentException
      * @throws InvalidOptionalArgumentException
      * @throws InvalidBooleanOptionException
      */
-    public function sms(string $to, string $text, array $options = []) {
-        $options['to'] = $to;
-        $options['text'] = $text;
+    public function sms(SmsParamsInterface $p) {
+        (new SmsValidator($p))->validate();
 
-        (new SmsValidator($options))->validate();
+        $res = $this->post('sms', $p->toArray());
 
-        $res = $this->post('sms', $options);
-
-        return (bool)($options['json'] ?? false) ? new Sms($res) : $res;
+        return $p->getJson() ? new Sms($res) : $res;
     }
 
     /**
-     * @param string $to
-     * @param string $text
-     * @param array $options
+     * @param SmsParamsInterface $p
      * @return Sms
      * @throws InvalidRequiredArgumentException
      * @throws InvalidOptionalArgumentException
      * @throws InvalidBooleanOptionException
      */
-    public function smsJson(string $to, string $text, array $options = []): Sms {
-        return $this->sms($to, $text, array_merge($options, ['json' => 1]));
+    public function smsJson(SmsParamsInterface $p): Sms {
+        return $this->sms($p->setJson(true));
     }
 
     /**

@@ -6,11 +6,17 @@ use Sms77\Api\Constant\SmsConstants;
 use Sms77\Api\Exception\InvalidBooleanOptionException;
 use Sms77\Api\Exception\InvalidOptionalArgumentException;
 use Sms77\Api\Exception\InvalidRequiredArgumentException;
+use Sms77\Api\Params\SmsParamsInterface;
 use Sms77\Api\Library\Util;
 
 class SmsValidator extends BaseValidator implements ValidatorInterface {
-    public function __construct(array $parameters = []) {
-        parent::__construct($parameters, [
+    /* @var SmsParamsInterface $params */
+    protected $params;
+
+    public function __construct(SmsParamsInterface $params) {
+        $this->params = $params;
+
+        parent::__construct((array)$this->params, [
             'debug',
             'details',
             'flash',
@@ -42,88 +48,101 @@ class SmsValidator extends BaseValidator implements ValidatorInterface {
 
     /** @throws InvalidOptionalArgumentException */
     public function delay(): void {
-        $delay = $this->fallback('delay');
+        $delay = $this->params->getDelay();
 
-        if (null !== $delay) {
-            $errorMsg = "Delay must be a valid UNIX timestamp or in the format of "
-                . SmsConstants::DELAY_DATE_FORMAT . '.';
+        if (null === $delay) {
+            return;
+        }
 
-            if (false === strpos($delay, '-')) {
-                if (!Util::isUnixTimestamp($delay)) {
-                    throw new InvalidOptionalArgumentException($errorMsg);
-                }
-            } else if (!preg_match(SmsConstants::DELAY_PATTERN, $delay)) {
+        $errorMsg = "Delay must be a valid UNIX timestamp or in the format of "
+            . SmsConstants::DELAY_DATE_FORMAT . '.';
+
+        if (false === strpos($delay, '-')) {
+            if (!Util::isUnixTimestamp($delay)) {
                 throw new InvalidOptionalArgumentException($errorMsg);
             }
+        } else if (!preg_match(SmsConstants::DELAY_PATTERN, $delay)) {
+            throw new InvalidOptionalArgumentException($errorMsg);
         }
     }
 
     /** @throws InvalidOptionalArgumentException */
     public function foreign_id(): void {
-        $label = $this->fallback('foreign_id');
+        $foreignId = $this->params->getForeignId();
 
-        if (null !== $label) {
-            if (mb_strlen($label) > SmsConstants::FOREIGN_ID_MAX_LENGTH) {
-                throw new InvalidOptionalArgumentException('foreign_id must not exceed "'
-                    . SmsConstants::LABEL_MAX_LENGTH . '" characters in length.');
-            }
+        if (null === $foreignId) {
+            return;
+        }
 
-            if (strlen($label) !== preg_match_all(SmsConstants::FOREIGN_ID_PATTERN, $label)) {
-                throw new InvalidOptionalArgumentException(
-                    'foreign_id must match the regex pattern ' . SmsConstants::LABEL_PATTERN);
-            }
+        $maxLength = SmsConstants::FOREIGN_ID_MAX_LENGTH;
+        if (mb_strlen($foreignId) > $maxLength) {
+            throw new InvalidOptionalArgumentException(
+                "foreign_id must not exceed '$maxLength' characters in length.");
+        }
+
+        $pattern = SmsConstants::FOREIGN_ID_PATTERN;
+        if (strlen($foreignId) !== preg_match_all($pattern, $foreignId)) {
+            throw new InvalidOptionalArgumentException(
+                "foreign_id must match the regex pattern $pattern");
         }
     }
 
     /** @throws InvalidOptionalArgumentException */
     public function from(): void {
-        $from = $this->fallback('from');
+        $from = $this->params->getFrom();
 
-        if (null !== $from) {
-            $length = strlen($from);
+        if (null === $from) {
+            return;
+        }
 
-            $alphaNumericMax = SmsConstants::FROM_ALPHANUMERIC_MAX;
-            $numericMax = SmsConstants::FROM_NUMERIC_MAX;
+        $length = strlen($from);
 
-            $isNumeric = is_numeric($from);
+        $alphaNumericMax = SmsConstants::FROM_ALPHANUMERIC_MAX;
+        $numericMax = SmsConstants::FROM_NUMERIC_MAX;
 
-            if ($length > $numericMax) {
-                throw new InvalidOptionalArgumentException(
-                    "Argument 'from' may not exceed $numericMax chars.");
-            }
+        $isNumeric = is_numeric($from);
 
-            if ($length > $alphaNumericMax && !$isNumeric) {
-                throw new InvalidOptionalArgumentException(
-                    "Argument 'from' must be numeric. if > $alphaNumericMax chars.");
-            }
+        if ($length > $numericMax) {
+            throw new InvalidOptionalArgumentException(
+                "Argument 'from' may not exceed $numericMax chars.");
+        }
 
-            if (!ctype_alnum(str_ireplace(SmsConstants::FROM_ALLOWED_CHARS, '', $from))) {
-                throw new InvalidOptionalArgumentException(
-                    "Argument 'from' must be alphanumeric.");
-            }
+        if ($length > $alphaNumericMax && !$isNumeric) {
+            throw new InvalidOptionalArgumentException(
+                "Argument 'from' must be numeric. if > $alphaNumericMax chars.");
+        }
+
+        if (!ctype_alnum(
+            str_ireplace(SmsConstants::FROM_ALLOWED_CHARS, '', $from))) {
+            throw new InvalidOptionalArgumentException(
+                "Argument 'from' must be alphanumeric.");
         }
     }
 
     /** @throws InvalidOptionalArgumentException */
     public function label(): void {
-        $label = $this->fallback('label');
+        $label = $this->params->getLabel();
 
-        if (null !== $label) {
-            if (mb_strlen($label) > SmsConstants::LABEL_MAX_LENGTH) {
-                throw new InvalidOptionalArgumentException('label must not exceed "'
-                    . SmsConstants::LABEL_MAX_LENGTH . '" characters in length.');
-            }
+        if (null === $label) {
+            return;
+        }
 
-            if (strlen($label) !== preg_match_all(SmsConstants::LABEL_PATTERN, $label)) {
-                throw new InvalidOptionalArgumentException(
-                    'label must match the regex pattern ' . SmsConstants::LABEL_PATTERN);
-            }
+        $max = SmsConstants::LABEL_MAX_LENGTH;
+        if (mb_strlen($label) > $max) {
+            throw new InvalidOptionalArgumentException(
+                "label must not exceed '$max' characters in length.");
+        }
+
+        $pattern = SmsConstants::LABEL_PATTERN;
+        if (strlen($label) !== preg_match_all($pattern, $label)) {
+            throw new InvalidOptionalArgumentException(
+                "label must match the regex pattern $pattern");
         }
     }
 
     /** @throws InvalidRequiredArgumentException */
     public function text(): void {
-        $text = $this->fallback('text');
+        $text = $this->params->getText() ?? '';
 
         $length = strlen($text);
 
@@ -142,7 +161,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface {
 
     /** @throws InvalidRequiredArgumentException */
     public function to(): void {
-        if (null === $this->fallback('to')) {
+        if (null === $this->params->getTo()) {
             throw new InvalidRequiredArgumentException(
                 'You cannot send a message without specifying a recipient.');
         }
@@ -150,18 +169,20 @@ class SmsValidator extends BaseValidator implements ValidatorInterface {
 
     /** @throws InvalidOptionalArgumentException */
     public function ttl(): void {
-        $ttl = $this->fallback('ttl');
+        $ttl = $this->params->getTtl();
 
         if (null !== $ttl) {
             $min = SmsConstants::TTL_MIN;
             $max = SmsConstants::TTL_MAX;
 
             if ($ttl < $min) {
-                throw new InvalidOptionalArgumentException("ttl must be at least $min.");
+                throw new InvalidOptionalArgumentException(
+                    "ttl must be at least $min.");
             }
 
             if ($ttl > $max) {
-                throw new InvalidOptionalArgumentException("ttl may not exceed $max.");
+                throw new InvalidOptionalArgumentException(
+                    "ttl may not exceed $max.");
             }
         }
     }

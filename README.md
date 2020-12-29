@@ -18,8 +18,12 @@ Alternatively you can [download as *.ZIP](https://github.com/sms77io/php-client/
 
 ```php
 use Sms77\Api\Client;
-$client = new Client('MYVERYSECRETAPIKEY1234!?');
-$client->sms('+4901234567890', 'HI2U');
+use Sms77\Api\Params\SmsParams;
+$client = new Client('MY_VERY_SECRET_API_KEY!');
+$params = new SmsParams();
+$client->sms($params
+    ->setTo(+4901234567890)
+    ->setText('HI2U'));
 ```
 
 
