@@ -31,7 +31,8 @@
         "text2speech",
         "hlr",
         "cnam",
-        "mnp"
+        "mnp",
+        "tts"
     ],
     "license": "MIT",
     "name": "sms77/api",

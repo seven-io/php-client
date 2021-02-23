@@ -21,18 +21,17 @@ class HooksTest extends BaseTest {
 
         self::assertArrayHasKey(0, $res->hooks);
 
-        $hook = $res->hooks[0];
+        $h = $res->hooks[0];
 
-        self::assertTrue(Util::isValidDate($hook->created, 'Y-m-d H:i:s'));
-        self::assertContains($hook->event_type, HooksConstants::EVENT_TYPES);
-        self::assertGreaterThan(0, $hook->id);
-        self::assertContains($hook->request_method, HooksConstants::REQUEST_METHODS);
-        self::assertTrue(Util::isValidUrl($hook->target_url));
+        self::assertTrue(Util::isValidDate($h->created, 'Y-m-d H:i:s'));
+        self::assertContains($h->event_type, HooksConstants::EVENT_TYPES);
+        self::assertGreaterThan(0, $h->id);
+        self::assertContains($h->request_method, HooksConstants::REQUEST_METHODS);
+        self::assertTrue(Util::isValidUrl($h->target_url));
     }
 
     public function testSubscribeHook(bool $delete = true): ?int {
-        $res = $this->client->subscribeHook(
-            'http://ho.ok/' . uniqid('', true),
+        $res = $this->client->subscribeHook(self::createRandomURL('http://ho.ok/'),
             HooksConstants::EVENT_TYPE_SMS_INBOUND);
 
         self::assertActionResponse($res, false);
@@ -46,7 +45,8 @@ class HooksTest extends BaseTest {
         return $res->id;
     }
 
-    private static function assertActionResponse(HookAction $a, bool $unsubscription): void {
+    private static function assertActionResponse(
+        HookAction $a, bool $unsubscription): void {
         self::assertIsBool($a->success);
 
         if ($a->success // no id on error

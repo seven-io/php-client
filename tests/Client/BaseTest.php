@@ -19,6 +19,10 @@ abstract class BaseTest extends TestCase {
         $this->recipient = getenv('SMS77_RECIPIENT') ?? '+491771783130';
     }
 
+    public static function createRandomURL(string $uri = 'https://my.tld/'): string {
+        return $uri . uniqid('', true);
+    }
+
     public static function assertIsNullOrLengthyString(?string $value): void {
         self::assertTrue(is_null($value) || 0 < strlen($value));
     }

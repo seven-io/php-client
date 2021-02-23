@@ -33,45 +33,6 @@ class HooksValidator extends BaseValidator implements ValidatorInterface {
     }
 
     /** @throws InvalidRequiredArgumentException */
-    public function id(): void {
-        if (HooksConstants::ACTION_UNSUBSCRIBE !== $this->action) {
-            return;
-        }
-
-        $this->id = $this->fallback('id');
-
-        if (!is_numeric($this->id)) {
-            throw new InvalidRequiredArgumentException("Invalid ID '$this->id'!");
-        }
-    }
-
-    /** @throws InvalidRequiredArgumentException */
-    public function target_url(): void {
-        if (!$this->expectsExtendedParameters()) {
-            return;
-        }
-
-        $targetUrl = $this->fallback('target_url');
-
-        if (!Util::isValidUrl($targetUrl)) {
-            throw new InvalidRequiredArgumentException(
-                "Invalid target_url '$targetUrl'!");
-        }
-    }
-
-    private function expectsExtendedParameters(): bool {
-        if (HooksConstants::ACTION_READ === $this->action) {
-            return false;
-        }
-
-        if (HooksConstants::ACTION_UNSUBSCRIBE === $this->action && $this->id) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /** @throws InvalidRequiredArgumentException */
     public function event_type(): void {
         if (!$this->expectsExtendedParameters()) {
             return;
@@ -83,6 +44,31 @@ class HooksValidator extends BaseValidator implements ValidatorInterface {
             throw new InvalidRequiredArgumentException(
                 "Invalid event_type '$eventType'! Allowed values are "
                 . implode(',', HooksConstants::EVENT_TYPES) . '.');
+        }
+    }
+
+    private function expectsExtendedParameters(): bool {
+        if (HooksConstants::ACTION_READ === $this->action) {
+            return false;
+        }
+
+        if (HooksConstants::ACTION_UNSUBSCRIBE === $this->action) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /** @throws InvalidRequiredArgumentException */
+    public function id(): void {
+        if (HooksConstants::ACTION_UNSUBSCRIBE !== $this->action) {
+            return;
+        }
+
+        $this->id = $this->fallback('id');
+
+        if (!is_numeric($this->id)) {
+            throw new InvalidRequiredArgumentException("Invalid ID '$this->id'!");
         }
     }
 
@@ -98,6 +84,20 @@ class HooksValidator extends BaseValidator implements ValidatorInterface {
             throw new InvalidRequiredArgumentException(
                 "Invalid request_method '$requestMethod'! Allowed values are "
                 . implode(',', HooksConstants::REQUEST_METHODS) . '.');
+        }
+    }
+
+    /** @throws InvalidRequiredArgumentException */
+    public function target_url(): void {
+        if (!$this->expectsExtendedParameters()) {
+            return;
+        }
+
+        $targetUrl = $this->fallback('target_url');
+
+        if (!Util::isValidUrl($targetUrl)) {
+            throw new InvalidRequiredArgumentException(
+                "Invalid target_url '$targetUrl'!");
         }
     }
 }
