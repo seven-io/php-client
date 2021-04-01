@@ -71,7 +71,7 @@ abstract class BaseClient {
         }
 
         $headers = [
-            "Authorization: Basic $this->apiKey",
+            "X-Api-Key: $this->apiKey",
             "sentWith: $this->sentWith",
         ];
         $url = self::BASE_URI . "/$path";
