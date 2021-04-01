@@ -6,6 +6,7 @@ class SmsParams extends AbstractParams implements SmsParamsInterface {
     protected $debug;
     protected $delay;
     protected $details;
+    protected $files;
     protected $flash;
     protected $foreign_id;
     protected $from;
@@ -37,7 +38,7 @@ class SmsParams extends AbstractParams implements SmsParamsInterface {
 
     public function setDelay(?string $delay): self {
         $this->delay = $delay;
-        
+
         return $this;
     }
 
@@ -47,6 +48,34 @@ class SmsParams extends AbstractParams implements SmsParamsInterface {
 
     public function setDetails(?bool $details): self {
         $this->details = $details;
+
+        return $this;
+    }
+
+    public function addFile(array $file): self {
+        $this->files[] = $file;
+
+        return $this;
+    }
+
+    public function getFiles(): array {
+        return $this->files;
+    }
+
+    public function setFiles(array $files): self {
+        $this->files = $files;
+
+        return $this;
+    }
+
+    public function removeFile(int $index): self {
+        unset($this->files[$index]);
+
+        return $this;
+    }
+
+    public function removeFiles(): self {
+        $this->files = null;
 
         return $this;
     }

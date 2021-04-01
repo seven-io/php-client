@@ -7,18 +7,12 @@ use Sms77\Api\Params\SmsParams;
 use Sms77\Api\Params\SmsParamsInterface;
 
 class SmsTest extends BaseTest {
-    private function params(): SmsParams {
-        return (new SmsParams())
-            ->setText('HI2U! The UNIX time is ' . time() . '.')
-            ->setTo($this->recipient);
+    public function testSms(): void {
+        self::assertIsInt($this->sms(new SmsParams()));
     }
 
     private function sms(SmsParamsInterface $p) {
         return $this->client->sms($p);
-    }
-
-    public function testSms(): void {
-        self::assertIsInt($this->sms(new SmsParams()));
     }
 
     public function testSmsDetails(): void {
@@ -31,47 +25,27 @@ class SmsTest extends BaseTest {
         self::assertIsInt($code);
         self::assertContains($code, StatusCode::values());
 
-        $booked = explode(':', $booked);
-        $booked = (float)end($booked);
-        self::assertIsFloat($booked);
+        $formatRow = static function (string $row): string {
+            $row = explode(':', $row);
+            $row = end($row);
+            return trim($row);
+        };
 
-        $price = explode(':', $price);
-        $price = (float)end($price);
-        self::assertIsFloat($price);
+        self::assertIsFloat((float)$formatRow((string)$booked));
+        self::assertIsFloat((float)$formatRow((string)$price));
+        self::assertIsFloat((float)$formatRow((string)$balance));
+        self::assertEquals($p->getText(), $formatRow($text));
+        self::assertEquals('direct', $formatRow($type));
+        self::assertEquals('false', $formatRow($flash));
+        self::assertEquals('gsm', $formatRow($encoding));
+        self::assertEquals('true', $formatRow($gsm0338));
+        self::assertEquals('false', $formatRow($debug));
+    }
 
-        $balance = explode(':', $balance);
-        $balance = (float)end($balance);
-        self::assertIsFloat($balance);
-
-        $text = explode(':', $text);
-        $text = end($text);
-        $text = trim($text);
-        self::assertEquals($p->getText(), $text);
-
-        $type = explode(':', $type);
-        $type = end($type);
-        $type = trim($type);
-        self::assertEquals('direct', $type);
-
-        $flash = explode(':', $flash);
-        $flash = end($flash);
-        $flash = trim($flash);
-        self::assertEquals('false', $flash);
-
-        $encoding = explode(':', $encoding);
-        $encoding = end($encoding);
-        $encoding = trim($encoding);
-        self::assertEquals('gsm',$encoding);
-
-        $gsm0338 = explode(':', $gsm0338);
-        $gsm0338 = end($gsm0338);
-        $gsm0338 = trim($gsm0338);
-        self::assertEquals('true', $gsm0338);
-
-        $debug = explode(':', $debug);
-        $debug = end($debug);
-        $debug = trim($debug);
-        self::assertEquals('false', $debug);
+    private function params(): SmsParams {
+        return (new SmsParams())
+            ->setText('HI2U! The UNIX time is ' . time() . '.')
+            ->setTo($this->recipient);
     }
 
     public function testSmsJson(): void {
@@ -81,5 +55,30 @@ class SmsTest extends BaseTest {
         self::assertEquals($p->getText(), $res->messages[0]->text);
         self::assertEquals(str_replace('+', '', $p->getTo()),
             $res->messages[0]->recipient);
+    }
+
+    public function testSmsFiles(): void {
+        $p = $this->params();
+        $text = '';
+        $start = 1;
+        $end = 3;
+        $fileCount = $end - $start;
+        $contents = file_get_contents(__DIR__ . '/../png.base64');
+
+        for ($i = $start; $i < $end; $i++) {
+            $name = "test$i.png";
+            $text .= "TestFile$i: [[$name]]" . PHP_EOL;
+            $p->addFile(compact('contents', 'name'));
+        }
+
+        $json = $this->client->smsJson($p->setText($text));
+
+        $msgLines = explode(PHP_EOL, trim($json->messages[0]->text));
+
+        self::assertCount($fileCount, $msgLines);
+
+        foreach ($msgLines as $line) {
+            self::assertNotFalse(strpos($line, 'https://ul.gl/'));
+        }
     }
 }
