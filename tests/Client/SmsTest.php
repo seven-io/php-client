@@ -64,11 +64,14 @@ class SmsTest extends BaseTest {
         $end = 3;
         $fileCount = $end - $start;
         $contents = file_get_contents(__DIR__ . '/../png.base64');
+        $validity = 1;
+        $password = 'sms77';
 
         for ($i = $start; $i < $end; $i++) {
             $name = "test$i.png";
             $text .= "TestFile$i: [[$name]]" . PHP_EOL;
-            $p->addFile(compact('contents', 'name'));
+            $p->addFile(
+                compact('contents', 'name', 'validity', 'password'));
         }
 
         $json = $this->client->smsJson($p->setText($text));
