@@ -12,6 +12,7 @@ use Sms77\Api\Exception\InvalidRequiredArgumentException;
 use Sms77\Api\Exception\UnexpectedApiResponseException;
 use Sms77\Api\Library\Util;
 use Sms77\Api\Params\SmsParamsInterface;
+use Sms77\Api\Params\VoiceParamsInterface;
 use Sms77\Api\Response\AbstractAnalytic;
 use Sms77\Api\Response\AnalyticByCountry;
 use Sms77\Api\Response\AnalyticByDate;
@@ -498,29 +499,29 @@ class Client extends BaseClient {
     }
 
     /**
-     * @param SmsParamsInterface $p
+     * @param SmsParamsInterface $params
      * @return Sms
      * @throws InvalidRequiredArgumentException
      * @throws InvalidOptionalArgumentException
      * @throws InvalidBooleanOptionException
      */
-    public function smsJson(SmsParamsInterface $p): Sms {
-        return $this->sms($p->setJson(true));
+    public function smsJson(SmsParamsInterface $params): Sms {
+        return $this->sms($params->setJson(true));
     }
 
     /**
-     * @param SmsParamsInterface $p
+     * @param SmsParamsInterface $params
      * @return string|Sms
      * @throws InvalidRequiredArgumentException
      * @throws InvalidOptionalArgumentException
      * @throws InvalidBooleanOptionException
      */
-    public function sms(SmsParamsInterface $p) {
-        (new SmsValidator($p))->validate();
+    public function sms(SmsParamsInterface $params) {
+        (new SmsValidator($params))->validate();
 
-        $res = $this->post('sms', $p->toArray());
+        $res = $this->post('sms', $params->toArray());
 
-        return $p->getJson() ? new Sms($res) : $res;
+        return $params->getJson() ? new Sms($res) : $res;
     }
 
     /**
@@ -564,40 +565,26 @@ class Client extends BaseClient {
     }
 
     /**
-     * @param string $to
-     * @param string $text
-     * @param bool $xml
+     * @param VoiceParamsInterface $params
      * @return Voice
      * @throws InvalidBooleanOptionException
-     * @throws InvalidOptionalArgumentException
      * @throws InvalidRequiredArgumentException
      */
-    public function voiceJson(string $to, string $text, bool $xml = false): Voice {
-        return $this->voice($to, $text, $xml, true);
+    public function voiceJson(VoiceParamsInterface $params): Voice {
+        return $this->voice($params->setJson(true));
     }
 
     /**
-     * @param string $to
-     * @param string $text
-     * @param bool $xml
-     * @param bool $json
+     * @param VoiceParamsInterface $params
      * @return string|Voice
      * @throws InvalidBooleanOptionException
-     * @throws InvalidOptionalArgumentException
      * @throws InvalidRequiredArgumentException
      */
-    public function voice(
-        string $to, string $text, bool $xml = false, bool $json = false) {
-        $options = [
-            'text' => $text,
-            'to' => $to,
-            'xml' => $xml,
-        ];
+    public function voice(VoiceParamsInterface $params) {
+        (new VoiceValidator($params))->validate();
 
-        (new VoiceValidator($options))->validate();
+        $res = $this->post('voice', $params->toArray());
 
-        $res = $this->post('voice', $options);
-
-        return $json ? new Voice($res) : $res;
+        return $params->getJson() ? new Voice($res) : $res;
     }
 }

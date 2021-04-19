@@ -3,16 +3,20 @@
 namespace Sms77\Api\Validator;
 
 use Sms77\Api\Exception\InvalidBooleanOptionException;
-use Sms77\Api\Exception\InvalidOptionalArgumentException;
 use Sms77\Api\Exception\InvalidRequiredArgumentException;
+use Sms77\Api\Params\VoiceParamsInterface;
 
 class VoiceValidator extends BaseValidator implements ValidatorInterface {
-    public function __construct(array $parameters = []) {
-        parent::__construct($parameters, ['xml']);
+    /* @var VoiceParamsInterface $params */
+    protected $params;
+
+    public function __construct(VoiceParamsInterface $params) {
+        $this->params = $params;
+
+        parent::__construct((array)$this->params, ['xml']);
     }
 
     /**
-     * @throws InvalidOptionalArgumentException
      * @throws InvalidRequiredArgumentException
      * @throws InvalidBooleanOptionException
      */
@@ -24,26 +28,29 @@ class VoiceValidator extends BaseValidator implements ValidatorInterface {
         parent::validate();
     }
 
-    /** @throws InvalidOptionalArgumentException */
     public function from(): void {
-        $from = $this->fallback('from');
-
-        if (null !== $from && '' === $from) {
-            throw new InvalidOptionalArgumentException('from may not be empty if set.');
+        if ('' === $this->params->getFrom()) {
+            $this->params->setFrom(null);
         }
     }
 
     /** @throws InvalidRequiredArgumentException */
     public function text(): void {
-        if ('' === $this->fallback('text', '')) {
-            throw new InvalidRequiredArgumentException('text is missing.');
+        $text = $this->params->getText() ?? '';
+
+        if (null === $text || '' === $text) {
+            throw new InvalidRequiredArgumentException(
+                'You cannot send an empty message.');
         }
     }
 
     /** @throws InvalidRequiredArgumentException */
     public function to(): void {
-        if ('' === $this->fallback('to', '')) {
-            throw new InvalidRequiredArgumentException('to is missing.');
+        $to = $this->params->getTo() ?? '';
+
+        if (null === $to || '' === $to) {
+            throw new InvalidRequiredArgumentException(
+                'You cannot send a message without specifying a recipient.');
         }
     }
 }

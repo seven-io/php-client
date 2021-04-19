@@ -1,18 +1,18 @@
 ![Sms77.io Logo](https://www.sms77.io/wp-content/uploads/2019/07/sms77-Logo-400x79.png "Sms77.io Logo")
 
-
-# sms77io PHP API Client
-
+# Official PHP API Client
 
 ## Installation
 
 **Via Composer:**
+
 ```shell script 
 composer require sms77/api 
 ```
 
-Alternatively you can [download as *.ZIP](https://github.com/sms77io/php-client/releases/latest "download as *.ZIP") if you don't use Composer.
-
+Alternatively you
+can [download as *.ZIP](https://github.com/sms77io/php-client/releases/latest "download as *.ZIP")
+if you don't use Composer.
 
 ### Usage
 
@@ -25,7 +25,6 @@ $client->sms($params
     ->setTo(+4901234567890)
     ->setText('HI2U'));
 ```
-
 
 #### Methods
 
@@ -119,8 +118,8 @@ $client->sms($params
 <summary>SMS</summary>
 
 <ul>
-    <li>sms(string $to, string $text, array $options = []): string|Sms</li>
-    <li>smsJson(string $to, string $text, array $options = []): Sms</li>
+    <li>sms(SmsParamsInterface $params): string|Sms</li>
+    <li>smsJson(SmsParamsInterface $params): Sms</li>
 </ul>
 </details>
 
@@ -145,18 +144,24 @@ $client->sms($params
 <summary>Voice</summary>
 
 <ul>
-    <li>voice(string $to, string $text, bool $xml = false, bool $json = false): string|Voice</li>
-    <li>voiceJson(string $to, string $text, bool $xml = false): Voice</li>
+    <li>voice(VoiceParamsInterface $p): string|Voice</li>
+    <li>voiceJson(VoiceParamsInterface $p): Voice</li>
 </ul>
 </details>
-
 
 ##### Tests
 
 Some basic tests are implemented. Run them like this:
+
 ```shell script
 SMS77_API_KEY= SMS77_RECIPIENT= SMS77_MSG_ID= php vendor/bin/phpunit tests/Client
 ```
-Make sure to fill in the values.
-SMS77_MSG_ID refers to a message ID sent from this particular API key.
-SMS77_RECIPIENT is the recipient of the test SMS.
+
+Make sure to fill in the values. SMS77_MSG_ID refers to a message ID sent from this
+particular API key. SMS77_RECIPIENT is the recipient of the test SMS.
+
+###### Support
+
+Need help? Feel free to [contact us](https://www.sms77.io/en/company/contact/).
+
+[![MIT](https://img.shields.io/badge/License-MIT-teal.svg)](./LICENSE)

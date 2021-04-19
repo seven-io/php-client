@@ -9,14 +9,20 @@ use Sms77\Api\Client;
 abstract class BaseTest extends TestCase {
     protected $client;
     protected $recipient;
+    protected $isDebug;
 
-    public function __construct(
-        ?string $name = null, array $data = [], string $dataName = '') {
-        parent::__construct($name, $data, $dataName);
+    public function __construct() {
+        parent::__construct(null, [], '');
 
-        $this->client = new Client(getenv('SMS77_API_KEY'), 'php-api-test');
+        $this->init(getenv('SMS77_API_KEY'), false);
 
-        $this->recipient = getenv('SMS77_RECIPIENT') ?? '+491771783130';
+        $this->recipient = getenv('SMS77_RECIPIENT') ?? '+491716992343';
+    }
+
+    protected function init(string $apiKey, bool $isDebug): void {
+        $this->client = new Client($apiKey, 'php-api-test');
+
+        $this->isDebug = $isDebug;
     }
 
     public static function createRandomURL(string $uri = 'https://my.tld/'): string {

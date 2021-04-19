@@ -2,17 +2,25 @@
 
 namespace Sms77\Api\Response;
 
-/**
- * @property int code
- * @property int id
- * @property float price
- */
-class Voice {
-    public function __construct(string $response) {
-        [$code, $id, $price] = explode(PHP_EOL, $response);
+use Sms77\Api\Library\JsonObject;
 
-        $this->code = (int)$code;
-        $this->id = (int)$id;
-        $this->price = (float)$price;
+/**
+ * @property bool debug
+ * @property float balance
+ * @property VoiceMessage[] messages
+ * @property int success
+ * @property float total_price
+ */
+class Voice extends JsonObject {
+    public function __construct(?object $class = null) {
+        if ($class) {
+            $class->success = (int)$class->success;
+
+            foreach ($class->messages as $k => $v) {
+                $class->messages[$k] = new VoiceMessage($v);
+            }
+        }
+
+        parent::__construct($class);
     }
 }
