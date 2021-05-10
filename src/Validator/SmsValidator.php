@@ -6,8 +6,8 @@ use Sms77\Api\Constant\SmsConstants;
 use Sms77\Api\Exception\InvalidBooleanOptionException;
 use Sms77\Api\Exception\InvalidOptionalArgumentException;
 use Sms77\Api\Exception\InvalidRequiredArgumentException;
-use Sms77\Api\Params\SmsParamsInterface;
 use Sms77\Api\Library\Util;
+use Sms77\Api\Params\SmsParamsInterface;
 
 class SmsValidator extends BaseValidator implements ValidatorInterface {
     /* @var SmsParamsInterface $params */
@@ -50,7 +50,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface {
     public function delay(): void {
         $delay = $this->params->getDelay();
 
-        if (null === $delay) {
+        if (null === $delay || '' === $delay) {
             return;
         }
 
@@ -70,7 +70,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface {
     public function foreign_id(): void {
         $foreignId = $this->params->getForeignId();
 
-        if (null === $foreignId) {
+        if (null === $foreignId || '' === $foreignId) {
             return;
         }
 
@@ -91,7 +91,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface {
     public function from(): void {
         $from = $this->params->getFrom();
 
-        if (null === $from) {
+        if (null === $from || '' === $from) {
             return;
         }
 
@@ -123,7 +123,7 @@ class SmsValidator extends BaseValidator implements ValidatorInterface {
     public function label(): void {
         $label = $this->params->getLabel();
 
-        if (null === $label) {
+        if (null === $label || '' === $label) {
             return;
         }
 
@@ -161,7 +161,9 @@ class SmsValidator extends BaseValidator implements ValidatorInterface {
 
     /** @throws InvalidRequiredArgumentException */
     public function to(): void {
-        if (null === $this->params->getTo()) {
+        $to = $this->params->getTo();
+
+        if (null === $to || '' === $to) {
             throw new InvalidRequiredArgumentException(
                 'You cannot send a message without specifying a recipient.');
         }
@@ -171,19 +173,26 @@ class SmsValidator extends BaseValidator implements ValidatorInterface {
     public function ttl(): void {
         $ttl = $this->params->getTtl();
 
-        if (null !== $ttl) {
-            $min = SmsConstants::TTL_MIN;
-            $max = SmsConstants::TTL_MAX;
+        if (null === $ttl) {
+            return;
+        }
 
-            if ($ttl < $min) {
-                throw new InvalidOptionalArgumentException(
-                    "ttl must be at least $min.");
-            }
+        if (0 === $ttl) {
+            $this->params->setTtl(null);
+            return;
+        }
 
-            if ($ttl > $max) {
-                throw new InvalidOptionalArgumentException(
-                    "ttl may not exceed $max.");
-            }
+        $min = SmsConstants::TTL_MIN;
+        $max = SmsConstants::TTL_MAX;
+
+        if ($ttl < $min) {
+            throw new InvalidOptionalArgumentException(
+                "ttl must be at least $min.");
+        }
+
+        if ($ttl > $max) {
+            throw new InvalidOptionalArgumentException(
+                "ttl may not exceed $max.");
         }
     }
 }

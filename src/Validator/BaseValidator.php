@@ -17,14 +17,35 @@ abstract class BaseValidator {
         $this->boolOptions = $boolOptions;
     }
 
+    public static function isValidDate(string $date): bool {
+        return Util::isValidDate($date, 'Y-m-d');
+    }
+
+    public function isValidBool($string): bool {
+        $string = (int)$string;
+
+        return 1 === $string || 0 === $string;
+    }
+
+    /**
+     * @param string $key
+     * @param mixed $fallback
+     * @return mixed
+     */
+    public function fallback(string $key, $fallback = null) {
+        return $this->parameters[$key] ?? $fallback;
+    }
+
     /** @throws InvalidBooleanOptionException */
     protected function validate(): void {
         foreach ($this->boolOptions as $k) {
             $v = $this->toBool($k, $this->parameters[$k] ?? null);
 
-            if (null !== $v) {
-                $this->parameters[$k] = $v;
+            if (null === $v) {
+                continue;
             }
+
+            $this->parameters[$k] = $v;
         }
     }
 
@@ -45,24 +66,5 @@ abstract class BaseValidator {
         }
 
         throw new InvalidBooleanOptionException($k, $v);
-    }
-
-    public static function isValidDate(string $date): bool {
-        return Util::isValidDate($date, 'Y-m-d');
-    }
-
-    public function isValidBool($string): bool {
-        $string = (int)$string;
-
-        return 1 === $string || 0 === $string;
-    }
-
-    /**
-     * @param string $key
-     * @param mixed $fallback
-     * @return mixed
-     */
-    public function fallback(string $key, $fallback = null) {
-        return $this->parameters[$key] ?? $fallback;
     }
 }
