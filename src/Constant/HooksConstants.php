@@ -17,12 +17,14 @@ class HooksConstants {
     public const EVENT_TYPE_SMS_INBOUND = 'sms_mo';
     public const EVENT_TYPE_SMS_STATUS = 'dlr';
     public const EVENT_TYPE_VOICE_STATUS = 'voice_status';
+    public const EVENT_TYPE_TRACKING = 'tracking';
 
     public const EVENT_TYPES = [
         self::EVENT_TYPE_ALL,
         self::EVENT_TYPE_SMS_INBOUND,
         self::EVENT_TYPE_SMS_STATUS,
         self::EVENT_TYPE_VOICE_STATUS,
+        self::EVENT_TYPE_TRACKING,
     ];
 
     public const REQUEST_METHOD_GET = 'GET';
