@@ -22,7 +22,7 @@ use Sms77\Api\Params\SmsParams;
 $client = new Client('MY_VERY_SECRET_API_KEY!');
 $params = new SmsParams();
 $client->sms($params
-    ->setTo(+4901234567890)
+    ->setTo('+4901234567890')
     ->setText('HI2U'));
 ```
 
