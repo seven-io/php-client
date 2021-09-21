@@ -3,11 +3,22 @@
 namespace Sms77\Api\Params;
 
 class VoiceParams extends AbstractParams implements VoiceParamsInterface {
+    protected $debug;
     protected $from;
     protected $json;
     protected $text;
     protected $to;
     protected $xml;
+
+    public function getDebug(): ?bool {
+        return $this->debug;
+    }
+
+    public function setDebug(?bool $debug): self {
+        $this->debug = $debug;
+
+        return $this;
+    }
 
     public function getFrom(): ?string {
         return $this->from;

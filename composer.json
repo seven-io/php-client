@@ -49,10 +49,10 @@
         "ext-simplexml": "*"
     },
     "support": {
+        "docs": "https://github.com/sms77io/php-client",
         "email": "support@sms77.io",
         "rss": "https://www.sms77.io/de/feed/",
-        "source": "https://github.com/sms77io/php-client",
-        "docs": "https://github.com/sms77io/php-client"
+        "source": "https://github.com/sms77io/php-client"
     },
     "type": "library"
 }

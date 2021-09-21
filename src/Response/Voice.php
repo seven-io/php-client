@@ -14,6 +14,7 @@ use Sms77\Api\Library\JsonObject;
 class Voice extends JsonObject {
     public function __construct(?object $class = null) {
         if ($class) {
+            $class->total_price = (float)$class->total_price;
             $class->success = (int)$class->success;
 
             foreach ($class->messages as $k => $v) {

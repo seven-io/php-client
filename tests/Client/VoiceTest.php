@@ -7,7 +7,7 @@ use Sms77\Api\Response\Voice;
 
 class VoiceTest extends BaseTest {
     public function testVoice(): void {
-        $str = $this->voice(false);
+        $str = $this->voice(false, false, false);
         $lines = explode(PHP_EOL, $str);
         [$code, $id, $cost] = $lines;
 
@@ -29,26 +29,28 @@ class VoiceTest extends BaseTest {
     /**
      * @param bool $json
      * @param bool $xml
+     * @param bool $debug
      * @return Voice|string
      */
-    private function voice(bool $json, bool $xml = false) {
+    private function voice(bool $json, bool $xml, bool $debug) {
         return $this->client->voice((new VoiceParams)
+            ->setDebug($debug)
+            ->setJson($json)
             ->setText('The current time is' . time())
             ->setTo($this->recipient)
-            ->setJson($json)
             ->setXml($xml)
         );
     }
 
     public function testVoiceJson(): void {
-        $res = $this->voice(true);
+        $res = $this->voice(true, false, false);
 
         self::assertIsObject($res);
         self::assertInstanceOf(Voice::class, $res);
         self::assertVoice($res);
     }
 
-    private static function assertVoice(Voice $v): void {
+    private static function assertVoice(Voice $v, bool $debug = false): void {
         self::assertEquals(100, $v->success);
 
         self::assertCount(1, $v->messages);
@@ -57,6 +59,15 @@ class VoiceTest extends BaseTest {
         self::assertGreaterThan(0, $msg->id);
 
         self::assertIsFloat($v->total_price);
-        self::assertGreaterThan(0, $v->total_price);
+        if ($debug) self::assertEquals(0.0, $v->total_price);
+        else self::assertGreaterThan(0, $v->total_price);
+    }
+
+    public function testVoiceJsonDebug(): void {
+        $res = $this->voice(true, false, true);
+
+        self::assertIsObject($res);
+        self::assertInstanceOf(Voice::class, $res);
+        self::assertVoice($res, true);
     }
 }

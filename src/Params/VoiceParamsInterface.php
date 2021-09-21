@@ -3,25 +3,29 @@
 namespace Sms77\Api\Params;
 
 interface VoiceParamsInterface {
+    public function getDebug(): ?bool;
+
     public function getFrom(): ?string;
 
     public function getJson(): ?bool;
-
-    public function getXml(): ?bool;
 
     public function getText(): ?string;
 
     public function getTo(): ?string;
 
-    public function setJson(?bool $json);
+    public function getXml(): ?bool;
+
+    public function setDebug(?bool $debug);
 
     public function setFrom(?string $from);
 
-    public function setXml(?bool $xml);
+    public function setJson(?bool $json);
 
     public function setText(string $text);
 
     public function setTo(string $to);
+
+    public function setXml(?bool $xml);
 
     public function toArray(): array;
 }
