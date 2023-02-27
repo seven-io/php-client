@@ -1,4 +1,4 @@
-![Sms77.io Logo](https://www.sms77.io/wp-content/uploads/2019/07/sms77-Logo-400x79.png "Sms77.io Logo")
+![](https://www.seven.io/wp-content/uploads/Logo.svg "seven Logo")
 
 # Official PHP API Client
 
@@ -11,7 +11,7 @@ composer require sms77/api
 ```
 
 Alternatively you
-can [download as *.ZIP](https://github.com/sms77io/php-client/releases/latest "download as *.ZIP")
+can [download as *.ZIP](https://github.com/seven-io/php-client/releases/latest "download as *.ZIP")
 if you don't use Composer.
 
 ### Usage
@@ -162,6 +162,6 @@ particular API key. SMS77_RECIPIENT is the recipient of the test SMS.
 
 ###### Support
 
-Need help? Feel free to [contact us](https://www.sms77.io/en/company/contact/).
+Need help? Feel free to [contact us](https://www.seven.io/en/company/contact/).
 
 [![MIT](https://img.shields.io/badge/License-MIT-teal.svg)](./LICENSE)

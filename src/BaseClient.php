@@ -76,11 +76,16 @@ abstract class BaseClient {
         ];
         $url = self::BASE_URI . "/$path";
         $params = http_build_query($options);
-        self::HTTP_GET === $method && $url .= "?$params";
+        if (self::HTTP_GET === $method) $url .= "?$params";
 
         $ch = curl_init($url);
 
         if (self::HTTP_POST === $method) {
+            if ($path === 'sms') {
+                $headers[] = 'Content-Type: application/json';
+                $params = stripslashes(json_encode($options));
+            }
+
             curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
             curl_setopt($ch, CURLOPT_POST, true);
         }

@@ -1,9 +1,9 @@
 {
     "authors": [
         {
-            "email": "a.matthies@sms77.io",
-            "homepage": "https://www.sms77.io",
-            "name": "sms77 e.K.",
+            "email": "support@seven.io",
+            "homepage": "https://www.seven.io",
+            "name": "seven communications GmbH & Co. KG",
             "role": "Developer"
         }
     ],
@@ -22,8 +22,8 @@
             "php": "7.3"
         }
     },
-    "description": "Official API Client for requesting the Sms77.io SMS Gateway.",
-    "homepage": "https://github.com/sms77io/php-client",
+    "description": "Official API Client for requesting the seven.io SMS Gateway.",
+    "homepage": "https://github.com/seven-io/php-client",
     "keywords": [
         "2fa",
         "sms",
@@ -49,10 +49,10 @@
         "ext-simplexml": "*"
     },
     "support": {
-        "docs": "https://github.com/sms77io/php-client",
-        "email": "support@sms77.io",
-        "rss": "https://www.sms77.io/de/feed/",
-        "source": "https://github.com/sms77io/php-client"
+        "docs": "https://github.com/seven-io/php-client",
+        "email": "support@seven.io",
+        "rss": "https://www.seven.io/en/feed/",
+        "source": "https://github.com/seven-io/php-client"
     },
     "type": "library"
 }
