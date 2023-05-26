@@ -31,7 +31,6 @@ $client->sms($params
 <details>
 <summary>Analytics</summary>
 
-
 <ul>
     <li>analytics(array options = [], string $groupBy = 'date'): AbstractAnalytic[]</li>
     <li>analyticsByCountry(array options = []): AnalyticByCountry[]</li>
@@ -164,4 +163,4 @@ particular API key. SMS77_RECIPIENT is the recipient of the test SMS.
 
 Need help? Feel free to [contact us](https://www.seven.io/en/company/contact/).
 
-[![MIT](https://img.shields.io/badge/License-MIT-teal.svg)](./LICENSE)
+[![MIT](https://img.shields.io/badge/License-MIT-teal.svg)](LICENSE)

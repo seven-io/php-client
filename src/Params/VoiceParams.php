@@ -6,6 +6,7 @@ class VoiceParams extends AbstractParams implements VoiceParamsInterface {
     protected $debug;
     protected $from;
     protected $json;
+    protected $language;
     protected $text;
     protected $to;
     protected $xml;
@@ -66,6 +67,16 @@ class VoiceParams extends AbstractParams implements VoiceParamsInterface {
 
     public function setXml(?bool $xml): self {
         $this->xml = $xml;
+
+        return $this;
+    }
+
+    public function getLanguage(): ?string {
+        return $this->language;
+    }
+
+    public function setLanguage(?string $language): self {
+        $this->language = $language;
 
         return $this;
     }

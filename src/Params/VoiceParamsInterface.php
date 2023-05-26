@@ -7,6 +7,8 @@ interface VoiceParamsInterface {
 
     public function getFrom(): ?string;
 
+    public function getLanguage(): ?string;
+
     public function getJson(): ?bool;
 
     public function getText(): ?string;
@@ -20,6 +22,8 @@ interface VoiceParamsInterface {
     public function setFrom(?string $from);
 
     public function setJson(?bool $json);
+
+    public function setLanguage();
 
     public function setText(string $text);
 
