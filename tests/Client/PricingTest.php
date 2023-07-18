@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Sms77\Tests\Client;
+namespace Seven\Tests\Client;
 
-use Sms77\Api\Response\Pricing;
+use Seven\Api\Response\Pricing;
 
 class PricingTest extends BaseTest {
     public function testPricingGermany(): void {

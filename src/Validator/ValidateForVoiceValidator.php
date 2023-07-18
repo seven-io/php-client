@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace Sms77\Api\Validator;
+namespace Seven\Api\Validator;
 
-use Sms77\Api\Exception\InvalidOptionalArgumentException;
-use Sms77\Api\Exception\InvalidRequiredArgumentException;
-use Sms77\Api\Library\Util;
+use Seven\Api\Exception\InvalidOptionalArgumentException;
+use Seven\Api\Exception\InvalidRequiredArgumentException;
+use Seven\Api\Library\Util;
 
 class ValidateForVoiceValidator extends BaseValidator implements ValidatorInterface {
     /**

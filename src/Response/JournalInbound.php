@@ -1,5 +1,5 @@
 <?php declare(strict_types=1);
 
-namespace Sms77\Api\Response;
+namespace Seven\Api\Response;
 
 class JournalInbound extends JournalBase {}

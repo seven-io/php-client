@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace Sms77\Api\Validator;
+namespace Seven\Api\Validator;
 
-use Sms77\Api\Constant\JournalConstants;
-use Sms77\Api\Exception\InvalidOptionalArgumentException;
-use Sms77\Api\Exception\InvalidRequiredArgumentException;
+use Seven\Api\Constant\JournalConstants;
+use Seven\Api\Exception\InvalidOptionalArgumentException;
+use Seven\Api\Exception\InvalidRequiredArgumentException;
 
 class JournalValidator extends BaseValidator implements ValidatorInterface {
     /** @throws InvalidOptionalArgumentException|InvalidRequiredArgumentException */

@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace Sms77\Tests\Client;
+namespace Seven\Tests\Client;
 
-use Sms77\Api\Constant\StatusCode;
-use Sms77\Api\Params\SmsParams;
-use Sms77\Api\Params\SmsParamsInterface;
+use Seven\Api\Constant\StatusCode;
+use Seven\Api\Params\SmsParams;
+use Seven\Api\Params\SmsParamsInterface;
 
 class SmsTest extends BaseTest {
     public function testSms(): void {
@@ -65,7 +65,7 @@ class SmsTest extends BaseTest {
         $fileCount = $end - $start;
         $contents = file_get_contents(__DIR__ . '/../png.base64');
         $validity = 1;
-        $password = 'sms77';
+        $password = 'seven';
 
         for ($i = $start; $i < $end; $i++) {
             $name = "test$i.png";

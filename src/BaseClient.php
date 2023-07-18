@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Sms77\Api;
+namespace Seven\Api;
 
 use Exception;
 use InvalidArgumentException;
@@ -11,7 +11,7 @@ abstract class BaseClient {
     public const HTTP_GET = 'GET';
     public const HTTP_POST = 'POST';
     public const HTTP_METHODS = [self::HTTP_DELETE, self::HTTP_GET, self::HTTP_POST];
-    public const BASE_URI = 'https://gateway.sms77.io/api';
+    public const BASE_URI = 'https://gateway.seven.io/api';
 
     /* @var string $apiKey */
     protected $apiKey;

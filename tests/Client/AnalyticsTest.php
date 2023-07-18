@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Sms77\Tests\Client;
+namespace Seven\Tests\Client;
 
-use Sms77\Api\Response\AbstractAnalytic;
-use Sms77\Api\Validator\BaseValidator;
+use Seven\Api\Response\AbstractAnalytic;
+use Seven\Api\Validator\BaseValidator;
 
 class AnalyticsTest extends BaseTest {
     private function assertResponse(array $res): array {

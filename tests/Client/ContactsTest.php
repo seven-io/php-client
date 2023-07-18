@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace Sms77\Tests\Client;
+namespace Seven\Tests\Client;
 
-use Sms77\Api\Response\Contact;
-use Sms77\Api\Response\ContactCreate;
-use Sms77\Api\Response\ContactDelete;
+use Seven\Api\Response\Contact;
+use Seven\Api\Response\ContactCreate;
+use Seven\Api\Response\ContactDelete;
 
 class ContactsTest extends BaseTest {
     public function testContactsReadCsv(): void {

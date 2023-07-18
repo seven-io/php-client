@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Sms77\Api\Params;
+namespace Seven\Api\Params;
 
 interface VoiceParamsInterface {
     public function getDebug(): ?bool;

@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Sms77\Api\Response;
+namespace Seven\Api\Response;
 
-use Sms77\Api\Library\JsonObject;
+use Seven\Api\Library\JsonObject;
 
 /**
  * @property string from

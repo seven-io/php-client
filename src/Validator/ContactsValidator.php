@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace Sms77\Api\Validator;
+namespace Seven\Api\Validator;
 
-use Sms77\Api\Constant\ContactsConstants;
-use Sms77\Api\Exception\InvalidBooleanOptionException;
-use Sms77\Api\Exception\InvalidRequiredArgumentException;
+use Seven\Api\Constant\ContactsConstants;
+use Seven\Api\Exception\InvalidBooleanOptionException;
+use Seven\Api\Exception\InvalidRequiredArgumentException;
 
 class ContactsValidator extends BaseValidator implements ValidatorInterface {
     public function __construct(array $parameters = []) {

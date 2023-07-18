@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace Sms77\Tests\Client;
+namespace Seven\Tests\Client;
 
 use DateTime;
 use PHPUnit\Framework\TestCase;
-use Sms77\Api\Client;
+use Seven\Api\Client;
 
 abstract class BaseTest extends TestCase {
     protected $client;
@@ -14,9 +14,9 @@ abstract class BaseTest extends TestCase {
     public function __construct() {
         parent::__construct(null, [], '');
 
-        $this->init(getenv('SMS77_API_KEY'), false);
+        $this->init(getenv('SEVEN_API_KEY'), false);
 
-        $this->recipient = getenv('SMS77_RECIPIENT') ?? '+491716992343';
+        $this->recipient = getenv('SEVEN_RECIPIENT') ?? '+491716992343';
     }
 
     protected function init(string $apiKey, bool $isDebug): void {

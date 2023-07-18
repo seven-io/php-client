@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace Sms77\Api\Validator;
+namespace Seven\Api\Validator;
 
-use Sms77\Api\Constant\HooksConstants;
-use Sms77\Api\Exception\InvalidRequiredArgumentException;
-use Sms77\Api\Library\Util;
+use Seven\Api\Constant\HooksConstants;
+use Seven\Api\Exception\InvalidRequiredArgumentException;
+use Seven\Api\Library\Util;
 
 class HooksValidator extends BaseValidator implements ValidatorInterface {
     /** @var string|null $action */

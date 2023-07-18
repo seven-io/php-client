@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace Sms77\Tests\Client;
+namespace Seven\Tests\Client;
 
-use Sms77\Api\Constant\HooksConstants;
-use Sms77\Api\Library\Util;
-use Sms77\Api\Response\HookAction;
+use Seven\Api\Constant\HooksConstants;
+use Seven\Api\Library\Util;
+use Seven\Api\Response\HookAction;
 
 class HooksTest extends BaseTest {
     public function testGetHooks(): void {

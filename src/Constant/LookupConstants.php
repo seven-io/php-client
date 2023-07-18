@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Sms77\Api\Constant;
+namespace Seven\Api\Constant;
 
 class LookupConstants {
     public const TYPE_CNAM = 'cnam';

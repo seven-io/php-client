@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace Sms77\Api\Validator;
+namespace Seven\Api\Validator;
 
-use Sms77\Api\Exception\InvalidBooleanOptionException;
-use Sms77\Api\Exception\InvalidRequiredArgumentException;
-use Sms77\Api\Params\VoiceParamsInterface;
+use Seven\Api\Exception\InvalidBooleanOptionException;
+use Seven\Api\Exception\InvalidRequiredArgumentException;
+use Seven\Api\Params\VoiceParamsInterface;
 
 class VoiceValidator extends BaseValidator implements ValidatorInterface {
     public static $LANGUAGES = [

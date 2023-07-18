@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Sms77\Tests\Client;
+namespace Seven\Tests\Client;
 
 use InvalidArgumentException;
-use Sms77\Api\Client;
+use Seven\Api\Client;
 
 class ClientTest extends BaseTest {
     public function testClient(): void {

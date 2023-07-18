@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Sms77\Api\Validator;
+namespace Seven\Api\Validator;
 
-use Sms77\Api\Constant\AnalyticsConstants;
-use Sms77\Api\Exception\InvalidOptionalArgumentException;
+use Seven\Api\Constant\AnalyticsConstants;
+use Seven\Api\Exception\InvalidOptionalArgumentException;
 
 class AnalyticsValidator extends BaseValidator implements ValidatorInterface {
     /** @throws InvalidOptionalArgumentException */

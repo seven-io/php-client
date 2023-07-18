@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Sms77\Api\Validator;
+namespace Seven\Api\Validator;
 
-use Sms77\Api\Exception\InvalidBooleanOptionException;
-use Sms77\Api\Library\Util;
+use Seven\Api\Exception\InvalidBooleanOptionException;
+use Seven\Api\Library\Util;
 
 abstract class BaseValidator {
     /* @var array $parameters */

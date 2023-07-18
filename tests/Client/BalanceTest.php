@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Sms77\Tests\Client;
+namespace Seven\Tests\Client;
 
-use Sms77\Api\Response\Balance;
+use Seven\Api\Response\Balance;
 
 class BalanceTest extends BaseTest {
     public function testBalance(): void {

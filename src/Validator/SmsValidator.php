@@ -1,13 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace Sms77\Api\Validator;
+namespace Seven\Api\Validator;
 
-use Sms77\Api\Constant\SmsConstants;
-use Sms77\Api\Exception\InvalidBooleanOptionException;
-use Sms77\Api\Exception\InvalidOptionalArgumentException;
-use Sms77\Api\Exception\InvalidRequiredArgumentException;
-use Sms77\Api\Library\Util;
-use Sms77\Api\Params\SmsParamsInterface;
+use Seven\Api\Constant\SmsConstants;
+use Seven\Api\Exception\InvalidBooleanOptionException;
+use Seven\Api\Exception\InvalidOptionalArgumentException;
+use Seven\Api\Exception\InvalidRequiredArgumentException;
+use Seven\Api\Library\Util;
+use Seven\Api\Params\SmsParamsInterface;
 
 class SmsValidator extends BaseValidator implements ValidatorInterface {
     /* @var SmsParamsInterface $params */

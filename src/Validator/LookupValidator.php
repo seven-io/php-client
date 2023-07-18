@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace Sms77\Api\Validator;
+namespace Seven\Api\Validator;
 
-use Sms77\Api\Constant\LookupConstants;
-use Sms77\Api\Exception\InvalidBooleanOptionException;
-use Sms77\Api\Exception\InvalidOptionalArgumentException;
-use Sms77\Api\Exception\InvalidRequiredArgumentException;
+use Seven\Api\Constant\LookupConstants;
+use Seven\Api\Exception\InvalidBooleanOptionException;
+use Seven\Api\Exception\InvalidOptionalArgumentException;
+use Seven\Api\Exception\InvalidRequiredArgumentException;
 
 class LookupValidator extends BaseValidator implements ValidatorInterface {
     public function __construct(array $parameters = []) {

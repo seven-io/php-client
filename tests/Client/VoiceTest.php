@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Sms77\Tests\Client;
+namespace Seven\Tests\Client;
 
-use Sms77\Api\Params\VoiceParams;
-use Sms77\Api\Response\Voice;
+use Seven\Api\Params\VoiceParams;
+use Seven\Api\Response\Voice;
 
 class VoiceTest extends BaseTest {
     public function testVoice(): void {

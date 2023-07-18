@@ -1,16 +1,16 @@
 <?php declare(strict_types=1);
 
-namespace Sms77\Tests\Client;
+namespace Seven\Tests\Client;
 
-use Sms77\Api\Constant\JournalConstants;
-use Sms77\Api\Constant\SmsConstants;
-use Sms77\Api\Constant\SmsType;
-use Sms77\Api\Exception\InvalidRequiredArgumentException;
-use Sms77\Api\Response\JournalBase;
-use Sms77\Api\Response\JournalInbound;
-use Sms77\Api\Response\JournalOutbound;
-use Sms77\Api\Response\JournalReplies;
-use Sms77\Api\Response\JournalVoice;
+use Seven\Api\Constant\JournalConstants;
+use Seven\Api\Constant\SmsConstants;
+use Seven\Api\Constant\SmsType;
+use Seven\Api\Exception\InvalidRequiredArgumentException;
+use Seven\Api\Response\JournalBase;
+use Seven\Api\Response\JournalInbound;
+use Seven\Api\Response\JournalOutbound;
+use Seven\Api\Response\JournalReplies;
+use Seven\Api\Response\JournalVoice;
 
 class JournalTest extends BaseTest {
     private function request(

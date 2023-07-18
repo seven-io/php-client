@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Sms77\Api\Validator;
+namespace Seven\Api\Validator;
 
-use Sms77\Api\Constant\PricingConstants;
-use Sms77\Api\Exception\InvalidOptionalArgumentException;
+use Seven\Api\Constant\PricingConstants;
+use Seven\Api\Exception\InvalidOptionalArgumentException;
 
 class PricingValidator extends BaseValidator implements ValidatorInterface {
     /** @throws InvalidOptionalArgumentException */

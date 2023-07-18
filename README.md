@@ -7,7 +7,7 @@
 **Via Composer:**
 
 ```shell script 
-composer require sms77/api 
+composer require seven.io/api
 ```
 
 Alternatively you
@@ -17,8 +17,8 @@ if you don't use Composer.
 ### Usage
 
 ```php
-use Sms77\Api\Client;
-use Sms77\Api\Params\SmsParams;
+use Seven\Api\Client;
+use Seven\Api\Params\SmsParams;
 $client = new Client('MY_VERY_SECRET_API_KEY!');
 $params = new SmsParams();
 $client->sms($params
@@ -153,11 +153,11 @@ $client->sms($params
 Some basic tests are implemented. Run them like this:
 
 ```shell script
-SMS77_API_KEY= SMS77_RECIPIENT= SMS77_MSG_ID= php vendor/bin/phpunit tests/Client
+SEVEN_API_KEY= SEVEN_RECIPIENT= SEVEN_MSG_ID= php vendor/bin/phpunit tests/Client
 ```
 
-Make sure to fill in the values. SMS77_MSG_ID refers to a message ID sent from this
-particular API key. SMS77_RECIPIENT is the recipient of the test SMS.
+Make sure to fill in the values. SEVEN_MSG_ID refers to a message ID sent from this
+particular API key. SEVEN_RECIPIENT is the recipient of the test SMS.
 
 ###### Support
 

@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace Sms77\Tests\Client;
+namespace Seven\Tests\Client;
 
-use Sms77\Api\Exception\UnexpectedApiResponseException;
-use Sms77\Api\Response\Carrier;
-use Sms77\Api\Response\LookupMnp;
-use Sms77\Api\Response\Mnp;
-use Sms77\Api\Validator\LookupValidator;
+use Seven\Api\Exception\UnexpectedApiResponseException;
+use Seven\Api\Response\Carrier;
+use Seven\Api\Response\LookupMnp;
+use Seven\Api\Response\Mnp;
+use Seven\Api\Validator\LookupValidator;
 
 class LookupTest extends BaseTest {
     public function testLookupFormat(): void {

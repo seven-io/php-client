@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Sms77\Tests\Client;
+namespace Seven\Tests\Client;
 
 class ValidateForVoiceTest extends BaseTest {
     public function testVoice(): void {

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Sms77\Api\Exception;
+namespace Seven\Api\Exception;
 
 use Exception;
 

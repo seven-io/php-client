@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Sms77\Api\Constant;
+namespace Seven\Api\Constant;
 
-use Sms77\Api\Library\Reflectable;
+use Seven\Api\Library\Reflectable;
 
 class RoamingStatus {
     use Reflectable;

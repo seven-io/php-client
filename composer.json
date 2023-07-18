@@ -9,12 +9,12 @@
     ],
     "autoload": {
         "psr-4": {
-            "Sms77\\Api\\": "src/"
+            "Seven\\Api\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Sms77\\Tests\\": "tests/"
+            "Seven\\Tests\\": "tests/"
         }
     },
     "config": {
@@ -35,7 +35,7 @@
         "tts"
     ],
     "license": "MIT",
-    "name": "sms77/api",
+    "name": "seven.io/api",
     "require": {
         "php": ">=7.3",
         "ext-ctype": "*",

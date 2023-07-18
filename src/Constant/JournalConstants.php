@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Sms77\Api\Constant;
+namespace Seven\Api\Constant;
 
 class JournalConstants {
     public const DATE_PATTERN = "/[\d]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][\d]|3[0-1])/";

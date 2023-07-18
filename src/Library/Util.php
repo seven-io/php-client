@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Sms77\Api\Library;
+namespace Seven\Api\Library;
 
 use DateTime;
 
