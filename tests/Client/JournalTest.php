@@ -2,78 +2,86 @@
 
 namespace Seven\Tests\Client;
 
-use Seven\Api\Constant\JournalConstants;
+use DateInterval;
+use DateTime;
 use Seven\Api\Constant\SmsConstants;
-use Seven\Api\Constant\SmsType;
-use Seven\Api\Exception\InvalidRequiredArgumentException;
-use Seven\Api\Response\JournalBase;
-use Seven\Api\Response\JournalInbound;
-use Seven\Api\Response\JournalOutbound;
-use Seven\Api\Response\JournalReplies;
-use Seven\Api\Response\JournalVoice;
+use Seven\Api\Params\JournalParams;
+use Seven\Api\Response\Journal\JournalInbound;
+use Seven\Api\Response\Journal\JournalOutbound;
+use Seven\Api\Response\Journal\JournalReply;
+use Seven\Api\Response\Journal\JournalVoice;
 
 class JournalTest extends BaseTest {
-    private function request(
-        string $type,
-        string $class,
-        ?callable $functionHandler = null,
-        array $options = []): void {
-        $journals = $this->client->journal($type, $options);
+    public function testJournalInbound(): void {
+        $arr = $this->client->journal->inbound();
+        $this->request($arr, JournalInbound::class);
+    }
 
-        self::assertIsArray($journals);
+    private function request(
+        array     $journals,
+        string    $class,
+        ?callable $functionHandler = null
+    ): void {
+        $this->assertIsArray($journals);
 
         foreach ($journals as $j) {
-            self::assertInstanceOf($class, $j);
-            self::assertIsLengthyString($j->from);
-            self::assertIsNumeric($j->id);
-            self::assertIsNumeric($j->price);
-            self::assertIsLengthyString($j->text);
-            self::assertIsValidDateTime($j->timestamp);
-            self::assertIsLengthyString($j->to);
+            $this->assertInstanceOf($class, $j);
+            $this->assertIsString($j->getFrom());
+            $this->assertIsNumeric($j->getId());
+            $this->assertTrue(property_exists($j, 'price'));
+            $this->assertIsLengthyString($j->getText());
+            $this->assertIsValidDateTime($j->getTimestamp());
+            $this->assertIsLengthyString($j->getTo());
 
-            $functionHandler && $functionHandler($j);
+            if ($functionHandler) $functionHandler($j);
         }
     }
 
-    public function testJournalInbound(): void {
-        $this->request(JournalConstants::TYPE_INBOUND, JournalInbound::class);
-    }
-
     public function testJournalOutbound(): void {
-        $this->request(
-            JournalConstants::TYPE_OUTBOUND,
-            JournalOutbound::class,
-            static function (JournalOutbound $j) {
-                self::assertIsString($j->connection);
-                self::assertIsNullOrLengthyString($j->dlr);
-                self::assertIsNullOrLengthyString($j->dlr_timestamp);
-                self::assertIsNullOrLengthyString($j->foreign_id);
-                self::assertIsNullOrLengthyString($j->label);
-                self::assertIsNullOrLengthyString($j->latency);
-                self::assertIsNullOrLengthyString($j->mccmnc);
-                self::assertEquals(SmsConstants::TYPE_DIRECT, $j->type);
-            });
+        $arr = $this->client->journal->outbound();
+        $callable = function (JournalOutbound $j) {
+            $this->assertIsString($j->getConnection());
+            $this->assertIsNullOrLengthyString($j->getDlr());
+            $this->assertIsNullOrLengthyString($j->getDlrTimestamp());
+            $this->assertIsNullOrLengthyString($j->getForeignId());
+            $this->assertIsNullOrLengthyString($j->getLabel());
+            $this->assertIsNullOrLengthyString($j->getLatency());
+            $this->assertIsNullOrLengthyString($j->getMccMnc());
+            $this->assertEquals(SmsConstants::TYPE_DIRECT, $j->getType());
+        };
+
+        $this->request($arr, JournalOutbound::class, $callable);
     }
 
     public function testJournalVoice(): void {
-        $this->request(
-            JournalConstants::TYPE_VOICE,
-            JournalVoice::class,
-            static function (JournalVoice $j) {
-                self::assertIsNumeric($j->duration);
-                self::assertIsString($j->error);
-                self::assertIsLengthyString($j->status);
-                self::assertIsBool($j->xml);
-            });
+        $arr = $this->client->journal->voice();
+        $callable = function (JournalVoice $j) {
+            $this->assertIsNullOrLengthyString($j->getDuration());
+            $this->assertIsNullOrString($j->getError());
+            $this->assertIsString($j->getStatus());
+            $this->assertIsBool($j->isXml());
+        };
+
+        $this->request($arr, JournalVoice::class, $callable);
     }
 
     public function testJournalReplies(): void {
-        $this->request(JournalConstants::TYPE_REPLIES, JournalReplies::class);
+        $arr = $this->client->journal->replies();
+
+        $this->request($arr, JournalReply::class);
     }
 
-    public function testJournalInvalidType(): void {
-        $this->expectException(InvalidRequiredArgumentException::class);
+    public function testJournalParams(): void {
+        $params = (new JournalParams)
+            ->setId(null)
+            ->setDateFrom((new DateTime)->sub(DateInterval::createFromDateString('30 day')))
+            ->setDateTo(new DateTime)
+            ->setLimit(null)
+            ->setState('')
+            ->setTo('')
+            ->toArray();
 
-        $this->request('INVALID_JOURNAL_TYPE', JournalBase::class);
+        $this->assertArrayHasKey('date_from', $params);
+        $this->assertArrayHasKey('date_to', $params);
     }
 }

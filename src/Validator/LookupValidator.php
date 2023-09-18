@@ -2,42 +2,35 @@
 
 namespace Seven\Api\Validator;
 
-use Seven\Api\Constant\LookupConstants;
-use Seven\Api\Exception\InvalidBooleanOptionException;
+use Seven\Api\Constant\LookupType;
 use Seven\Api\Exception\InvalidOptionalArgumentException;
 use Seven\Api\Exception\InvalidRequiredArgumentException;
+use Seven\Api\Params\LookupParams;
 
-class LookupValidator extends BaseValidator implements ValidatorInterface {
-    public function __construct(array $parameters = []) {
-        parent::__construct($parameters, ['json']);
-    }
+class LookupValidator {
+    protected LookupParams $params;
 
-    public static function isValidMobileNetworkShortName(string $subject): bool {
-        return in_array($subject, LookupConstants::MNP_TYPES);
+    public function __construct(LookupParams $params) {
+        $this->params = $params;
     }
 
     /**
      * @throws InvalidOptionalArgumentException
      * @throws InvalidRequiredArgumentException
-     * @throws InvalidBooleanOptionException
      */
     public function validate(): void {
         $this->json();
         $this->number();
         $this->type();
-
-        parent::validate();
     }
 
     /** @throws InvalidOptionalArgumentException */
     public function json(): void {
-        if (null === $this->fallback('json')) {
-            return;
-        }
+        if (null === $this->params->getJson()) return;
 
-        $type = $this->fallback('type');
+        $type = $this->params->getType();
 
-        if (LookupConstants::TYPE_MNP !== $type) {
+        if (LookupType::MobileNumberPortability !== $type) {
             throw new InvalidOptionalArgumentException(
                 'json may only be set if type is set to mnp.');
         }
@@ -45,19 +38,18 @@ class LookupValidator extends BaseValidator implements ValidatorInterface {
 
     /** @throws InvalidRequiredArgumentException */
     public function number(): void {
-        $number = $this->fallback('number', '');
+        $numbers = $this->params->getNumbers();
 
-        if ('' === $number) {
-            throw new InvalidRequiredArgumentException('number is missing.');
-        }
+        if (empty($numbers)) throw new InvalidRequiredArgumentException('number(s) are missing.');
     }
 
     /** @throws InvalidRequiredArgumentException */
     public function type(): void {
-        $type = $this->fallback('type');
+        $type = $this->params->getType();
+        $values = LookupType::values();
 
-        if (!in_array($type, LookupConstants::TYPES, true)) {
-            $imploded = implode(',', LookupConstants::TYPES);
+        if (!in_array($type, $values, true)) {
+            $imploded = implode(',', $values);
 
             throw new InvalidRequiredArgumentException(
                 "type $type is invalid. Valid types are: $imploded.");

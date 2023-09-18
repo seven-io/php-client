@@ -2,28 +2,36 @@
 
 namespace Seven\Tests\Client;
 
-use DateTime;
 use Seven\Api\Constant\StatusMessage;
-use Seven\Api\Response\Status;
+use Seven\Api\Exception\InvalidRequiredArgumentException;
+use Seven\Api\Params\JournalParams;
 
 class StatusTest extends BaseTest {
-    public function testStatus(): void {
-        $status = new Status($this->status(false));
-
-        self::assertContains($status->status, StatusMessage::values());
-
-        self::assertInstanceOf('DateTime', new DateTime($status->dateTime));
+    public function testError(): void {
+        $this->expectException(InvalidRequiredArgumentException::class);
+        $this->client->status->get(0);
     }
 
-    private function status(bool $json) {
-        return $this->client->status((int)getenv('SEVEN_MSG_ID'), $json);
+    public function testSuccess(): void {
+        $msgId = $this->getMessageId();
+        $arr = $this->client->status->get($msgId);
+
+        foreach ($arr as $obj) {
+            $status = $obj->getStatus();
+            $statusTime = $obj->getStatusTime();
+
+            if ($status) {
+                $this->assertContains($status, StatusMessage::values());
+                $this->assertNotNull($statusTime);
+            } else $this->assertNull($statusTime);
+        }
     }
 
-    public function testStatusJson(): void {
-        $status = $this->status(true);
-
-        self::assertContains($status->status, StatusMessage::values());
-
-        self::assertInstanceOf('DateTime', new DateTime($status->dateTime));
+    private function getMessageId(): int {
+        $journalParams = (new JournalParams)->setLimit(1);
+        $outbounds = $this->client->journal->outbound($journalParams);
+        $outbound = $outbounds[0];
+        $msgId = $outbound->getId();
+        return (int)$msgId;
     }
 }

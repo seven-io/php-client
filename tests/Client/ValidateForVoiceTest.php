@@ -2,27 +2,27 @@
 
 namespace Seven\Tests\Client;
 
-class ValidateForVoiceTest extends BaseTest {
-    public function testVoice(): void {
-        $res = $this->client->validateForVoice($this->recipient,
-            ['callback' => 'http://my.site/validate_for_voice']);
+use Seven\Api\Params\ValidateForVoiceParams;
 
-        self::assertIsObject($res);
-        self::assertIsBool($res->success);
-        self::assertIsInt($res->code);
-        self::assertGreaterThan(0, $res->code);
+class ValidateForVoiceTest extends BaseTest {
+    public function testValidateForVoice(): void {
+        $params = (new ValidateForVoiceParams('491716992343'))
+            ->setCallback('https://seven.dev/callback/validate_for_voice');
+        $res = $this->client->validateForVoice->post($params);
+
+        $this->assertTrue($res->isSuccess());
     }
 
-    public function testVoiceFaulty(): void {
-        $faultySenderNumber = '123';
-        $voice = $this->client->validateForVoice($faultySenderNumber);
+    public function testValidateForVoiceFaulty(): void {
+        $faultySenderNumber = '0';
+        $params = new ValidateForVoiceParams($faultySenderNumber);
+        $voice = $this->client->validateForVoice->post($params);
 
-        self::assertIsObject($voice);
-        self::assertIsString($voice->error);
-        self::assertIsString($voice->formatted_output);
-        self::assertNull($voice->id);
-        self::assertEquals($faultySenderNumber, $voice->sender);
-        self::assertFalse($voice->success);
-        self::assertFalse($voice->voice);
+        $this->assertTrue($voice->getError() === null || $voice->getError() !== '');
+        $this->assertTrue($voice->getFormattedOutput() == null || $voice->getFormattedOutput() !== '');
+        $this->assertTrue($voice->getId() === null || $voice->getId() > 0);
+        $this->assertEquals($faultySenderNumber, $voice->getSender());
+        $this->assertFalse($voice->isSuccess());
+        $this->assertFalse($voice->isVoice());
     }
 }

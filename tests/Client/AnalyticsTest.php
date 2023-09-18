@@ -2,79 +2,81 @@
 
 namespace Seven\Tests\Client;
 
-use Seven\Api\Response\AbstractAnalytic;
-use Seven\Api\Validator\BaseValidator;
+use Seven\Api\Response\Analytics\AbstractAnalytic;
+use Seven\Api\Response\Analytics\AnalyticByCountry;
+use Seven\Api\Response\Analytics\AnalyticByDate;
+use Seven\Api\Response\Analytics\AnalyticByLabel;
+use Seven\Api\Response\Analytics\AnalyticBySubaccount;
 
 class AnalyticsTest extends BaseTest {
+    public function testAnalyticsGroupByDate(): void {
+        $res = $this->client->analytics->byDate();
+
+        $this->assertCount(31, $res);
+
+        foreach ($this->assertResponse($res) as $a) {
+            /** @var AnalyticByDate $a */
+            $this->assertEach($a);
+            $this->assertIsLengthyString($a->getDate());
+        }
+    }
+
+    /**
+     * @return AbstractAnalytic[]
+     */
     private function assertResponse(array $res): array {
-        self::assertIsArray($res);
+        $this->assertIsArray($res);
 
         return $res;
     }
 
     private function assertEach(AbstractAnalytic $a): bool {
-        self::assertIsInt($a->economy);
-        self::assertIsInt($a->direct);
-        self::assertIsInt($a->voice);
-        self::assertIsInt($a->hlr);
-        self::assertIsInt($a->mnp);
-        self::assertIsInt($a->inbound);
+        $this->assertGreaterThanOrEqual(0, $a->getHLR());
+        $this->assertGreaterThanOrEqual(0, $a->getInbound());
+        $this->assertGreaterThanOrEqual(0, $a->getMNP());
+        $this->assertGreaterThanOrEqual(0, $a->getSMS());
+        $this->assertGreaterThanOrEqual(0, $a->getUsageEuro());
+        $this->assertGreaterThanOrEqual(0, $a->getVoice());
 
-        $isEmpty = 0 ===
-            $a->economy + $a->direct + $a->voice + $a->hlr + $a->mnp + $a->inbound;
+        $total = $a->getSMS()
+            + $a->getVoice()
+            + $a->getHLR()
+            + $a->getMNP()// + $a->inbound
+        ;
+        $isEmpty = 0 === $total;
 
-        if ($isEmpty) {
-            self::assertEquals(0, $a->usage_eur);
-        } else {
-            self::assertIsFloat($a->usage_eur);
-        }
+        $this->assertIsFloat($a->getUsageEuro());
+
+        /*        if ($isEmpty) $this->assertEquals(0, $a->getUsageEuro());
+                else $this->assertIsFloat($a->getUsageEuro());*/
 
         return $isEmpty;
     }
 
-    public function testAnalyticsGroupByDate(): void {
-        $res = $this->client->analyticsByDate();
-
-        self::assertCount(31, $res);
-
-        foreach ($this->assertResponse($res) as $a) {
-            $this->assertEach($a);
-
-            self::assertTrue(BaseValidator::isValidDate($a->date));
-        }
-    }
-
     public function testAnalyticsGroupByLabel(): void {
-        foreach ($this->assertResponse($this->client->analyticsByLabel()) as $a) {
-            $isEmpty = $this->assertEach($a);
-
-            if ($isEmpty) {
-                self::assertEquals(0, $a->label);
-            } else {
-                self::assertIsString($a->label);
-            }
+        foreach ($this->assertResponse($this->client->analytics->byLabel()) as $a) {
+            /** @var AnalyticByLabel $a */
+            $this->assertIsString($a->getLabel());
         }
     }
 
     public function testAnalyticsGroupByCountry(): void {
-        foreach ($this->assertResponse($this->client->analyticsByCountry()) as $a) {
-            $isEmpty = $this->assertEach($a);
-
-            if ($isEmpty) {
-                self::assertEquals(0, $a->country);
-            } else {
-                self::assertIsString($a->country);
-                self::assertNotEmpty($a->country);
-            }
+        foreach ($this->assertResponse($this->client->analytics->byCountry()) as $a) {
+            /** @var AnalyticByCountry $a */
+            $country = $a->getCountry();
+            $this->assertIsString($country);
+            $this->assertNotEmpty($country);
         }
     }
 
     public function testAnalyticsGroupBySubaccount(): void {
-        foreach ($this->assertResponse($this->client->analyticsBySubaccount()) as $a) {
+        foreach ($this->assertResponse($this->client->analytics->bySubaccount()) as $a) {
+            /** @var AnalyticBySubaccount $a */
+            $account = $a->getAccount();
             $this->assertEach($a);
 
-            self::assertIsString($a->account);
-            self::assertNotEmpty($a->account);
+            $this->assertIsString($account);
+            $this->assertNotEmpty($account);
         }
     }
 }

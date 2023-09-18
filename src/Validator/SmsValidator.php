@@ -2,37 +2,22 @@
 
 namespace Seven\Api\Validator;
 
+use Datetime;
 use Seven\Api\Constant\SmsConstants;
-use Seven\Api\Exception\InvalidBooleanOptionException;
 use Seven\Api\Exception\InvalidOptionalArgumentException;
 use Seven\Api\Exception\InvalidRequiredArgumentException;
-use Seven\Api\Library\Util;
-use Seven\Api\Params\SmsParamsInterface;
+use Seven\Api\Params\SmsParams;
 
-class SmsValidator extends BaseValidator implements ValidatorInterface {
-    /* @var SmsParamsInterface $params */
-    protected $params;
+class SmsValidator {
+    protected SmsParams $params;
 
-    public function __construct(SmsParamsInterface $params) {
+    public function __construct(SmsParams $params) {
         $this->params = $params;
-
-        parent::__construct((array)$this->params, [
-            'debug',
-            'details',
-            'flash',
-            'json',
-            'no_reload',
-            'performance_tracking',
-            'return_msg_id',
-            'unicode',
-            'utf8',
-        ]);
     }
 
     /**
      * @throws InvalidOptionalArgumentException
      * @throws InvalidRequiredArgumentException
-     * @throws InvalidBooleanOptionException
      */
     public function validate(): void {
         $this->delay();
@@ -42,28 +27,16 @@ class SmsValidator extends BaseValidator implements ValidatorInterface {
         $this->text();
         $this->to();
         $this->ttl();
-
-        parent::validate();
     }
 
     /** @throws InvalidOptionalArgumentException */
     public function delay(): void {
         $delay = $this->params->getDelay();
 
-        if (null === $delay || '' === $delay) {
-            return;
-        }
+        if (!$delay) return;
 
-        $errorMsg = "Delay must be a valid UNIX timestamp or in the format of "
-            . SmsConstants::DELAY_DATE_FORMAT . '.';
-
-        if (false === strpos($delay, '-')) {
-            if (!Util::isUnixTimestamp($delay)) {
-                throw new InvalidOptionalArgumentException($errorMsg);
-            }
-        } else if (!preg_match(SmsConstants::DELAY_PATTERN, $delay)) {
-            throw new InvalidOptionalArgumentException($errorMsg);
-        }
+        if ($delay < new DateTime)
+            throw new InvalidOptionalArgumentException('Delay must be a value from the future');
     }
 
     /** @throws InvalidOptionalArgumentException */

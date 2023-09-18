@@ -2,31 +2,20 @@
 
 namespace Seven\Tests\Client;
 
-use Seven\Api\Response\Pricing;
-
 class PricingTest extends BaseTest {
-    public function testPricingGermany(): void {
-        /** @var Pricing $res */
-        $res = $this->client->pricing(true, 'de');
+    public function testGermany(): void {
+        $res = $this->client->pricing->json('de');
 
-        self::assertEquals(1, $res->countCountries);
-        self::assertGreaterThan(0, $res->countNetworks);
-        self::assertCount(1, $res->countries);
+        self::assertEquals(1, $res->getCountCountries());
+        self::assertGreaterThan(0, $res->getCountNetworks());
+        self::assertCount(1, $res->getCountries());
     }
 
-    public function testPricingGermanyCsv(): void {
-        /** @var Pricing $res */
-        $res = $this->client->pricing(false, 'de');
+    public function testJson(): void {
+        $res = $this->client->pricing->json();
 
-        self::assertIsString($res);
-    }
-
-    public function testPricing(): void {
-        /** @var Pricing $res */
-        $res = $this->client->pricing();
-
-        self::assertGreaterThan(0, $res->countCountries);
-        self::assertGreaterThan(0, $res->countNetworks);
-        self::assertCount($res->countCountries, $res->countries);
+        self::assertGreaterThan(0, $res->getCountCountries());
+        self::assertGreaterThan(0, $res->getCountNetworks());
+        self::assertCount($res->getCountCountries(), $res->getCountries());
     }
 }

@@ -2,21 +2,10 @@
 
 namespace Seven\Tests\Client;
 
-use Seven\Api\Response\Balance;
-
 class BalanceTest extends BaseTest {
     public function testBalance(): void {
-        self::assertIsFloat($this->balance(false));
-    }
+        $res = $this->client->balance->get();
 
-    private function balance(bool $json) {
-        return $this->client->balance($json);
-    }
-
-    public function testBalanceJson(): void {
-        $res = $this->balance(true);
-
-        self::assertInstanceOf(Balance::class, $res);
-        self::assertIsFloat($res->balance);
+        $this->assertNotEmpty($res->getCurrency());
     }
 }

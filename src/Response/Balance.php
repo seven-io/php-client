@@ -2,9 +2,20 @@
 
 namespace Seven\Api\Response;
 
-/** @property float balance */
 class Balance {
-    public function __construct(float $response) {
-        $this->balance = $response;
+    protected float $amount;
+    protected string $currency;
+
+    public function __construct(object $data) {
+        $this->amount = $data->amount;
+        $this->currency = $data->currency;
+    }
+
+    public function getAmount(): float {
+        return $this->amount;
+    }
+
+    public function getCurrency(): string {
+        return $this->currency;
     }
 }

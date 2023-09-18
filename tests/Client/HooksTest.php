@@ -2,67 +2,64 @@
 
 namespace Seven\Tests\Client;
 
-use Seven\Api\Constant\HooksConstants;
+use Seven\Api\Constant\HooksEventType;
+use Seven\Api\Constant\HooksRequestMethod;
 use Seven\Api\Library\Util;
-use Seven\Api\Response\HookAction;
 
 class HooksTest extends BaseTest {
     public function testGetHooks(): void {
-        $res = $this->client->getHooks();
+        $res = $this->client->hooks->read();
 
-        self::assertIsBool($res->success);
-        self::assertIsArray($res->hooks);
+        $this->assertIsBool($res->isSuccess());
+        $this->assertIsArray($res->getHooks());
 
-        if (!count($res->hooks)) {
+        if (!count($res->getHooks())) {
             $this->testSubscribeHook(false);
 
-            $res = $this->client->getHooks();
+            $res = $this->client->hooks->read();
         }
 
-        self::assertArrayHasKey(0, $res->hooks);
+        $this->assertArrayHasKey(0, $res->getHooks());
 
-        $h = $res->hooks[0];
+        $h = $res->getHooks()[0];
 
-        self::assertTrue(Util::isValidDate($h->created, 'Y-m-d H:i:s'));
-        self::assertContains($h->event_type, HooksConstants::EVENT_TYPES);
-        self::assertGreaterThan(0, $h->id);
-        self::assertContains($h->request_method, HooksConstants::REQUEST_METHODS);
-        self::assertTrue(Util::isValidUrl($h->target_url));
+        $this->assertContains($h->getEventType(), HooksEventType::values());
+        $this->assertGreaterThan(0, $h->getId());
+        $this->assertContains($h->getRequestMethod(), HooksRequestMethod::values());
+        $this->assertTrue(Util::isValidUrl($h->getTargetUrl()));
     }
 
     public function testSubscribeHook(bool $delete = true): ?int {
-        $res = $this->client->subscribeHook(self::createRandomURL('http://ho.ok/'),
-            HooksConstants::EVENT_TYPE_SMS_INBOUND);
+        $res = $this->client->hooks->subscribe(
+            self::createRandomURL('http://ho.ok/'),
+            HooksEventType::SMS_INBOUND
+        );
 
-        self::assertActionResponse($res, false);
+        $id = $res->getId();
+        $isSuccess = $res->isSuccess();
+        if ($isSuccess) $this->assertGreaterThan(0, $id);
+        else $this->assertNull($id);
 
         if ($delete) {
-            $this->testUnsubscribeHook($res->id);
+            $this->testUnsubscribeHook($id);
 
             return null;
         }
 
-        return $res->id;
-    }
-
-    private static function assertActionResponse(
-        HookAction $a, bool $unsubscription): void {
-        self::assertIsBool($a->success);
-
-        if ($a->success // no id on error
-            && !$unsubscription) { // no id after unsubscription
-            self::assertGreaterThan(0, $a->id);
-        }
+        return $id;
     }
 
     public function testUnsubscribeHook(?int $id = null): void {
         if (!$id) {
-            $res = $this->client->getHooks();
+            $res = $this->client->hooks->read();
 
-            $id = count($res->hooks)
-                ? $res->hooks[0]->id : $this->testSubscribeHook(false);
+            $hooks = $res->getHooks();
+            $id = count($hooks)
+                ? $hooks[0]->getId()
+                : $this->testSubscribeHook(false);
         }
 
-        self::assertActionResponse($this->client->unsubscribeHook($id), true);
+        $res = $this->client->hooks->unsubscribe($id);
+        $this->assertTrue($res->isSuccess());
     }
 }

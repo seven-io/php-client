@@ -23,5 +23,4 @@ class SmsConstants {
     public const TTL_MAX = PHP_INT_MAX;
 
     public const TYPE_DIRECT = 'direct';
-    public const TYPE_ECONOMY = 'economy';
 }

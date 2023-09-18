@@ -2,12 +2,12 @@
 
 namespace Seven\Api\Validator;
 
-use Seven\Api\Exception\InvalidBooleanOptionException;
+use Seven\Api\Exception\InvalidOptionalArgumentException;
 use Seven\Api\Exception\InvalidRequiredArgumentException;
-use Seven\Api\Params\VoiceParamsInterface;
+use Seven\Api\Params\VoiceParams;
 
-class VoiceValidator extends BaseValidator implements ValidatorInterface {
-    public static $LANGUAGES = [
+class VoiceValidator {
+    public static array $LANGUAGES = [
         'af-ZA',
         'am-ET',
         'ar-AE',
@@ -203,32 +203,41 @@ class VoiceValidator extends BaseValidator implements ValidatorInterface {
         'zh-TW',
     ];
 
-    /* @var VoiceParamsInterface $params */
-    protected $params;
+    protected VoiceParams $params;
 
-    public function __construct(VoiceParamsInterface $params) {
+    public function __construct(VoiceParams $params) {
         $this->params = $params;
-
-        parent::__construct((array)$this->params, ['xml']);
     }
 
     /**
-     * @throws InvalidRequiredArgumentException
-     * @throws InvalidBooleanOptionException
+     * @throws InvalidRequiredArgumentException|InvalidOptionalArgumentException
      */
     public function validate(): void {
         $this->from();
         $this->language();
+        $this->ringtime();
         $this->text();
         $this->to();
-
-        parent::validate();
     }
 
+    /**
+     * @throws InvalidOptionalArgumentException
+     */
     public function from(): void {
-        if ('' === $this->params->getFrom()) {
+        $from = $this->params->getFrom();
+
+        if ($from === null) return;
+
+        if ('' === $from) {
             $this->params->setFrom(null);
+            return;
         }
+
+        $max = 16;
+
+        if (strlen($from) > $max) throw new InvalidOptionalArgumentException(
+            "From may not exceed $max characters"
+        );
     }
 
     /**
@@ -239,28 +248,49 @@ class VoiceValidator extends BaseValidator implements ValidatorInterface {
 
         if ($language === null) return;
 
-        if (!in_array($language, self::$LANGUAGES)) {
+        if (!in_array($language, self::$LANGUAGES))
             throw new InvalidRequiredArgumentException('Invalid language.');
-        }
+    }
+
+    /**
+     * @throws InvalidOptionalArgumentException
+     */
+    public function ringtime(): void {
+        $ringtime = $this->params->getRingtime();
+
+        if ($ringtime === null) return;
+
+        $min = 1;
+        $max = 60;
+
+        if ($ringtime < $min) throw new InvalidOptionalArgumentException(
+            'Ringtime may not be lower than: ' . $min
+        );
+
+        if ($ringtime > $max) throw new InvalidOptionalArgumentException(
+            'Ringtime may not be higher than: ' . $max
+        );
     }
 
     /** @throws InvalidRequiredArgumentException */
     public function text(): void {
-        $text = $this->params->getText() ?? '';
+        $text = $this->params->getText();
 
-        if (null === $text || '' === $text) {
-            throw new InvalidRequiredArgumentException(
-                'You cannot send an empty message.');
-        }
+        $max = 10000;
+
+        if ('' === $text)
+            throw new InvalidRequiredArgumentException('You cannot send an empty message.');
+
+        if (strlen($text) > $max)
+            throw new InvalidRequiredArgumentException("Text may not exceed $max characters");
     }
 
     /** @throws InvalidRequiredArgumentException */
     public function to(): void {
-        $to = $this->params->getTo() ?? '';
+        $to = $this->params->getTo();
 
-        if (null === $to || '' === $to) {
-            throw new InvalidRequiredArgumentException(
-                'You cannot send a message without specifying a recipient.');
-        }
+        if ('' === $to) throw new InvalidRequiredArgumentException(
+            'You cannot send a message without specifying a recipient.'
+        );
     }
 }

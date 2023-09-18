@@ -2,15 +2,28 @@
 
 namespace Seven\Api\Response;
 
-/**
- * @property string status
- * @property string dateTime
- */
-class Status {
-    public function __construct(string $response) {
-        [$status, $dateTime] = explode(PHP_EOL, $response);
+use DateTime;
 
-        $this->status = $status;
-        $this->dateTime = $dateTime;
+class Status {
+    protected int $id;
+    protected ?DateTime $statusTime;
+    protected ?string $status;
+
+    public function __construct(object $data) {
+        $this->id = (int)$data->id;
+        $this->status = $data->status;
+        $this->statusTime = $data->status_time ? new DateTime($data->status_time) : null;
+    }
+
+    public function getStatusTime(): ?DateTime {
+        return $this->statusTime;
+    }
+
+    public function getStatus(): ?string {
+        return $this->status;
+    }
+
+    public function getId(): int {
+        return $this->id;
     }
 }

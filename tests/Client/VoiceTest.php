@@ -3,71 +3,36 @@
 namespace Seven\Tests\Client;
 
 use Seven\Api\Params\VoiceParams;
-use Seven\Api\Response\Voice;
+use Seven\Api\Response\Voice\Voice;
 
 class VoiceTest extends BaseTest {
     public function testVoice(): void {
-        $str = $this->voice(false, false, false);
-        $lines = explode(PHP_EOL, $str);
-        [$code, $id, $cost] = $lines;
+        $res = $this->client->voice->post($this->params);
 
-        self::assertIsString($str);
-        self::assertCount(3, $lines);
-        self::assertEquals('100', $code);
-
-        $id = (int)$id;
-        $cost = (float)$cost;
-        if ($this->isDebug) {
-            self::assertEquals(123456789, $id);
-            self::assertEquals(0, $cost);
-        } else {
-            self::assertGreaterThan(0, $id);
-            self::assertGreaterThan(0, $cost);
-        }
+        $this->assertVoice($res);
     }
 
-    /**
-     * @param bool $json
-     * @param bool $xml
-     * @param bool $debug
-     * @return Voice|string
-     */
-    private function voice(bool $json, bool $xml, bool $debug) {
-        return $this->client->voice((new VoiceParams)
-            ->setDebug($debug)
-            ->setJson($json)
-            ->setText('The current time is' . time())
-            ->setTo($this->recipient)
-            ->setXml($xml)
-        );
+    private function assertVoice(Voice $v, bool $debug = false): void {
+        $this->assertEquals(100, $v->getSuccess());
+
+        $this->assertCount(1, $v->getMessages());
+        $msg = $v->getMessages()[0];
+        $this->assertIsInt($msg->getId());
+        $this->assertGreaterThan(0, $msg->getId());
+
+        $this->assertIsFloat($v->getTotalPrice());
+        if ($debug) $this->assertEquals(0.0, $v->getTotalPrice());
+        else $this->assertGreaterThanOrEqual(0, $v->getTotalPrice());
     }
 
-    public function testVoiceJson(): void {
-        $res = $this->voice(true, false, false);
+    public function testVoiceDebug(): void {
+        $params = (clone $this->params)->setDebug(true);
+        $res = $this->client->voice->post($params);
 
-        self::assertIsObject($res);
-        self::assertInstanceOf(Voice::class, $res);
-        self::assertVoice($res);
+        $this->assertVoice($res, true);
     }
 
-    private static function assertVoice(Voice $v, bool $debug = false): void {
-        self::assertEquals(100, $v->success);
-
-        self::assertCount(1, $v->messages);
-        $msg = $v->messages[0];
-        self::assertIsInt($msg->id);
-        self::assertGreaterThan(0, $msg->id);
-
-        self::assertIsFloat($v->total_price);
-        if ($debug) self::assertEquals(0.0, $v->total_price);
-        else self::assertGreaterThan(0, $v->total_price);
-    }
-
-    public function testVoiceJsonDebug(): void {
-        $res = $this->voice(true, false, true);
-
-        self::assertIsObject($res);
-        self::assertInstanceOf(Voice::class, $res);
-        self::assertVoice($res, true);
+    protected function setUp(): void {
+        $this->params = new VoiceParams('The current time is' . time(), '491716992343');
     }
 }

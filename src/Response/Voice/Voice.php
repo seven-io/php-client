@@ -1,0 +1,42 @@
+<?php declare(strict_types=1);
+
+namespace Seven\Api\Response\Voice;
+
+class Voice {
+    protected bool $debug;
+    protected float $balance;
+    /**
+     * @var VoiceMessage[] $messages
+     */
+    protected array $messages;
+    protected int $success;
+    protected float $totalPrice;
+
+    public function __construct(object $data) {
+        $this->debug = $data->debug;
+        $this->balance = $data->balance;
+        foreach ($data->messages as $k => $v) $this->messages[$k] = new VoiceMessage($v);
+        $this->success = (int)$data->success;
+        $this->totalPrice = (float)$data->total_price;
+    }
+
+    public function isDebug(): bool {
+        return $this->debug;
+    }
+
+    public function getBalance(): float {
+        return $this->balance;
+    }
+
+    public function getMessages(): array {
+        return $this->messages;
+    }
+
+    public function getSuccess(): int {
+        return $this->success;
+    }
+
+    public function getTotalPrice(): float {
+        return $this->totalPrice;
+    }
+}

@@ -7,15 +7,6 @@ class JournalConstants {
 
     public const ENDPOINT = 'journal';
 
-    public const TYPE_INBOUND = 'inbound';
-    public const TYPE_OUTBOUND = 'outbound';
-    public const TYPE_REPLIES = 'replies';
-    public const TYPE_VOICE = 'voice';
-
-    public const TYPES = [
-        self::TYPE_INBOUND,
-        self::TYPE_OUTBOUND,
-        self::TYPE_REPLIES,
-        self::TYPE_VOICE,
-    ];
+    public const LIMIT_MIN = 1;
+    public const LIMIT_MAX = 100;
 }

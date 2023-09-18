@@ -2,14 +2,23 @@
 
 namespace Seven\Api\Params;
 
-class VoiceParams extends AbstractParams implements VoiceParamsInterface {
-    protected $debug;
-    protected $from;
-    protected $json;
-    protected $language;
-    protected $text;
-    protected $to;
-    protected $xml;
+class VoiceParams implements ParamsInterface {
+    protected ?bool $debug = null;
+    protected ?string $from = null;
+    protected ?string $language = null;
+    protected ?int $ringtime = null;
+    protected string $text;
+    protected string $to;
+    protected ?bool $xml = null;
+
+    public function __construct(string $text, string $to) {
+        $this->text = $text;
+        $this->to = $to;
+    }
+
+    public function toArray(): array {
+        return get_object_vars($this);
+    }
 
     public function getDebug(): ?bool {
         return $this->debug;
@@ -17,7 +26,6 @@ class VoiceParams extends AbstractParams implements VoiceParamsInterface {
 
     public function setDebug(?bool $debug): self {
         $this->debug = $debug;
-
         return $this;
     }
 
@@ -27,37 +35,33 @@ class VoiceParams extends AbstractParams implements VoiceParamsInterface {
 
     public function setFrom(?string $from): self {
         $this->from = $from;
-
         return $this;
     }
 
-    public function getJson(): ?bool {
-        return $this->json;
+    public function getRingtime(): ?int {
+        return $this->ringtime;
     }
 
-    public function setJson(?bool $json): self {
-        $this->json = $json;
-
+    public function setRingtime(?int $ringtime): self {
+        $this->ringtime = $ringtime;
         return $this;
     }
 
-    public function getText(): ?string {
+    public function getText(): string {
         return $this->text;
     }
 
     public function setText(string $text): self {
         $this->text = $text;
-
         return $this;
     }
 
-    public function getTo(): ?string {
+    public function getTo(): string {
         return $this->to;
     }
 
     public function setTo(string $to): self {
         $this->to = $to;
-
         return $this;
     }
 
@@ -67,7 +71,6 @@ class VoiceParams extends AbstractParams implements VoiceParamsInterface {
 
     public function setXml(?bool $xml): self {
         $this->xml = $xml;
-
         return $this;
     }
 
@@ -77,7 +80,6 @@ class VoiceParams extends AbstractParams implements VoiceParamsInterface {
 
     public function setLanguage(?string $language): self {
         $this->language = $language;
-
         return $this;
     }
 }

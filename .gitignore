@@ -2,3 +2,4 @@ vendor/
 .env
 *.http
 .phpunit.result.cache
+.phpdoc/

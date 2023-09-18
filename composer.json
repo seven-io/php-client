@@ -19,25 +19,25 @@
     },
     "config": {
         "platform": {
-            "php": "7.3"
+            "php": "7.4"
         }
     },
     "description": "Official API Client for requesting the seven.io SMS Gateway.",
     "homepage": "https://github.com/seven-io/php-client",
     "keywords": [
         "2fa",
-        "sms",
-        "gateway",
-        "text2speech",
-        "hlr",
         "cnam",
+        "gateway",
+        "hlr",
         "mnp",
+        "sms",
+        "text2speech",
         "tts"
     ],
     "license": "MIT",
     "name": "seven.io/api",
     "require": {
-        "php": ">=7.3",
+        "php": ">=7.4",
         "ext-ctype": "*",
         "ext-curl": "*",
         "ext-mbstring": "*",
@@ -45,6 +45,7 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^9",
+        "ext-xdebug": "*",
         "ext-soap": "*",
         "ext-simplexml": "*"
     },

@@ -2,95 +2,69 @@
 
 namespace Seven\Tests\Client;
 
-use Seven\Api\Response\Contact;
-use Seven\Api\Response\ContactCreate;
-use Seven\Api\Response\ContactDelete;
+use Seven\Api\Params\WriteContactParams;
+use Seven\Api\Response\Contacts\Contact;
+use Seven\Api\Response\Contacts\ContactCreate;
+use Seven\Api\Response\Contacts\ContactDelete;
 
 class ContactsTest extends BaseTest {
-    public function testContactsReadCsv(): void {
-        $res = $this->client->getContacts();
-        $res = explode(PHP_EOL, $res);
+    public function testContactsRead(): void {
+        $res = $this->client->contacts->read();
 
-        self::assertIsArray($res);
+        $this->assertIsArray($res);
 
         if (count($res)) {
-            $c0 = self::toJSON(reset($res));
-            self::assertContact($c0);
-
-            self::assertContact(self::toJSON($this->client->getContact($c0->ID)));
+            $this->assertRead($res);
+            $contact = reset($res);
+            $contact = $this->client->contacts->read($contact->getId());
+            $this->assertRead($contact);
         }
     }
 
-    private static function toJSON(string $csv): Contact {
-        $c = str_replace('"', '', $csv);
-        [$id, $name, $number] = explode(';', $c);
-
-        $c = new Contact;
-        $c->Name = $name;
-        $c->Number = $number;
-        $c->setID($id);
-
-        return $c;
+    private function assertRead(array $res): void {
+        $this->assertContact(reset($res));
     }
 
-    private static function assertContact(Contact $c): void {
-        self::assertIsInt($c->ID);
-
-        self::assertIsString($c->Name);
-
-        self::assertIsString($c->Number);
-    }
-
-    public function testContactsReadJson(): void {
-        /** @var Contact[] $res */
-        $res = $this->client->getContacts(true);
-
-        self::assertIsArray($res);
-
-        if (count($res)) {
-            self::assertRead($res);
-
-            self::assertRead($this->client->getContact(reset($res)->ID, true));
-        }
-    }
-
-    private static function assertRead(array $res): void {
-        self::assertContact(reset($res));
+    private function assertContact(Contact $c): void {
+        $this->assertGreaterThanOrEqual(1, $c->getId());
     }
 
     public function testContactsCreateEditDelete(): void {
-        $c = new ContactCreate($this->client->createContact());
+        $c = $this->client->contacts->create();
+        $contactId = $c->getId();
 
-        self::assertCreate($c);
+        $this->assertCreate($c);
 
-        self::assertWriteSuccess($this->client->editContact([
-            'email' => 'Tommy_Testersen@web.de',
-            'empfaenger' => '+0123459877676',
-            'id' => $c->id,
-            'nick' => 'Tommy Testersen',
-        ]));
+        $writeParams = (new WriteContactParams)
+            ->setEmail('Tommy_Testersen@web.de')
+            ->setId($contactId)
+            ->setMobile('+0123459877676')
+            ->setNick('Tommy Testersen');
+        $writeResponse = $this->client->contacts->write($writeParams);
+        $this->assertEquals(152, $writeResponse->getReturn());
 
-        self::assertRead($this->client->getContact($c->id, true));
+        $this->assertRead($this->client->contacts->read($contactId));
 
-        self::assertWriteSuccess($this->client->deleteContact($c->id));
+        $this->assertDeleteSuccess($this->client->contacts->delete($contactId));
     }
 
-    private static function assertCreate(ContactCreate $c): void {
-        self::assertIsInt($c->id);
-        self::assertGreaterThan(0, $c->id);
-        self::assertEquals(152, $c->code);
+    private function assertCreate(ContactCreate $c): void {
+        $contactId = $c->getId();
+
+        $this->assertIsInt($contactId);
+        $this->assertGreaterThan(0, $contactId);
+        $this->assertEquals(152, $c->getCode());
     }
 
-    private static function assertWriteSuccess(int $code): void {
-        self::assertEquals(152, $code);
+    private function assertDeleteSuccess(ContactDelete $contactDelete): void {
+        $this->assertEquals(152, $contactDelete->getCode());
     }
 
-    public function testContactsCreateDeleteJson(): void {
-        $res = $this->client->createContact(true);
-        self::assertCreate($res);
+    public function testContactsCreateDelete(): void {
+        $res = $this->client->contacts->create();
+        $this->assertCreate($res);
 
-        $res = $this->client->deleteContact($res->id, true);
-        self::assertInstanceOf(ContactDelete::class, $res);
-        self::assertWriteSuccess($res->code);
+        $res = $this->client->contacts->delete($res->getId());
+        $this->assertDeleteSuccess($res);
     }
 }

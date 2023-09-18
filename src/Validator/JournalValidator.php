@@ -2,70 +2,78 @@
 
 namespace Seven\Api\Validator;
 
+use DateTime;
 use Seven\Api\Constant\JournalConstants;
 use Seven\Api\Exception\InvalidOptionalArgumentException;
-use Seven\Api\Exception\InvalidRequiredArgumentException;
+use Seven\Api\Params\JournalParams;
 
-class JournalValidator extends BaseValidator implements ValidatorInterface {
-    /** @throws InvalidOptionalArgumentException|InvalidRequiredArgumentException */
+class JournalValidator {
+    protected JournalParams $params;
+
+    public function __construct(JournalParams $params) {
+        $this->params = $params;
+    }
+
+    /** @throws InvalidOptionalArgumentException */
     public function validate(): void {
-        $this->type();
         $this->id();
-        $this->date_from();
-        $this->date_to();
+        $this->limit();
+        $this->dateFrom();
+        $this->dateTo();
         $this->to();
         $this->state();
     }
 
-    /** @throws InvalidRequiredArgumentException */
-    public function type(): void {
-        $type = $this->fallback('type');
-
-        if (!in_array($type, JournalConstants::TYPES)) {
-            throw new InvalidRequiredArgumentException('missing type.');
-        }
-    }
-
     /** @throws InvalidOptionalArgumentException */
     public function id(): void {
-        $id = $this->fallback('id');
+        $id = $this->params->getId();
+        if ($id === null) return;
 
-        if (null !== $id && !is_int($id)) {
-            throw new InvalidOptionalArgumentException("Invalid type for id $id.");
-        }
+        if ($id < 1)
+            throw new InvalidOptionalArgumentException('ID must be greater than 0.');
+    }
+
+    /**
+     * @throws InvalidOptionalArgumentException
+     */
+    public function limit(): void {
+        $limit = $this->params->getLimit();
+        if ($limit === null) return;
+
+        if ($limit < JournalConstants::LIMIT_MIN) throw new InvalidOptionalArgumentException(
+            'Limit can not be less than ' . JournalConstants::LIMIT_MIN
+        );
+
+        if ($limit > JournalConstants::LIMIT_MAX) throw new InvalidOptionalArgumentException(
+            'Limit can not be more than ' . JournalConstants::LIMIT_MAX
+        );
     }
 
     /** @throws InvalidOptionalArgumentException */
-    public function date_from(): void {
-        $dateFrom = $this->fallback('date_from');
+    public function dateFrom(): void {
+        $dateFrom = $this->params->getDateFrom();
+        if (!$dateFrom) return;
 
-        if (null !== $dateFrom && !self::isDateValid($dateFrom)) {
-            throw new InvalidOptionalArgumentException(
-                'date_from is not a valid date.');
-        }
-    }
-
-    public static function isDateValid(string $date): bool {
-        return (bool)preg_match(JournalConstants::DATE_PATTERN, $date);
+        if ($dateFrom > new DateTime)
+            throw new InvalidOptionalArgumentException('From date can not be in the future.');
     }
 
     /** @throws InvalidOptionalArgumentException */
-    public function date_to(): void {
-        $dateTo = $this->fallback('date_to');
+    public function dateTo(): void {
+        $dateTo = $this->params->getDateTo();
+        if (!$dateTo) return;
 
-        if (null !== $dateTo && !self::isDateValid($dateTo)) {
-            throw new InvalidOptionalArgumentException(
-                'date_to is not a valid date.');
-        }
+        if ($dateTo > new DateTime)
+            throw new InvalidOptionalArgumentException('To date can not be in the future.');
     }
 
     /** @throws InvalidOptionalArgumentException */
     public function to(): void {
-        $to = $this->fallback('to');
+        $to = $this->params->getTo();
+        if (!$to) return;
 
-        if (null !== $to && !((bool)preg_match('/\\d/', $to))) {
+        if (!(preg_match('/\\d/', $to)))
             throw new InvalidOptionalArgumentException('to is not a valid number.');
-        }
     }
 
     public function state(): void {

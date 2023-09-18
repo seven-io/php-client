@@ -4,8 +4,15 @@ namespace Seven\Api\Validator;
 
 use Seven\Api\Constant\PricingConstants;
 use Seven\Api\Exception\InvalidOptionalArgumentException;
+use Seven\Api\Params\PricingParams;
 
-class PricingValidator extends BaseValidator implements ValidatorInterface {
+class PricingValidator {
+    protected PricingParams $params;
+
+    public function __construct(PricingParams $params) {
+        $this->params = $params;
+    }
+
     /** @throws InvalidOptionalArgumentException */
     public function validate(): void {
         $this->country();
@@ -14,7 +21,8 @@ class PricingValidator extends BaseValidator implements ValidatorInterface {
 
     /** @throws InvalidOptionalArgumentException */
     public function country(): void {
-        $country = $this->fallback('country', '');
+        $country = $this->params->getCountry();
+        if (!$country) return;
 
         $len = strlen($country);
         if ($len > PricingConstants::COUNTRY_MAX_LENGTH) {
@@ -26,10 +34,10 @@ class PricingValidator extends BaseValidator implements ValidatorInterface {
 
     /** @throws InvalidOptionalArgumentException */
     public function format(): void {
-        $format = $this->fallback('format');
+        $format = $this->params->getFormat();
+        if (!$format) return;
 
-        if (null !== $format && !in_array($format, PricingConstants::FORMATS)) {
+        if (!in_array($format, PricingConstants::FORMATS))
             throw new InvalidOptionalArgumentException("format seems to be invalid: $format.");
-        }
     }
 }

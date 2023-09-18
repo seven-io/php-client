@@ -2,32 +2,57 @@
 
 namespace Seven\Api\Validator;
 
-use Seven\Api\Constant\ContactsConstants;
-use Seven\Api\Exception\InvalidBooleanOptionException;
+use Seven\Api\Constant\ContactsAction;
 use Seven\Api\Exception\InvalidRequiredArgumentException;
+use Seven\Api\Params\ContactsParams;
 
-class ContactsValidator extends BaseValidator implements ValidatorInterface {
-    public function __construct(array $parameters = []) {
-        parent::__construct($parameters, ['json']);
+class ContactsValidator {
+    protected ContactsParams $params;
+
+    public function __construct(ContactsParams $params) {
+        $this->params = $params;
     }
 
     /**
      * @throws InvalidRequiredArgumentException
-     * @throws InvalidBooleanOptionException
      */
     public function validate(): void {
         $this->action();
-
-        parent::validate();
     }
 
     /** @throws InvalidRequiredArgumentException */
     public function action(): void {
-        $action = $this->fallback('action');
+        $action = $this->params->getAction();
 
-        if (!in_array($action, ContactsConstants::ACTIONS)) {
-            throw new InvalidRequiredArgumentException(
-                "Unknown action '$action'.");
+        switch ($action) {
+            case ContactsAction::DELETE:
+                $this->delete();
+                break;
+            case ContactsAction::READ:
+                $this->read();
+                break;
+            case ContactsAction::WRITE:
+                $this->write();
+                break;
+
+            default:
+                throw new InvalidRequiredArgumentException('Unknown action: ' . $action);
         }
+    }
+
+    /**
+     * @throws InvalidRequiredArgumentException
+     */
+    public function delete(): void {
+        $id = $this->params->getId();
+
+        if ($id === null)
+            throw new InvalidRequiredArgumentException('Missing parameter id');
+    }
+
+    public function read(): void {
+    }
+
+    public function write(): void {
     }
 }

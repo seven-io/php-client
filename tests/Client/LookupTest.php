@@ -1,85 +1,74 @@
-<?php declare(strict_types=1);
+<?php /** @noinspection PhpUnhandledExceptionInspection */
+declare(strict_types=1);
 
 namespace Seven\Tests\Client;
 
-use Seven\Api\Exception\UnexpectedApiResponseException;
-use Seven\Api\Response\Carrier;
-use Seven\Api\Response\LookupMnp;
-use Seven\Api\Response\Mnp;
-use Seven\Api\Validator\LookupValidator;
+use Seven\Api\Response\Lookup\Carrier;
 
 class LookupTest extends BaseTest {
-    public function testLookupFormat(): void {
-        $res = $this->client->lookupFormat($this->recipient);
-
-        self::assertIsObject($res);
-        self::assertIsBool($res->success);
+    public function testFormat(): void {
+        $res = $this->client->lookup->format('491716992343');
+        $this->assertTrue($res->isSuccess());
     }
 
-    /** @throws UnexpectedApiResponseException */
-    public function testLookupMnp(): void {
-        self::assertTrue(LookupValidator::isValidMobileNetworkShortName(
-            $this->client->lookupMnp($this->recipient)));
+    public function testMnpMulti(): void {
+        $arr = $this->client->lookup->mnp('491716992343');
+
+        foreach ($arr as $item) {
+            $this->assertIsInt($item->getCode());
+            $mnp = $item->getMnp();
+            $this->assertIsString($mnp->getCountry());
+            $this->assertIsString($mnp->getInternationalFormatted());
+            $this->assertIsBool($mnp->isPorted());
+            $this->assertIsString($mnp->getMccMnc());
+            $this->assertIsString($mnp->getNationalFormat());
+            $this->assertIsString($mnp->getNetwork());
+            $this->assertIsString($mnp->getNumber());
+            $this->assertIsNumeric($item->getPrice());
+            $this->assertTrue($item->isSuccess());
+        }
     }
 
-    /** @throws UnexpectedApiResponseException */
-    public function testLookupMnpJson(): void {
-        $res = $this->client->lookupMnp($this->recipient, true);
+    public function testHlr(): void {
+        $arr = $this->client->lookup->hlr('491716992343');
 
-        self::assertIsObject($res);
-        self::assertInstanceOf(LookupMnp::class, $res);
-        self::assertIsInt($res->code);
-        self::assertInstanceOf(Mnp::class, $res->mnp);
-        self::assertIsString($res->mnp->country);
-        self::assertIsString($res->mnp->international_formatted);
-        self::assertIsBool($res->mnp->isPorted);
-        self::assertIsString($res->mnp->mccmnc);
-        self::assertIsString($res->mnp->national_format);
-        self::assertIsString($res->mnp->network);
-        self::assertIsString($res->mnp->number);
-        self::assertIsFloat($res->price);
-        self::assertIsBool($res->success);
+        foreach ($arr as $item) {
+            $this->assertNotEmpty($item->getCountryCode());
+            $this->assertNotEmpty($item->getCountryName());
+            $this->assertNotEmpty($item->getCountryPrefix());
+            $this->assertCarrier($item->getCurrentCarrier());
+            $this->assertIsLengthyString($item->getGsmCode());
+            $this->assertNotEmpty($item->getGsmMessage());
+            $this->assertNotEmpty($item->getInternationalFormatNumber());
+            $this->assertNotEmpty($item->getInternationalFormatted());
+            $this->assertTrue($item->isLookupOutcome());
+            $this->assertNotEmpty($item->getLookupOutcomeMessage());
+            $this->assertNotEmpty($item->getNationalFormatNumber());
+            $this->assertCarrier($item->getOriginalCarrier());
+            $this->assertNotEmpty($item->getPorted());
+            $this->assertNotEmpty($item->getReachable());
+            $this->assertNotEmpty($item->getRoaming());
+            $this->assertTrue($item->isStatus());
+            $this->assertNotEmpty($item->getStatusMessage());
+            $this->assertNotEmpty($item->getValidNumber());
+        }
     }
 
-    public function testLookupHlr(): void {
-        $res = $this->client->lookupHlr($this->recipient);
-        self::assertIsObject($res);
-        self::assertIsString($res->country_code);
-        self::assertIsString($res->country_name);
-        self::assertIsString($res->country_prefix);
-        self::assertCarrier($res->current_carrier);
-        self::assertIsString($res->gsm_code);
-        self::assertIsString($res->gsm_message);
-        self::assertIsString($res->international_format_number);
-        self::assertIsString($res->international_formatted);
-        self::assertIsBool($res->lookup_outcome);
-        self::assertIsString($res->lookup_outcome_message);
-        self::assertIsString($res->national_format_number);
-        self::assertCarrier($res->original_carrier);
-        self::assertIsString($res->ported);
-        self::assertIsString($res->reachable);
-        self::assertIsString($res->roaming);
-        self::assertIsBool($res->status);
-        self::assertIsString($res->status_message);
-        self::assertIsString($res->valid_number);
+    private function assertCarrier(Carrier $c): void {
+        $this->assertNotEmpty($c->getCountry());
+        $this->assertNotEmpty($c->getName());
+        $this->assertNotEmpty($c->getNetworkCode());
+        $this->assertNotEmpty($c->getNetworkType());
     }
 
-    private static function assertCarrier(Carrier $c): void {
-        self::assertIsObject($c);
-        self::assertInstanceOf(Carrier::class, $c);
-        self::assertIsString($c->country);
-        self::assertIsString($c->name);
-        self::assertIsString($c->network_code);
-        self::assertIsString($c->network_type);
-    }
+    public function testCnam(): void {
+        $arr = $this->client->lookup->cnam('491716992343');
 
-    public function testLookupCnam(): void {
-        $res = $this->client->lookupCnam($this->recipient);
-
-        self::assertIsObject($res);
-        self::assertIsString($res->code);
-        self::assertIsString($res->name);
-        self::assertIsString($res->number);
-        self::assertIsBool($res->success);
+        foreach ($arr as $item) {
+            $this->assertNotEmpty($item->getCode());
+            $this->assertNotEmpty($item->getName());
+            $this->assertNotEmpty($item->getNumber());
+            $this->assertTrue($item->isSuccess());
+        }
     }
 }

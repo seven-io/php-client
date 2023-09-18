@@ -5,8 +5,15 @@ namespace Seven\Api\Validator;
 use Seven\Api\Exception\InvalidOptionalArgumentException;
 use Seven\Api\Exception\InvalidRequiredArgumentException;
 use Seven\Api\Library\Util;
+use Seven\Api\Params\ValidateForVoiceParams;
 
-class ValidateForVoiceValidator extends BaseValidator implements ValidatorInterface {
+class ValidateForVoiceValidator {
+    protected ValidateForVoiceParams $params;
+
+    public function __construct(ValidateForVoiceParams $params) {
+        $this->params = $params;
+    }
+
     /**
      * @throws InvalidOptionalArgumentException
      * @throws InvalidRequiredArgumentException
@@ -18,18 +25,16 @@ class ValidateForVoiceValidator extends BaseValidator implements ValidatorInterf
 
     /** @throws InvalidOptionalArgumentException */
     public function callback(): void {
-        $callback = $this->fallback('callback');
+        $callback = $this->params->getCallback();
 
-        if (null !== $callback && !Util::isValidUrl($callback)) {
+        if (null !== $callback && !Util::isValidUrl($callback))
             throw new InvalidOptionalArgumentException(
                 'Parameter "callback" is not a valid URL.');
-        }
     }
 
     /** @throws InvalidRequiredArgumentException */
     public function number(): void {
-        if ('' === $this->fallback('number', '')) {
+        if ('' === $this->params->getNumber())
             throw new InvalidRequiredArgumentException('Parameter "number" is missing.');
-        }
     }
 }
