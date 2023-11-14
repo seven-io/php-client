@@ -8,11 +8,13 @@ use Seven\Api\Params\SmsParams;
 
 class SmsTest extends BaseTest {
     public function testSms(): void {
-        $res = $this->client->sms->dispatch($this->params);
+        $params = clone $this->params;
+        $params->setText('Müller');
+        $res = $this->client->sms->dispatch($params);
 
         $msg = $res->getMessages()[0];
-        $this->assertEquals($this->params->getText(), $msg->getText());
-        $this->assertEquals(str_replace('+', '', $this->params->getTo()[0]), $msg->getRecipient());
+        $this->assertEquals($params->getText(), $msg->getText());
+        $this->assertEquals(str_replace('+', '', $params->getTo()[0]), $msg->getRecipient());
     }
 
     public function testSmsFiles(): void {
