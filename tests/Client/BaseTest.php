@@ -9,7 +9,7 @@ use Seven\Api\Client;
 
 abstract class BaseTest extends TestCase {
     protected Client $client;
-    protected bool $isDebug;
+    protected bool $isSandbox;
 
     public function __construct() {
         parent::__construct();
@@ -17,10 +17,9 @@ abstract class BaseTest extends TestCase {
         $this->init(getenv('SEVEN_API_KEY'), false);
     }
 
-    protected function init(string $apiKey, bool $isDebug): void {
+    protected function init(string $apiKey, bool $isSandbox): void {
         $this->client = new Client($apiKey, 'php-api-test');
-
-        $this->isDebug = $isDebug;
+        $this->isSandbox = $isSandbox;
     }
 
     public static function createRandomURL(string $uri = 'https://my.tld/'): string {
@@ -36,6 +35,10 @@ abstract class BaseTest extends TestCase {
         }
 
         self::assertInstanceOf(DateTime::class, $bool);
+    }
+
+    public function toSandbox(): void {
+        $this->init(getenv('SEVEN_API_KEY_SANDBOX'), true);
     }
 
     public function assertIsNullOrString($value): void {

@@ -5,7 +5,6 @@ namespace Seven\Api\Params;
 use DateTime;
 
 class SmsParams implements ParamsInterface {
-    protected ?bool $debug = null;
     protected ?DateTime $delay = null;
     protected array $files = [];
     protected ?bool $flash = null;
@@ -24,15 +23,6 @@ class SmsParams implements ParamsInterface {
     public function __construct(string $text, string ...$to) {
         $this->text = $text;
         $this->to = $to;
-    }
-
-    public function getDebug(): ?bool {
-        return $this->debug;
-    }
-
-    public function setDebug(?bool $debug): self {
-        $this->debug = $debug;
-        return $this;
     }
 
     public function getDelay(): ?DateTime {

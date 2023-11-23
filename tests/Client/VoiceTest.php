@@ -12,7 +12,7 @@ class VoiceTest extends BaseTest {
         $this->assertVoice($res);
     }
 
-    private function assertVoice(Voice $v, bool $debug = false): void {
+    private function assertVoice(Voice $v, bool $sandbox = false): void {
         $this->assertEquals(100, $v->getSuccess());
 
         $this->assertCount(1, $v->getMessages());
@@ -21,12 +21,13 @@ class VoiceTest extends BaseTest {
         $this->assertGreaterThan(0, $msg->getId());
 
         $this->assertIsFloat($v->getTotalPrice());
-        if ($debug) $this->assertEquals(0.0, $v->getTotalPrice());
+        if ($sandbox) $this->assertEquals(0.0, $v->getTotalPrice());
         else $this->assertGreaterThanOrEqual(0, $v->getTotalPrice());
     }
 
-    public function testVoiceDebug(): void {
-        $params = (clone $this->params)->setDebug(true);
+    public function testVoiceSandbox(): void {
+        $this->toSandbox();
+        $params = (clone $this->params);
         $res = $this->client->voice->post($params);
 
         $this->assertVoice($res, true);

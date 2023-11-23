@@ -3,7 +3,6 @@
 namespace Seven\Api\Params;
 
 class VoiceParams implements ParamsInterface {
-    protected ?bool $debug = null;
     protected ?string $from = null;
     protected ?string $language = null;
     protected ?int $ringtime = null;
@@ -18,15 +17,6 @@ class VoiceParams implements ParamsInterface {
 
     public function toArray(): array {
         return get_object_vars($this);
-    }
-
-    public function getDebug(): ?bool {
-        return $this->debug;
-    }
-
-    public function setDebug(?bool $debug): self {
-        $this->debug = $debug;
-        return $this;
     }
 
     public function getFrom(): ?string {

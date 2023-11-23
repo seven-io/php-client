@@ -31,7 +31,7 @@ See [docs](/docs) for more details.
 Some basic tests are implemented. You can run them like this:
 
 ```shell script
-SEVEN_API_KEY=<API-KEY> php vendor/bin/phpunit tests/Client
+SEVEN_API_KEY=<API-KEY> SEVEN_API_KEY_SANDBOX=<SANDBOX-API-KEY> php vendor/bin/phpunit tests/Client
 ```
 
 Make sure to fill in the values.
