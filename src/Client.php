@@ -9,13 +9,15 @@ use Seven\Api\Resource\HooksResource;
 use Seven\Api\Resource\JournalResource;
 use Seven\Api\Resource\LookupResource;
 use Seven\Api\Resource\PricingResource;
+use Seven\Api\Resource\RcsResource;
 use Seven\Api\Resource\SmsResource;
 use Seven\Api\Resource\StatusResource;
 use Seven\Api\Resource\SubaccountsResource;
 use Seven\Api\Resource\ValidateForVoiceResource;
 use Seven\Api\Resource\VoiceResource;
 
-class Client extends BaseClient {
+class Client extends BaseClient
+{
     public AnalyticsResource $analytics;
     public BalanceResource $balance;
     public ContactsResource $contacts;
@@ -23,13 +25,15 @@ class Client extends BaseClient {
     public JournalResource $journal;
     public LookupResource $lookup;
     public PricingResource $pricing;
+    public RcsResource $rcs;
     public SmsResource $sms;
     public StatusResource $status;
     public SubaccountsResource $subaccounts;
     public ValidateForVoiceResource $validateForVoice;
     public VoiceResource $voice;
 
-    public function __construct(string $apiKey, string $sentWith = 'php-api') {
+    public function __construct(string $apiKey, string $sentWith = 'php-api')
+    {
         parent::__construct($apiKey, $sentWith);
 
         $this->analytics = new AnalyticsResource($this);
@@ -39,6 +43,7 @@ class Client extends BaseClient {
         $this->journal = new JournalResource($this);
         $this->lookup = new LookupResource($this);
         $this->pricing = new PricingResource($this);
+        $this->rcs = new RcsResource($this);
         $this->sms = new SmsResource($this);
         $this->status = new StatusResource($this);
         $this->subaccounts = new SubaccountsResource($this);
