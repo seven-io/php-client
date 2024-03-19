@@ -7,18 +7,18 @@ use InvalidArgumentException;
 use Seven\Api\Constant\HttpMethod;
 use UnexpectedValueException;
 
-abstract class BaseClient {
+abstract class BaseClient
+{
     public const BASE_URI = 'https://gateway.seven.io/api';
-
-    protected string $apiKey;
-    protected string $sentWith;
 
     /**
      * @throws Exception
      */
-    public function __construct(string $apiKey, string $sentWith = 'php-api') {
-        $this->apiKey = $apiKey;
-        $this->sentWith = $sentWith;
+    public function __construct(
+        protected string $apiKey,
+        protected string $sentWith = 'php-api'
+    )
+    {
 
         if ('' === $apiKey) throw new InvalidArgumentException(
             "Invalid required constructor argument apiKey: $apiKey");
@@ -27,25 +27,23 @@ abstract class BaseClient {
             "Invalid required constructor argument sentWith: $sentWith");
     }
 
-    public function getApiKey(): string {
+    public function getApiKey(): string
+    {
         return $this->apiKey;
     }
 
-    public function getSentWith(): string {
+    public function getSentWith(): string
+    {
         return $this->sentWith;
     }
 
-    /**
-     * @return mixed
-     */
-    public function delete(string $path, array $options = []) {
+    public function delete(string $path, array $options = []): mixed
+    {
         return $this->request($path, HttpMethod::DELETE, $options);
     }
 
-    /**
-     * @return mixed
-     */
-    protected function request(string $path, string $method, array $options = []) {
+    protected function request(string $path, string $method, array $options = []): mixed
+    {
         $method = strtoupper($method);
         $methods = HttpMethod::values();
         if (!in_array($method, $methods)) {
@@ -58,16 +56,17 @@ abstract class BaseClient {
         $headers = [
             'Accept: application/json',
             'Content-Type: application/json',
-            "SentWith: $this->sentWith",
-            "X-Api-Key: $this->apiKey",
+            'SentWith: ' . $this->sentWith,
+            'X-Api-Key:' . $this->apiKey,
         ];
-        $url = self::BASE_URI . "/$path";
+        $url = self::BASE_URI . '/' . $path;
         $params = http_build_query($options);
-        if (HttpMethod::GET === $method) $url .= "?$params";
+        if (HttpMethod::GET === $method) $url .= '?' . $params;
 
         $ch = curl_init($url);
 
         if (HttpMethod::POST === $method) {
+            var_dump($options);
             $params = stripslashes(json_encode($options, JSON_UNESCAPED_UNICODE));
 
             curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
@@ -88,23 +87,19 @@ abstract class BaseClient {
 
         try {
             $res = json_decode($res, false, 512, JSON_THROW_ON_ERROR);
-        } catch (Exception $e) {
+        } catch (Exception) {
         }
 
         return $res;
     }
 
-    /**
-     * @return mixed
-     */
-    public function post(string $path, array $options = []) {
+    public function post(string $path, array $options = []): mixed
+    {
         return $this->request($path, HttpMethod::POST, $options);
     }
 
-    /**
-     * @return mixed
-     */
-    public function get(string $path, array $options = []) {
+    public function get(string $path, array $options = []): mixed
+    {
         return $this->request($path, HttpMethod::GET, $options);
     }
 }
