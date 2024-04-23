@@ -5,6 +5,7 @@ namespace Seven\Api;
 use Seven\Api\Resource\AnalyticsResource;
 use Seven\Api\Resource\BalanceResource;
 use Seven\Api\Resource\ContactsResource;
+use Seven\Api\Resource\GroupsResource;
 use Seven\Api\Resource\HooksResource;
 use Seven\Api\Resource\JournalResource;
 use Seven\Api\Resource\LookupResource;
@@ -21,6 +22,7 @@ class Client extends BaseClient
     public AnalyticsResource $analytics;
     public BalanceResource $balance;
     public ContactsResource $contacts;
+    public GroupsResource $groups;
     public HooksResource $hooks;
     public JournalResource $journal;
     public LookupResource $lookup;
@@ -39,6 +41,7 @@ class Client extends BaseClient
         $this->analytics = new AnalyticsResource($this);
         $this->balance = new BalanceResource($this);
         $this->contacts = new ContactsResource($this);
+        $this->groups = new GroupsResource($this);
         $this->hooks = new HooksResource($this);
         $this->journal = new JournalResource($this);
         $this->lookup = new LookupResource($this);
