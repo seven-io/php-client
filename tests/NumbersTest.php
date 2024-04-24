@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Seven\Tests\Client;
+namespace Seven\Tests;
 
 use Seven\Api\Constant\PaymentInterval;
 use Seven\Api\Params\Numbers\ListAvailableParams;
@@ -14,7 +14,7 @@ class NumbersTest extends BaseTest
         $availableParams = (new ListAvailableParams)
             ->setCountry('DE')
             ->setFeaturesApplicationToPersonSms(true);
-        $offers = $this->client->numbers->listAvailable($availableParams)->getAvailableNumbers();
+        $offers = $this->resources->numbers->listAvailable($availableParams)->getAvailableNumbers();
         $this->assertNotEmpty($offers);
 
         foreach ($offers as $offer) {
@@ -24,7 +24,7 @@ class NumbersTest extends BaseTest
 
         $firstOffer = $offers[0];
         $orderParams = (new OrderParams($firstOffer->getNumber()))->setPaymentInterval(PaymentInterval::MONTHLY);
-        $order = $this->client->numbers->order($orderParams);
+        $order = $this->resources->numbers->order($orderParams);
         $this->assertNull($order->getError());
         $this->assertTrue($order->isSuccess());
 
@@ -32,18 +32,18 @@ class NumbersTest extends BaseTest
             ->setEmailForward(['php_test@seven.dev'])
             ->setFriendlyName('Friendly Name')
             ->setSmsForward(['491716992343']);
-        $updated = $this->client->numbers->update($updateParams);
+        $updated = $this->resources->numbers->update($updateParams);
         $this->assertEquals($updateParams->getFriendlyName(), $updated->getFriendlyName());
         $this->assertEquals($updateParams->getEmailForward(), $updated->getForwardInboundSms()->getEmail()->getAddresses());
         $this->assertEquals($updateParams->getSmsForward(), $updated->getForwardInboundSms()->getSms()->getNumbers());
 
-        $number = $this->client->numbers->get($firstOffer->getNumber());
+        $number = $this->resources->numbers->get($firstOffer->getNumber());
         $this->assertEquals($orderParams->getPaymentInterval(), $number->getBilling()->getPaymentInterval());
 
-        $actives = $this->client->numbers->listActive();
+        $actives = $this->resources->numbers->listActive();
         $this->assertNotEmpty($actives);
 
-        $deleted = $this->client->numbers->delete($firstOffer->getNumber());
+        $deleted = $this->resources->numbers->delete($firstOffer->getNumber());
         $this->assertTrue($deleted->isSuccess());
     }
 }

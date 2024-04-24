@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Seven\Tests\Client;
+namespace Seven\Tests;
 
 use DateInterval;
 use DateTime;
@@ -14,7 +14,7 @@ class JournalTest extends BaseTest
 {
     public function testJournalInbound(): void
     {
-        $arr = $this->client->journal->inbound();
+        $arr = $this->resources->journal->inbound();
         $this->request($arr);
     }
 
@@ -36,7 +36,7 @@ class JournalTest extends BaseTest
 
     public function testJournalOutbound(): void
     {
-        $arr = $this->client->journal->outbound();
+        $arr = $this->resources->journal->outbound();
         $callable = function (JournalOutbound $j) {
             $this->assertIsString($j->getConnection());
             $this->assertIsNullOrLengthyString($j->getDlr());
@@ -53,7 +53,7 @@ class JournalTest extends BaseTest
 
     public function testJournalVoice(): void
     {
-        $arr = $this->client->journal->voice();
+        $arr = $this->resources->journal->voice();
         $callable = function (JournalVoice $j) {
             $this->assertIsNullOrLengthyString($j->getDuration());
             $this->assertIsNullOrString($j->getError());
@@ -66,7 +66,7 @@ class JournalTest extends BaseTest
 
     public function testJournalReplies(): void
     {
-        $arr = $this->client->journal->replies();
+        $arr = $this->resources->journal->replies();
         $this->request($arr);
     }
 

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Seven\Tests\Client;
+namespace Seven\Tests;
 
 use Seven\Api\Exception\InvalidRequiredArgumentException;
 use Seven\Api\Params\Subaccounts\CreateSubaccountParams;
@@ -13,7 +13,7 @@ class SubaccountsTest extends BaseTest
         $this->expectException(InvalidRequiredArgumentException::class);
 
         $params = new CreateSubaccountParams('', '');
-        $this->client->subaccounts->create($params);
+        $this->resources->subaccounts->create($params);
     }
 
     public function testCreate(): Subaccount
@@ -22,7 +22,7 @@ class SubaccountsTest extends BaseTest
             'Tommy Tester',
             sprintf('tommy.tester.%d@seven.dev', time())
         );
-        $res = $this->client->subaccounts->create($params);
+        $res = $this->resources->subaccounts->create($params);
 
         $this->assertTrue($res->isSuccess());
         $this->assertNull($res->getError());
@@ -55,7 +55,7 @@ class SubaccountsTest extends BaseTest
     {
         $id = $subaccount->getId();
         $amount = 12.34;
-        $res = $this->client->subaccounts->transferCredits($id, $amount);
+        $res = $this->resources->subaccounts->transferCredits($id, $amount);
 
         if ($res->isSuccess()) {
             $this->assertNull($res->getError());
@@ -74,7 +74,7 @@ class SubaccountsTest extends BaseTest
         $id = $subaccount->getId();
         $amount = 12.34;
         $threshold = 123.456;
-        $res = $this->client->subaccounts->update($id, $amount, $threshold);
+        $res = $this->resources->subaccounts->update($id, $amount, $threshold);
 
         if ($res->isSuccess()) {
             $this->assertNull($res->getError());
@@ -90,7 +90,7 @@ class SubaccountsTest extends BaseTest
      */
     public function testDelete(Subaccount $subaccount): void
     {
-        $res = $this->client->subaccounts->delete($subaccount->getId());
+        $res = $this->resources->subaccounts->delete($subaccount->getId());
 
         if ($res->isSuccess()) {
             $this->assertNull($res->getError());
@@ -101,7 +101,7 @@ class SubaccountsTest extends BaseTest
 
     public function testRead(): void
     {
-        $res = $this->client->subaccounts->read();
+        $res = $this->resources->subaccounts->read();
 
         $this->assertIsArray($res);
         array_walk($res, [$this, 'assertSubaccount']);

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Seven\Tests\Client;
+namespace Seven\Tests;
 
 use Seven\Api\Response\Analytics\AbstractAnalytic;
 use Seven\Api\Response\Analytics\AnalyticByDate;
@@ -11,7 +11,7 @@ class AnalyticsTest extends BaseTest
 {
     public function testAnalyticsGroupByDate(): void
     {
-        $res = $this->client->analytics->byDate();
+        $res = $this->resources->analytics->byDate();
 
         $this->assertCount(31, $res);
 
@@ -58,7 +58,7 @@ class AnalyticsTest extends BaseTest
 
     public function testAnalyticsGroupByLabel(): void
     {
-        foreach ($this->assertResponse($this->client->analytics->byLabel()) as $a) {
+        foreach ($this->assertResponse($this->resources->analytics->byLabel()) as $a) {
             /** @var AnalyticByLabel $a */
             $this->assertIsString($a->getLabel());
         }
@@ -66,12 +66,12 @@ class AnalyticsTest extends BaseTest
 
     public function testAnalyticsGroupByCountry(): void
     {
-        $this->assertResponse($this->client->analytics->byCountry());
+        $this->assertResponse($this->resources->analytics->byCountry());
     }
 
     public function testAnalyticsGroupBySubaccount(): void
     {
-        foreach ($this->assertResponse($this->client->analytics->bySubaccount()) as $a) {
+        foreach ($this->assertResponse($this->resources->analytics->bySubaccount()) as $a) {
             /** @var AnalyticBySubaccount $a */
             $account = $a->getAccount();
             $this->assertEach($a);

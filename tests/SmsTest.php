@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Seven\Tests\Client;
+namespace Seven\Tests;
 
 use DateTime;
 use Seven\Api\Params\SmsParams;
@@ -12,13 +12,13 @@ class SmsTest extends BaseTest
         $params = (new SmsParams('HI2U! The UNIX time is ' . time() . '.', '491716992343'));
         $params->setText('Müller');
         $params->setDelay(new DateTime('2050-12-31'));
-        $res = $this->client->sms->dispatch($params);
+        $res = $this->resources->sms->dispatch($params);
 
         $msg = $res->getMessages()[0];
         $this->assertEquals($params->getText(), $msg->getText());
         $this->assertEquals(str_replace('+', '', $params->getTo()[0]), $msg->getRecipient());
 
-        $this->client->sms->delete($msg->getId());
+        $this->resources->sms->delete($msg->getId());
     }
 
     public function testSmsFiles(): void
@@ -39,7 +39,7 @@ class SmsTest extends BaseTest
             $p->addFile($file);
         }
 
-        $json = $this->client->sms->dispatch($p->setText($text));
+        $json = $this->resources->sms->dispatch($p->setText($text));
         $msg = trim($json->getMessages()[0]->getText());
 
         $links = (int)preg_match_all('#(https://svn.me/)#', $msg);
@@ -51,11 +51,11 @@ class SmsTest extends BaseTest
         $params = (new SmsParams('HI2U! The UNIX time is ' . time() . '.', '491716992343'))
             ->addTo('4917987654321')
             ->setDelay(new DateTime('2050-12-31'));
-        $sms = $this->client->sms->dispatch($params);
+        $sms = $this->resources->sms->dispatch($params);
         $this->assertNotEmpty($sms->getMessages());
         $msg = $sms->getMessages()[0];
 
-        $res = $this->client->sms->delete($msg->getId());
+        $res = $this->resources->sms->delete($msg->getId());
         if ($res->isSuccess()) $this->assertSameSize($sms->getMessages(), $res->getDeleted());
         else $this->assertNull($res->getDeleted());
     }

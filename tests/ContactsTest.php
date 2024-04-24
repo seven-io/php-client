@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Seven\Tests\Client;
+namespace Seven\Tests;
 
 use DateTime;
 use Seven\Api\Library\OrderDirection;
@@ -28,11 +28,11 @@ class ContactsTest extends BaseTest
                     ->setNotes('CPaaS')
                     ->setPostalCode('24103')
             );
-        $created = $this->client->contacts->create($toCreate);
+        $created = $this->resources->contacts->create($toCreate);
 
         $this->assertEquals($toCreate->getProperties(), $created->getProperties());
 
-        $contact = $this->client->contacts->get($created->getId());
+        $contact = $this->resources->contacts->get($created->getId());
 
         $this->assertEquals($created->getProperties(), $contact->getProperties());
 
@@ -43,7 +43,7 @@ class ContactsTest extends BaseTest
             ->setSearch('')
             ->setOrderBy('')
             ->setOrderDirection(OrderDirection::Ascending);
-        $list = $this->client->contacts->list($listParams);
+        $list = $this->resources->contacts->list($listParams);
         $this->assertEquals($listParams->getLimit(), $list->getPagingMetadata()->getLimit());
         $this->assertEquals($listParams->getOffset(), $list->getPagingMetadata()->getOffset());
         $match = array_filter($list->getData(), fn($entry) => $entry->getId() === $created->getId());
@@ -51,9 +51,9 @@ class ContactsTest extends BaseTest
 
         $toUpdate = clone $contact;
         $toUpdate->getProperties()->setNotes('New Notes');
-        $updated = $this->client->contacts->update($toUpdate);
+        $updated = $this->resources->contacts->update($toUpdate);
         $this->assertNotEquals($created->getProperties()->getNotes(), $updated->getProperties()->getNotes());
 
-        $this->client->contacts->delete($created->getId());
+        $this->resources->contacts->delete($created->getId());
     }
 }

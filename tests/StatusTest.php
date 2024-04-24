@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Seven\Tests\Client;
+namespace Seven\Tests;
 
 use Seven\Api\Constant\StatusMessage;
 use Seven\Api\Exception\InvalidRequiredArgumentException;
@@ -11,13 +11,13 @@ class StatusTest extends BaseTest
     public function testError(): void
     {
         $this->expectException(InvalidRequiredArgumentException::class);
-        $this->client->status->get(0);
+        $this->resources->status->get(0);
     }
 
     public function testSuccess(): void
     {
         $msgId = $this->getMessageId();
-        $arr = $this->client->status->get($msgId, $msgId);
+        $arr = $this->resources->status->get($msgId, $msgId);
         $this->assertCount(2, $arr);
 
         foreach ($arr as $obj) {
@@ -34,7 +34,7 @@ class StatusTest extends BaseTest
     private function getMessageId(): int
     {
         $journalParams = (new JournalParams)->setLimit(1);
-        $outbounds = $this->client->journal->outbound($journalParams);
+        $outbounds = $this->resources->journal->outbound($journalParams);
         $outbound = $outbounds[0];
         $msgId = $outbound->getId();
         return (int)$msgId;

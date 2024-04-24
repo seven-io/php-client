@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Seven\Tests\Client;
+namespace Seven\Tests;
 
 use Seven\Api\Constant\HooksEventType;
 use Seven\Api\Constant\HooksRequestMethod;
@@ -11,7 +11,7 @@ class HooksTest extends BaseTest
 {
     public function testGetHooks(): void
     {
-        $res = $this->client->hooks->read();
+        $res = $this->resources->hooks->read();
 
         $this->assertIsBool($res->isSuccess());
         $this->assertIsArray($res->getHooks());
@@ -19,7 +19,7 @@ class HooksTest extends BaseTest
         if (!count($res->getHooks())) {
             $this->testSubscribeHook(false);
 
-            $res = $this->client->hooks->read();
+            $res = $this->resources->hooks->read();
         }
 
         $this->assertArrayHasKey(0, $res->getHooks());
@@ -35,7 +35,7 @@ class HooksTest extends BaseTest
     public function testSubscribeHook(bool $delete = true): ?int
     {
         $params = new SubscribeParams(self::createRandomURL(), HooksEventType::SMS_INBOUND);
-        $res = $this->client->hooks->subscribe($params);
+        $res = $this->resources->hooks->subscribe($params);
 
         $id = $res->getId();
         $isSuccess = $res->isSuccess();
@@ -54,7 +54,7 @@ class HooksTest extends BaseTest
     public function testUnsubscribeHook(?int $id = null): void
     {
         if (!$id) {
-            $res = $this->client->hooks->read();
+            $res = $this->resources->hooks->read();
 
             $hooks = $res->getHooks();
             $id = count($hooks)
@@ -62,7 +62,7 @@ class HooksTest extends BaseTest
                 : $this->testSubscribeHook(false);
         }
 
-        $res = $this->client->hooks->unsubscribe($id);
+        $res = $this->resources->hooks->unsubscribe($id);
         $this->assertTrue($res->isSuccess());
     }
 }

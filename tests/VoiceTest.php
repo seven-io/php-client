@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Seven\Tests\Client;
+namespace Seven\Tests;
 
 use Seven\Api\Params\VoiceParams;
 use Seven\Api\Response\Voice\Voice;
@@ -9,7 +9,7 @@ class VoiceTest extends BaseTest
 {
     public function testVoice(): void
     {
-        $res = $this->client->voice->call($this->params);
+        $res = $this->resources->voice->call($this->params);
 
         $this->assertVoice($res);
     }
@@ -32,7 +32,7 @@ class VoiceTest extends BaseTest
     {
         $this->toSandbox();
         $params = (clone $this->params);
-        $res = $this->client->voice->call($params);
+        $res = $this->resources->voice->call($params);
 
         $this->assertVoice($res, true);
     }

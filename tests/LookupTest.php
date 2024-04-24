@@ -1,7 +1,7 @@
 <?php /** @noinspection PhpUnhandledExceptionInspection */
 declare(strict_types=1);
 
-namespace Seven\Tests\Client;
+namespace Seven\Tests;
 
 use Seven\Api\Response\Lookup\Carrier;
 
@@ -9,25 +9,25 @@ class LookupTest extends BaseTest
 {
     public function testRcsCapabilities(): void
     {
-        $res = $this->client->lookup->rcsCapabilities('491716992343');
+        $res = $this->resources->lookup->rcsCapabilities('491716992343');
         $this->assertCount(1, $res);
     }
 
     public function testFormat(): void
     {
-        $res = $this->client->lookup->format('491716992343');
+        $res = $this->resources->lookup->format('491716992343');
         $this->assertCount(1, $res);
     }
 
     public function testFormatMulti(): void
     {
-        $res = $this->client->lookup->format('491716992343', '49179999999');
+        $res = $this->resources->lookup->format('491716992343', '49179999999');
         $this->assertCount(2, $res);
     }
 
     public function testMnpMulti(): void
     {
-        $arr = $this->client->lookup->mnp('491716992343');
+        $arr = $this->resources->lookup->mnp('491716992343');
         $this->assertCount(1, $arr);
 
         foreach ($arr as $item) {
@@ -47,7 +47,7 @@ class LookupTest extends BaseTest
 
     public function testHlr(): void
     {
-        $arr = $this->client->lookup->hlr('491716992343');
+        $arr = $this->resources->lookup->hlr('491716992343');
         $this->assertCount(1, $arr);
 
         foreach ($arr as $item) {
@@ -82,7 +82,7 @@ class LookupTest extends BaseTest
 
     public function testCnam(): void
     {
-        $arr = $this->client->lookup->cnam('491716992343');
+        $arr = $this->resources->lookup->cnam('491716992343');
         $this->assertCount(1, $arr);
 
         foreach ($arr as $item) {

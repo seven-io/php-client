@@ -19,9 +19,13 @@ if you don't use Composer.
 ```php
 use Seven\Api\Client;
 use Seven\Api\Params\SmsParams;
+use Seven\Api\Resource\SmsResource;
+
 $client = new Client('MY_VERY_SECRET_API_KEY!');
-$params = new SmsParams('HI2U', '+4901234567890');
-$client->sms($params);
+$smsResource = new SmsResource($client);
+$smsParams = new SmsParams('HI2U', '+4901234567890');
+$res = $smsResource->dispatch($smsParams);
+var_dump($res);
 ```
 
 See [docs](/docs) for more details.
@@ -31,7 +35,13 @@ See [docs](/docs) for more details.
 Some basic tests are implemented. You can run them like this:
 
 ```shell script
-SEVEN_API_KEY=<API-KEY> SEVEN_API_KEY_SANDBOX=<SANDBOX-API-KEY> php vendor/bin/phpunit tests/Client
+SEVEN_API_KEY=<API-KEY> php vendor/bin/phpunit tests
+```
+
+or
+
+```shell script
+SEVEN_API_KEY_SANDBOX=<SANDBOX-API-KEY> php vendor/bin/phpunit tests
 ```
 
 Make sure to fill in the values.

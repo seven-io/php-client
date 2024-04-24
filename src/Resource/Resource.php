@@ -2,11 +2,11 @@
 
 namespace Seven\Api\Resource;
 
-use Seven\Api\BaseClient;
+use Seven\Api\Client;
 
 abstract class Resource
 {
-    public function __construct(protected BaseClient $client)
+    public function __construct(protected Client $client)
     {
     }
 

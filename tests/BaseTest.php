@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Seven\Tests\Client;
+namespace Seven\Tests;
 
 use DateTime;
 use Exception;
@@ -9,8 +9,8 @@ use Seven\Api\Client;
 
 abstract class BaseTest extends TestCase
 {
-    protected Client $client;
     protected bool $isSandbox;
+    protected readonly Resources $resources;
 
     public function __construct()
     {
@@ -21,7 +21,8 @@ abstract class BaseTest extends TestCase
 
     protected function init(string $apiKey, bool $isSandbox): void
     {
-        $this->client = new Client($apiKey, 'php-api-test', getenv('SEVEN_SIGNING_SECRET'));
+        $client = new Client($apiKey, 'php-api-test', getenv('SEVEN_SIGNING_SECRET'));
+        $this->resources = new Resources($client);
         $this->isSandbox = $isSandbox;
     }
 
