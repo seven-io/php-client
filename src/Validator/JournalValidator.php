@@ -7,15 +7,15 @@ use Seven\Api\Constant\JournalConstants;
 use Seven\Api\Exception\InvalidOptionalArgumentException;
 use Seven\Api\Params\JournalParams;
 
-class JournalValidator {
-    protected JournalParams $params;
-
-    public function __construct(JournalParams $params) {
-        $this->params = $params;
+class JournalValidator
+{
+    public function __construct(protected JournalParams $params)
+    {
     }
 
     /** @throws InvalidOptionalArgumentException */
-    public function validate(): void {
+    public function validate(): void
+    {
         $this->id();
         $this->limit();
         $this->dateFrom();
@@ -25,7 +25,8 @@ class JournalValidator {
     }
 
     /** @throws InvalidOptionalArgumentException */
-    public function id(): void {
+    public function id(): void
+    {
         $id = $this->params->getId();
         if ($id === null) return;
 
@@ -36,7 +37,8 @@ class JournalValidator {
     /**
      * @throws InvalidOptionalArgumentException
      */
-    public function limit(): void {
+    public function limit(): void
+    {
         $limit = $this->params->getLimit();
         if ($limit === null) return;
 
@@ -50,7 +52,8 @@ class JournalValidator {
     }
 
     /** @throws InvalidOptionalArgumentException */
-    public function dateFrom(): void {
+    public function dateFrom(): void
+    {
         $dateFrom = $this->params->getDateFrom();
         if (!$dateFrom) return;
 
@@ -59,7 +62,8 @@ class JournalValidator {
     }
 
     /** @throws InvalidOptionalArgumentException */
-    public function dateTo(): void {
+    public function dateTo(): void
+    {
         $dateTo = $this->params->getDateTo();
         if (!$dateTo) return;
 
@@ -68,7 +72,8 @@ class JournalValidator {
     }
 
     /** @throws InvalidOptionalArgumentException */
-    public function to(): void {
+    public function to(): void
+    {
         $to = $this->params->getTo();
         if (!$to) return;
 
@@ -76,6 +81,7 @@ class JournalValidator {
             throw new InvalidOptionalArgumentException('to is not a valid number.');
     }
 
-    public function state(): void {
+    public function state(): void
+    {
     }
 }

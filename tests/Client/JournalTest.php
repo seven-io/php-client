@@ -6,30 +6,27 @@ use DateInterval;
 use DateTime;
 use Seven\Api\Constant\SmsConstants;
 use Seven\Api\Params\JournalParams;
-use Seven\Api\Response\Journal\JournalInbound;
+use Seven\Api\Response\Journal\JournalBase;
 use Seven\Api\Response\Journal\JournalOutbound;
-use Seven\Api\Response\Journal\JournalReply;
 use Seven\Api\Response\Journal\JournalVoice;
 
-class JournalTest extends BaseTest {
-    public function testJournalInbound(): void {
+class JournalTest extends BaseTest
+{
+    public function testJournalInbound(): void
+    {
         $arr = $this->client->journal->inbound();
-        $this->request($arr, JournalInbound::class);
+        $this->request($arr);
     }
 
-    private function request(
-        array     $journals,
-        string    $class,
-        ?callable $functionHandler = null
-    ): void {
+    private function request(array $journals, ?callable $functionHandler = null): void
+    {
         $this->assertIsArray($journals);
 
+        /** @var JournalBase $j */
         foreach ($journals as $j) {
-            $this->assertInstanceOf($class, $j);
             $this->assertIsString($j->getFrom());
             $this->assertIsNumeric($j->getId());
-            $this->assertTrue(property_exists($j, 'price'));
-            $this->assertIsLengthyString($j->getText());
+            $this->assertGreaterThanOrEqual(0.0, $j->getPrice());
             $this->assertIsValidDateTime($j->getTimestamp());
             $this->assertIsLengthyString($j->getTo());
 
@@ -37,7 +34,8 @@ class JournalTest extends BaseTest {
         }
     }
 
-    public function testJournalOutbound(): void {
+    public function testJournalOutbound(): void
+    {
         $arr = $this->client->journal->outbound();
         $callable = function (JournalOutbound $j) {
             $this->assertIsString($j->getConnection());
@@ -50,10 +48,11 @@ class JournalTest extends BaseTest {
             $this->assertEquals(SmsConstants::TYPE_DIRECT, $j->getType());
         };
 
-        $this->request($arr, JournalOutbound::class, $callable);
+        $this->request($arr, $callable);
     }
 
-    public function testJournalVoice(): void {
+    public function testJournalVoice(): void
+    {
         $arr = $this->client->journal->voice();
         $callable = function (JournalVoice $j) {
             $this->assertIsNullOrLengthyString($j->getDuration());
@@ -62,26 +61,32 @@ class JournalTest extends BaseTest {
             $this->assertIsBool($j->isXml());
         };
 
-        $this->request($arr, JournalVoice::class, $callable);
+        $this->request($arr, $callable);
     }
 
-    public function testJournalReplies(): void {
+    public function testJournalReplies(): void
+    {
         $arr = $this->client->journal->replies();
-
-        $this->request($arr, JournalReply::class);
+        $this->request($arr);
     }
 
-    public function testJournalParams(): void {
+    public function testJournalParams(): void
+    {
         $params = (new JournalParams)
-            ->setId(null)
             ->setDateFrom((new DateTime)->sub(DateInterval::createFromDateString('30 day')))
             ->setDateTo(new DateTime)
+            ->setId(null)
             ->setLimit(null)
             ->setState('')
             ->setTo('')
             ->toArray();
 
         $this->assertArrayHasKey('date_from', $params);
+        $this->assertArrayNotHasKey('dateFrom', $params);
+        $this->assertIsString($params['date_from']);
+
         $this->assertArrayHasKey('date_to', $params);
+        $this->assertArrayNotHasKey('dateTo', $params);
+        $this->assertIsString($params['date_to']);
     }
 }
