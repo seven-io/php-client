@@ -7,11 +7,13 @@ use Seven\Api\Params\PricingParams;
 use Seven\Api\Response\Pricing\Pricing;
 use Seven\Api\Validator\PricingValidator;
 
-class PricingResource extends Resource {
+class PricingResource extends Resource
+{
     /**
      * @throws InvalidOptionalArgumentException
      */
-    public function json(string $country = null): Pricing {
+    public function get(string $country = null): Pricing
+    {
         $params = (new PricingParams)->setCountry($country);
         $res = $this->fetch($params);
         return new Pricing($res);
@@ -21,7 +23,8 @@ class PricingResource extends Resource {
      * @return string|object
      * @throws InvalidOptionalArgumentException
      */
-    protected function fetch(PricingParams $params = null) {
+    protected function fetch(PricingParams $params = null)
+    {
         if (!$params) $params = new PricingParams;
 
         $this->validate($params);
@@ -33,7 +36,8 @@ class PricingResource extends Resource {
      * @param PricingParams $params
      * @throws InvalidOptionalArgumentException
      */
-    public function validate($params): void {
+    public function validate($params): void
+    {
         (new PricingValidator($params))->validate();
     }
 }
