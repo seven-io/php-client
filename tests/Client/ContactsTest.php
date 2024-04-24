@@ -2,69 +2,58 @@
 
 namespace Seven\Tests\Client;
 
-use Seven\Api\Params\WriteContactParams;
+use DateTime;
+use Seven\Api\Library\OrderDirection;
+use Seven\Api\Params\Contacts\ListParams;
 use Seven\Api\Response\Contacts\Contact;
-use Seven\Api\Response\Contacts\ContactCreate;
-use Seven\Api\Response\Contacts\ContactDelete;
+use Seven\Api\Response\Contacts\Properties;
 
-class ContactsTest extends BaseTest {
-    public function testContactsRead(): void {
-        $res = $this->client->contacts->read();
+class ContactsTest extends BaseTest
+{
+    public function testAll(): void
+    {
+        $toCreate = (new Contact)
+            ->setAvatar('https://avatars.githubusercontent.com/u/37155205')
+            ->setGroups([])
+            ->setProperties(
+                (new Properties)
+                    ->setAddress('Willestr. 4-6')
+                    ->setBirthday(new DateTime('01.01.2000'))
+                    ->setCity('Kiel')
+                    ->setEmail('support@seven.io')
+                    ->setFirstname('Dan')
+                    ->setHomeNumber('4943130149270')
+                    ->setLastname('Developer')
+                    ->setMobileNumber('4917999999999')
+                    ->setNotes('CPaaS')
+                    ->setPostalCode('24103')
+            );
+        $created = $this->client->contacts->create($toCreate);
 
-        $this->assertIsArray($res);
+        $this->assertEquals($toCreate->getProperties(), $created->getProperties());
 
-        if (count($res)) {
-            $this->assertRead($res);
-            $contact = reset($res);
-            $contact = $this->client->contacts->read($contact->getId());
-            $this->assertRead($contact);
-        }
-    }
+        $contact = $this->client->contacts->get($created->getId());
 
-    private function assertRead(array $res): void {
-        $this->assertContact(reset($res));
-    }
+        $this->assertEquals($created->getProperties(), $contact->getProperties());
 
-    private function assertContact(Contact $c): void {
-        $this->assertGreaterThanOrEqual(1, $c->getId());
-    }
+        $listParams = (new ListParams)
+            ->setLimit(77)
+            ->setOffset(0)
+            ->setGroupId(null)
+            ->setSearch('')
+            ->setOrderBy('')
+            ->setOrderDirection(OrderDirection::Ascending);
+        $list = $this->client->contacts->list($listParams);
+        $this->assertEquals($listParams->getLimit(), $list->getPagingMetadata()->getLimit());
+        $this->assertEquals($listParams->getOffset(), $list->getPagingMetadata()->getOffset());
+        $match = array_filter($list->getData(), fn($entry) => $entry->getId() === $created->getId());
+        $this->assertCount(1, $match);
 
-    public function testContactsCreateEditDelete(): void {
-        $c = $this->client->contacts->create();
-        $contactId = $c->getId();
+        $toUpdate = clone $contact;
+        $toUpdate->getProperties()->setNotes('New Notes');
+        $updated = $this->client->contacts->update($toUpdate);
+        $this->assertNotEquals($created->getProperties()->getNotes(), $updated->getProperties()->getNotes());
 
-        $this->assertCreate($c);
-
-        $writeParams = (new WriteContactParams)
-            ->setEmail('Tommy_Testersen@web.de')
-            ->setId($contactId)
-            ->setMobile('+0123459877676')
-            ->setNick('Tommy Testersen');
-        $writeResponse = $this->client->contacts->write($writeParams);
-        $this->assertEquals(152, $writeResponse->getReturn());
-
-        $this->assertRead($this->client->contacts->read($contactId));
-
-        $this->assertDeleteSuccess($this->client->contacts->delete($contactId));
-    }
-
-    private function assertCreate(ContactCreate $c): void {
-        $contactId = $c->getId();
-
-        $this->assertIsInt($contactId);
-        $this->assertGreaterThan(0, $contactId);
-        $this->assertEquals(152, $c->getCode());
-    }
-
-    private function assertDeleteSuccess(ContactDelete $contactDelete): void {
-        $this->assertEquals(152, $contactDelete->getCode());
-    }
-
-    public function testContactsCreateDelete(): void {
-        $res = $this->client->contacts->create();
-        $this->assertCreate($res);
-
-        $res = $this->client->contacts->delete($res->getId());
-        $this->assertDeleteSuccess($res);
+        $this->client->contacts->delete($created->getId());
     }
 }

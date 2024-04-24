@@ -20,7 +20,7 @@ class GroupsTest extends BaseTest
         $listParams = new ListParams();
         $listParams->setLimit(77);
         $listParams->setOffset(0);
-        $list = $this->client->groups->list();
+        $list = $this->client->groups->list($listParams);
         //$this->assertEquals($listParams->getLimit(), $list->getPagingMetadata()->getLimit());
         $this->assertEquals($listParams->getOffset(), $list->getPagingMetadata()->getOffset());
         $match = array_filter($list->getData(), fn($entry) => $entry->getId() === $created->getId());

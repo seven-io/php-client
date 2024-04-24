@@ -2,68 +2,39 @@
 
 namespace Seven\Api\Resource;
 
-use Seven\Api\Constant\ContactsAction;
-use Seven\Api\Exception\InvalidRequiredArgumentException;
-use Seven\Api\Params\ContactsParams;
-use Seven\Api\Params\WriteContactParams;
+use Seven\Api\Params\Contacts\ListParams;
 use Seven\Api\Response\Contacts\Contact;
-use Seven\Api\Response\Contacts\ContactCreate;
-use Seven\Api\Response\Contacts\ContactDelete;
-use Seven\Api\Response\Contacts\ContactEdit;
-use Seven\Api\Validator\ContactsValidator;
+use Seven\Api\Response\Contacts\ListContacts;
 
-class ContactsResource extends Resource {
-    /**
-     * @throws InvalidRequiredArgumentException
-     */
-    public function delete(int $id): ContactDelete {
-        $params = (new ContactsParams(ContactsAction::DELETE))->setId($id);
-        $this->validate($params);
-        $res = $this->client->post('contacts', $params->toArray());
-
-        return new ContactDelete($res);
+class ContactsResource extends Resource
+{
+    public function delete(int $id): void
+    {
+        $this->client->delete('contacts/' . $id);
     }
 
-    /**
-     * @param ContactsParams $params
-     * @throws InvalidRequiredArgumentException
-     */
-    public function validate($params): void {
-        (new ContactsValidator($params))->validate();
+    public function validate($params): void
+    {
+        // TODO?
     }
 
-    /**
-     * @throws InvalidRequiredArgumentException
-     */
-    public function create(): ContactCreate {
-        $params = new WriteContactParams;
-        $this->validate($params);
-        $res = $this->client->get('contacts', $params->toArray());
-
-        return new ContactCreate($res);
+    public function create(Contact $contact): Contact
+    {
+        return Contact::fromApi($this->client->post('contacts', $contact->toPayload()));
     }
 
-    /**
-     * @throws InvalidRequiredArgumentException
-     */
-    public function write(WriteContactParams $params): ContactEdit {
-        $this->validate($params);
-        $res = $this->client->get('contacts', $params->toArray());
-
-        return new ContactEdit($res);
+    public function update(Contact $contact): Contact
+    {
+        return Contact::fromApi($this->client->patch('contacts/' . $contact->getId(), $contact->toPayload()));
     }
 
-    /**
-     * @return Contact[]
-     * @throws InvalidRequiredArgumentException
-     */
-    public function read(int $id = null): array {
-        $params = (new ContactsParams(ContactsAction::READ))->setId($id);
-        $this->validate($params);
-        $res = $this->client->get('contacts', $params->toArray());
+    public function list(ListParams $params = new ListParams): ListContacts
+    {
+        return new ListContacts($this->client->get('contacts', $params->toArray()));
+    }
 
-        return array_map(static function ($value) {
-            return new Contact($value);
-        }, $res);
+    public function get(int $id): Contact
+    {
+        return Contact::fromApi($this->client->get('contacts/' . $id));
     }
 }
