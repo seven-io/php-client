@@ -20,12 +20,44 @@ class SubscribeParams implements ParamsInterface
         $arr = get_object_vars($this);
 
         $arr['event_filter'] = $this->eventFilter;
-        $arr['event_type'] = $this->eventType;
-        $arr['request_method'] = $this->requestMethod;
+        $arr['event_type'] = $this->eventType->value;
+        $arr['request_method'] = $this->requestMethod->name;
         $arr['target_url'] = $this->targetUrl;
 
         unset($arr['eventFilter'], $arr['eventType'], $arr['requestMethod'], $arr['targetUrl']);
 
         return $arr;
+    }
+
+    public function getEventFilter(): ?string
+    {
+        return $this->eventFilter;
+    }
+
+    public function setEventFilter(?string $eventFilter): self
+    {
+        $this->eventFilter = $eventFilter;
+        return $this;
+    }
+
+    public function getTargetUrl(): string
+    {
+        return $this->targetUrl;
+    }
+
+    public function getEventType(): HooksEventType
+    {
+        return $this->eventType;
+    }
+
+    public function getRequestMethod(): HooksRequestMethod
+    {
+        return $this->requestMethod;
+    }
+
+    public function setRequestMethod(HooksRequestMethod $requestMethod): self
+    {
+        $this->requestMethod = $requestMethod;
+        return $this;
     }
 }

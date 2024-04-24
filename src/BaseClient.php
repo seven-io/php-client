@@ -84,9 +84,11 @@ abstract class BaseClient
             curl_setopt($ch, CURLOPT_POST, true);
         } elseif (HttpMethod::PATCH === $method) {
             curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
-
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, HttpMethod::PATCH->name);
-        } elseif (HttpMethod::DELETE === $method) curl_setopt($ch, CURLOPT_CUSTOMREQUEST, HttpMethod::DELETE->name);
+        } elseif (HttpMethod::DELETE === $method) {
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, HttpMethod::DELETE->name);
+        }
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
