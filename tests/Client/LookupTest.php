@@ -7,6 +7,12 @@ use Seven\Api\Response\Lookup\Carrier;
 
 class LookupTest extends BaseTest
 {
+    public function testRcsCapabilities(): void
+    {
+        $res = $this->client->lookup->rcsCapabilities('491716992343');
+        $this->assertCount(1, $res);
+    }
+
     public function testFormat(): void
     {
         $res = $this->client->lookup->format('491716992343');

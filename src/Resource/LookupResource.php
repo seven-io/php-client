@@ -6,6 +6,7 @@ use Seven\Api\Response\Lookup\LookupCnam;
 use Seven\Api\Response\Lookup\LookupFormat;
 use Seven\Api\Response\Lookup\LookupHlr;
 use Seven\Api\Response\Lookup\LookupMnp;
+use Seven\Api\Response\Lookup\LookupRcsCapabilities;
 
 class LookupResource extends Resource
 {
@@ -53,5 +54,14 @@ class LookupResource extends Resource
     {
         $res = $this->fetch('mnp', ...$numbers);
         return array_map(static fn($obj) => new LookupMnp($obj), is_array($res) ? $res : [$res]);
+    }
+
+    /**
+     * @return LookupRcsCapabilities[]
+     */
+    public function rcsCapabilities(string ...$numbers): array
+    {
+        $res = $this->fetch('rcs', ...$numbers);
+        return array_map(static fn($obj) => new LookupRcsCapabilities($obj), is_array($res) ? $res : [$res]);
     }
 }
