@@ -9,6 +9,7 @@ use Seven\Api\Resource\GroupsResource;
 use Seven\Api\Resource\HooksResource;
 use Seven\Api\Resource\JournalResource;
 use Seven\Api\Resource\LookupResource;
+use Seven\Api\Resource\NumbersResource;
 use Seven\Api\Resource\PricingResource;
 use Seven\Api\Resource\RcsResource;
 use Seven\Api\Resource\SmsResource;
@@ -26,6 +27,7 @@ class Client extends BaseClient
     public HooksResource $hooks;
     public JournalResource $journal;
     public LookupResource $lookup;
+    public NumbersResource $numbers;
     public PricingResource $pricing;
     public RcsResource $rcs;
     public SmsResource $sms;
@@ -45,6 +47,7 @@ class Client extends BaseClient
         $this->hooks = new HooksResource($this);
         $this->journal = new JournalResource($this);
         $this->lookup = new LookupResource($this);
+        $this->numbers = new NumbersResource($this);
         $this->pricing = new PricingResource($this);
         $this->rcs = new RcsResource($this);
         $this->sms = new SmsResource($this);
