@@ -2,11 +2,8 @@
 
 namespace Seven\Api\Constant;
 
-use Seven\Api\Library\Reflectable;
-
-class AnalyticsSubaccounts {
-    use Reflectable;
-
-    public const ALL = 'all';
-    public const MAIN = 'only_main';
+enum AnalyticsSubaccounts: string
+{
+    case ALL = 'all';
+    case MAIN = 'only_main';
 }
