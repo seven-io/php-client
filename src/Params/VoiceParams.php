@@ -5,15 +5,10 @@ namespace Seven\Api\Params;
 class VoiceParams implements ParamsInterface
 {
     protected ?string $from = null;
-    protected ?string $language = null;
     protected ?int $ringtime = null;
-    protected string $text;
-    protected string $to;
 
-    public function __construct(string $text, string $to)
+    public function __construct(protected string $text, protected string $to)
     {
-        $this->text = $text;
-        $this->to = $to;
     }
 
     public function toArray(): array
@@ -62,17 +57,6 @@ class VoiceParams implements ParamsInterface
     public function setTo(string $to): self
     {
         $this->to = $to;
-        return $this;
-    }
-
-    public function getLanguage(): ?string
-    {
-        return $this->language;
-    }
-
-    public function setLanguage(?string $language): self
-    {
-        $this->language = $language;
         return $this;
     }
 }
