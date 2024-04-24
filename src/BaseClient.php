@@ -10,46 +10,29 @@ use UnexpectedValueException;
 abstract class BaseClient
 {
     public const BASE_URI = 'https://gateway.seven.io/api';
-    /**
-     * @var array|string[]
-     */
+    /** @var string[] $headers */
     protected array $headers;
 
     /**
      * @throws Exception
      */
     public function __construct(
-        protected string $apiKey,
-        protected string $sentWith = 'php-api'
+        protected string  $apiKey,
+        protected string  $sentWith = 'php-api',
+        protected ?string $signingSecret = null,
     )
     {
         if ('' === $apiKey) throw new InvalidArgumentException(
             'Invalid required constructor argument apiKey: ' . $apiKey);
 
-        if ('' === $sentWith || !is_string($sentWith)) throw new InvalidArgumentException(
+        if ('' === $sentWith) throw new InvalidArgumentException(
             'Invalid required constructor argument sentWith: ' . $sentWith);
 
         $this->headers = [
             'Accept: application/json',
             'SentWith: ' . $this->sentWith,
-            'X-Api-Key:' . $this->apiKey,
+            'X-Api-Key: ' . $this->apiKey,
         ];
-        //$this->setContentTypeJson();
-    }
-
-    public function setContentTypeJson(): void
-    {
-        $this->setContentType('application/json');
-    }
-
-    public function setContentType(string $contentType): void
-    {
-        $this->headers['Content-Type'] = $contentType;
-    }
-
-    public function setContentTypeUrlEncoded(): void
-    {
-        $this->setContentType('application/x-www-form-urlencoded');
     }
 
     public function getApiKey(): string
@@ -69,7 +52,6 @@ abstract class BaseClient
 
     protected function request(string $path, HttpMethod $method, array $payload = [], array $headers = []): mixed
     {
-        $headers = array_unique([...$this->headers, ...$headers]);
         $url = self::BASE_URI . '/' . $path;
         $params = http_build_query($payload);
         if (HttpMethod::GET === $method) $url .= str_ends_with($url, '?') ? '' : '?' . $params;
@@ -77,10 +59,7 @@ abstract class BaseClient
         $ch = curl_init($url);
 
         if (HttpMethod::POST === $method) {
-            $value = $headers['Content-Type'] ?? '' === 'application/json'
-                ? json_encode($payload, JSON_UNESCAPED_UNICODE)
-                : $params;
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $value);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
             curl_setopt($ch, CURLOPT_POST, true);
         } elseif (HttpMethod::PATCH === $method) {
             curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
@@ -90,8 +69,22 @@ abstract class BaseClient
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, HttpMethod::DELETE->name);
         }
 
+        if ($this->signingSecret) {
+            $nonce = bin2hex(random_bytes(16));
+            $timestamp = time();
+            $toSign = $timestamp . PHP_EOL .
+                $nonce . PHP_EOL .
+                $method->name . PHP_EOL .
+                $url . PHP_EOL .
+                md5($params);
+            $hash = hash_hmac('sha256', $toSign, $this->signingSecret);
+            $this->headers[] = 'X-Nonce: ' . $nonce;
+            $this->headers[] = 'X-Signature: ' . $hash;
+            $this->headers[] = 'X-Timestamp: ' . $timestamp;
+        }
+
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array_unique([...$this->headers, ...$headers]));
 
         $res = curl_exec($ch);
 

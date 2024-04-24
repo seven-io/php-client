@@ -36,9 +36,9 @@ class Client extends BaseClient
     public ValidateForVoiceResource $validateForVoice;
     public VoiceResource $voice;
 
-    public function __construct(string $apiKey, string $sentWith = 'php-api')
+    public function __construct(string $apiKey, string $sentWith = 'php-api', string $signingSecret = null)
     {
-        parent::__construct($apiKey, $sentWith);
+        parent::__construct($apiKey, $sentWith, $signingSecret);
 
         $this->analytics = new AnalyticsResource($this);
         $this->balance = new BalanceResource($this);

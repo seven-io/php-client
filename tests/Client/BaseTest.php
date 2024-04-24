@@ -21,7 +21,7 @@ abstract class BaseTest extends TestCase
 
     protected function init(string $apiKey, bool $isSandbox): void
     {
-        $this->client = new Client($apiKey, 'php-api-test');
+        $this->client = new Client($apiKey, 'php-api-test', getenv('SEVEN_SIGNING_SECRET'));
         $this->isSandbox = $isSandbox;
     }
 
