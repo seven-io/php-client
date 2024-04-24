@@ -6,15 +6,19 @@ use Seven\Api\Constant\StatusMessage;
 use Seven\Api\Exception\InvalidRequiredArgumentException;
 use Seven\Api\Params\JournalParams;
 
-class StatusTest extends BaseTest {
-    public function testError(): void {
+class StatusTest extends BaseTest
+{
+    public function testError(): void
+    {
         $this->expectException(InvalidRequiredArgumentException::class);
         $this->client->status->get(0);
     }
 
-    public function testSuccess(): void {
+    public function testSuccess(): void
+    {
         $msgId = $this->getMessageId();
-        $arr = $this->client->status->get($msgId);
+        $arr = $this->client->status->get($msgId, $msgId);
+        $this->assertCount(2, $arr);
 
         foreach ($arr as $obj) {
             $status = $obj->getStatus();
@@ -27,7 +31,8 @@ class StatusTest extends BaseTest {
         }
     }
 
-    private function getMessageId(): int {
+    private function getMessageId(): int
+    {
         $journalParams = (new JournalParams)->setLimit(1);
         $outbounds = $this->client->journal->outbound($journalParams);
         $outbound = $outbounds[0];

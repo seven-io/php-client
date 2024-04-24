@@ -2,23 +2,28 @@
 
 namespace Seven\Tests\Client;
 
-use DateInterval;
 use DateTime;
 use Seven\Api\Params\SmsParams;
 
-class SmsTest extends BaseTest {
-    public function testSms(): void {
-        $params = clone $this->params;
+class SmsTest extends BaseTest
+{
+    public function testSms(): void
+    {
+        $params = (new SmsParams('HI2U! The UNIX time is ' . time() . '.', '491716992343'));
         $params->setText('Müller');
+        $params->setDelay(new DateTime('2050-12-31'));
         $res = $this->client->sms->dispatch($params);
 
         $msg = $res->getMessages()[0];
         $this->assertEquals($params->getText(), $msg->getText());
         $this->assertEquals(str_replace('+', '', $params->getTo()[0]), $msg->getRecipient());
+
+        $this->client->sms->delete($msg->getId());
     }
 
-    public function testSmsFiles(): void {
-        $p = clone $this->params;
+    public function testSmsFiles(): void
+    {
+        $p = (new SmsParams('HI2U! The UNIX time is ' . time() . '.', '491716992343'));
         $text = '';
         $start = 1;
         $end = 3;
@@ -41,10 +46,11 @@ class SmsTest extends BaseTest {
         $this->assertEquals($fileCount, $links);
     }
 
-    public function testDelete(): void {
-        $params = (clone $this->params)
+    public function testDelete(): void
+    {
+        $params = (new SmsParams('HI2U! The UNIX time is ' . time() . '.', '491716992343'))
             ->addTo('4917987654321')
-            ->setDelay((new DateTime)->add(DateInterval::createFromDateString('1 day')));
+            ->setDelay(new DateTime('2050-12-31'));
         $sms = $this->client->sms->dispatch($params);
         $this->assertNotEmpty($sms->getMessages());
         $msg = $sms->getMessages()[0];
@@ -52,9 +58,5 @@ class SmsTest extends BaseTest {
         $res = $this->client->sms->delete($msg->getId());
         if ($res->isSuccess()) $this->assertSameSize($sms->getMessages(), $res->getDeleted());
         else $this->assertNull($res->getDeleted());
-    }
-
-    protected function setUp(): void {
-        $this->params = new SmsParams('HI2U! The UNIX time is ' . time() . '.', '491716992343');
     }
 }
