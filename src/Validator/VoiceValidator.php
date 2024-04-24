@@ -57,7 +57,7 @@ class VoiceValidator
 
         if ($ringtime === null) return;
 
-        $min = 1;
+        $min = 5;
         $max = 60;
 
         if ($ringtime < $min) throw new InvalidOptionalArgumentException(
