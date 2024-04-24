@@ -4,19 +4,22 @@ namespace Seven\Api\Validator;
 
 use Seven\Api\Constant\SubaccountsAction;
 use Seven\Api\Exception\InvalidRequiredArgumentException;
-use Seven\Api\Params\SubaccountsParams;
+use Seven\Api\Params\Subaccounts\SubaccountsParams;
 
-class SubaccountsValidator {
+class SubaccountsValidator
+{
     protected SubaccountsParams $params;
 
-    public function __construct(SubaccountsParams $params) {
+    public function __construct(SubaccountsParams $params)
+    {
         $this->params = $params;
     }
 
     /**
      * @throws InvalidRequiredArgumentException
      */
-    public function validate(): void {
+    public function validate(): void
+    {
         $this->action();
 
         switch ($this->params->getAction()) {
@@ -39,13 +42,15 @@ class SubaccountsValidator {
     }
 
     /** @throws InvalidRequiredArgumentException */
-    public function action(): void {
+    public function action(): void
+    {
         if (!in_array($this->params->getAction(), SubaccountsAction::values()))
             throw new InvalidRequiredArgumentException('Parameter "number" is missing.');
     }
 
     /** @throws InvalidRequiredArgumentException */
-    public function create(): void {
+    public function create(): void
+    {
         if (!$this->params->getName())
             throw new InvalidRequiredArgumentException('Parameter "name" is missing.');
 
@@ -54,16 +59,19 @@ class SubaccountsValidator {
     }
 
     /** @throws InvalidRequiredArgumentException */
-    public function delete(): void {
+    public function delete(): void
+    {
         if (!$this->params->getId())
             throw new InvalidRequiredArgumentException('Parameter "id" is missing or invalid.');
     }
 
-    public function read(): void {
+    public function read(): void
+    {
     }
 
     /** @throws InvalidRequiredArgumentException */
-    public function transferCredits(): void {
+    public function transferCredits(): void
+    {
         if (!$this->params->getId())
             throw new InvalidRequiredArgumentException('Parameter "id" is invalid.');
 
@@ -72,7 +80,8 @@ class SubaccountsValidator {
     }
 
     /** @throws InvalidRequiredArgumentException */
-    public function update(): void {
+    public function update(): void
+    {
         if (!$this->params->getId())
             throw new InvalidRequiredArgumentException('Parameter "id" is invalid.');
 

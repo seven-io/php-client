@@ -35,6 +35,7 @@ class RcsResource extends Resource
     }
 
     /**
+     * @param RcsParams $params
      * @throws InvalidOptionalArgumentException
      * @throws InvalidRequiredArgumentException
      */

@@ -5,8 +5,8 @@ namespace Seven\Api\Resource;
 use Seven\Api\Constant\SubaccountsAction;
 use Seven\Api\Exception\InvalidOptionalArgumentException;
 use Seven\Api\Exception\InvalidRequiredArgumentException;
-use Seven\Api\Params\CreateSubaccountParams;
-use Seven\Api\Params\SubaccountsParams;
+use Seven\Api\Params\Subaccounts\CreateSubaccountParams;
+use Seven\Api\Params\Subaccounts\SubaccountsParams;
 use Seven\Api\Response\Subaccounts\Subaccount;
 use Seven\Api\Response\Subaccounts\SubaccountCreate;
 use Seven\Api\Response\Subaccounts\SubaccountDelete;
@@ -14,12 +14,14 @@ use Seven\Api\Response\Subaccounts\SubaccountTransferCredits;
 use Seven\Api\Response\Subaccounts\SubaccountUpdate;
 use Seven\Api\Validator\SubaccountsValidator;
 
-class SubaccountsResource extends Resource {
+class SubaccountsResource extends Resource
+{
     /**
      * @throws InvalidOptionalArgumentException
      * @throws InvalidRequiredArgumentException
      */
-    public function delete(int $id): SubaccountDelete {
+    public function delete(int $id): SubaccountDelete
+    {
         $params = (new SubaccountsParams(SubaccountsAction::DELETE))->setId($id);
         $res = $this->fetch($params, 'POST');
 
@@ -31,7 +33,8 @@ class SubaccountsResource extends Resource {
      * @throws InvalidOptionalArgumentException
      * @throws InvalidRequiredArgumentException
      */
-    protected function fetch(SubaccountsParams $params, string $method) {
+    protected function fetch(SubaccountsParams $params, string $method)
+    {
         $this->validate($params);
 
         return $this->client->$method('subaccounts', $params->toArray());
@@ -41,7 +44,8 @@ class SubaccountsResource extends Resource {
      * @param SubaccountsParams $params
      * @throws InvalidRequiredArgumentException
      */
-    public function validate($params): void {
+    public function validate($params): void
+    {
         (new SubaccountsValidator($params))->validate();
     }
 
@@ -50,7 +54,8 @@ class SubaccountsResource extends Resource {
      * @throws InvalidOptionalArgumentException
      * @throws InvalidRequiredArgumentException
      */
-    public function read(): array {
+    public function read(): array
+    {
         $params = new SubaccountsParams(SubaccountsAction::READ);
         $arr = $this->fetch($params, 'GET');
 
@@ -63,7 +68,8 @@ class SubaccountsResource extends Resource {
      * @throws InvalidOptionalArgumentException
      * @throws InvalidRequiredArgumentException
      */
-    public function create(CreateSubaccountParams $params): SubaccountCreate {
+    public function create(CreateSubaccountParams $params): SubaccountCreate
+    {
         $res = $this->fetch($params, 'POST');
 
         return new SubaccountCreate($res);
@@ -73,7 +79,8 @@ class SubaccountsResource extends Resource {
      * @throws InvalidOptionalArgumentException
      * @throws InvalidRequiredArgumentException
      */
-    public function transferCredits(int $id, float $amount): SubaccountTransferCredits {
+    public function transferCredits(int $id, float $amount): SubaccountTransferCredits
+    {
         $params = (new SubaccountsParams(SubaccountsAction::TRANSFER_CREDITS))
             ->setAmount($amount)
             ->setId($id);
@@ -86,7 +93,8 @@ class SubaccountsResource extends Resource {
      * @throws InvalidOptionalArgumentException
      * @throws InvalidRequiredArgumentException
      */
-    public function update(int $id, float $amount, float $threshold): SubaccountUpdate {
+    public function update(int $id, float $amount, float $threshold): SubaccountUpdate
+    {
         $params = (new SubaccountsParams(SubaccountsAction::UPDATE))
             ->setAmount($amount)
             ->setId($id)

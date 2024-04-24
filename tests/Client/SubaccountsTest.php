@@ -3,18 +3,21 @@
 namespace Seven\Tests\Client;
 
 use Seven\Api\Exception\InvalidRequiredArgumentException;
-use Seven\Api\Params\CreateSubaccountParams;
+use Seven\Api\Params\Subaccounts\CreateSubaccountParams;
 use Seven\Api\Response\Subaccounts\Subaccount;
 
-class SubaccountsTest extends BaseTest {
-    public function testCreateFail(): void {
+class SubaccountsTest extends BaseTest
+{
+    public function testCreateFail(): void
+    {
         $this->expectException(InvalidRequiredArgumentException::class);
 
         $params = new CreateSubaccountParams('', '');
         $this->client->subaccounts->create($params);
     }
 
-    public function testCreate(): Subaccount {
+    public function testCreate(): Subaccount
+    {
         $params = new CreateSubaccountParams(
             'Tommy Tester',
             sprintf('tommy.tester.%d@seven.dev', time())
@@ -29,7 +32,8 @@ class SubaccountsTest extends BaseTest {
         return $res->getSubaccount();
     }
 
-    private function assertSubaccount(Subaccount $subaccount): void {
+    private function assertSubaccount(Subaccount $subaccount): void
+    {
         $this->assertGreaterThan(0, $subaccount->getId());
         $this->assertGreaterThanOrEqual(0, $subaccount->getTotalUsage());
 
@@ -47,7 +51,8 @@ class SubaccountsTest extends BaseTest {
     /**
      * @depends testCreate
      */
-    public function testTransferCredits(Subaccount $subaccount): Subaccount {
+    public function testTransferCredits(Subaccount $subaccount): Subaccount
+    {
         $id = $subaccount->getId();
         $amount = 12.34;
         $res = $this->client->subaccounts->transferCredits($id, $amount);
@@ -64,7 +69,8 @@ class SubaccountsTest extends BaseTest {
     /**
      * @depends testTransferCredits
      */
-    public function testUpdate(Subaccount $subaccount): Subaccount {
+    public function testUpdate(Subaccount $subaccount): Subaccount
+    {
         $id = $subaccount->getId();
         $amount = 12.34;
         $threshold = 123.456;
@@ -82,7 +88,8 @@ class SubaccountsTest extends BaseTest {
     /**
      * @depends testUpdate
      */
-    public function testDelete(Subaccount $subaccount): void {
+    public function testDelete(Subaccount $subaccount): void
+    {
         $res = $this->client->subaccounts->delete($subaccount->getId());
 
         if ($res->isSuccess()) {
@@ -92,7 +99,8 @@ class SubaccountsTest extends BaseTest {
         }
     }
 
-    public function testRead(): void {
+    public function testRead(): void
+    {
         $res = $this->client->subaccounts->read();
 
         $this->assertIsArray($res);

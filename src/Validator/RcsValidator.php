@@ -62,37 +62,8 @@ class RcsValidator
         }
     }
 
-    /** @throws InvalidOptionalArgumentException */
     public function from(): void
     {
-        $from = $this->params->getFrom();
-
-        if (null === $from || '' === $from) {
-            return;
-        }
-
-        $length = strlen($from);
-
-        $alphaNumericMax = SmsConstants::FROM_ALPHANUMERIC_MAX;
-        $numericMax = SmsConstants::FROM_NUMERIC_MAX;
-
-        $isNumeric = is_numeric($from);
-
-        if ($length > $numericMax) {
-            throw new InvalidOptionalArgumentException(
-                "Argument 'from' may not exceed $numericMax chars.");
-        }
-
-        if ($length > $alphaNumericMax && !$isNumeric) {
-            throw new InvalidOptionalArgumentException(
-                "Argument 'from' must be numeric. if > $alphaNumericMax chars.");
-        }
-
-        if (!ctype_alnum(
-            str_ireplace(SmsConstants::FROM_ALLOWED_CHARS, '', $from))) {
-            throw new InvalidOptionalArgumentException(
-                "Argument 'from' must be alphanumeric.");
-        }
     }
 
     /** @throws InvalidOptionalArgumentException */
@@ -127,13 +98,6 @@ class RcsValidator
         if (null === $text || !$length) {
             throw new InvalidRequiredArgumentException(
                 'You cannot send an empty message.');
-        }
-
-        $maxTextLength = SmsConstants::TEXT_MAX_LENGTH;
-
-        if ($maxTextLength < $length) {
-            throw new InvalidRequiredArgumentException(
-                "The text can not be longer than $maxTextLength characters.");
         }
     }
 
