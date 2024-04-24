@@ -2,85 +2,56 @@
 
 namespace Seven\Api\Resource;
 
-use Seven\Api\Exception\InvalidOptionalArgumentException;
-use Seven\Api\Exception\InvalidRequiredArgumentException;
-use Seven\Api\Params\LookupParams;
 use Seven\Api\Response\Lookup\LookupCnam;
 use Seven\Api\Response\Lookup\LookupFormat;
 use Seven\Api\Response\Lookup\LookupHlr;
 use Seven\Api\Response\Lookup\LookupMnp;
-use Seven\Api\Validator\LookupValidator;
 
-class LookupResource extends Resource {
+class LookupResource extends Resource
+{
     /**
-     * @throws InvalidOptionalArgumentException
-     * @throws InvalidRequiredArgumentException
+     * @return LookupFormat[]
      */
-    public function format(string ...$numbers): LookupFormat {
-        $params = new LookupParams('format', ...$numbers);
-        $res = $this->fetch($params);
-        return new LookupFormat($res);
+    public function format(string ...$numbers): array
+    {
+        $res = $this->fetch('format', ...$numbers);
+        return array_map(static fn($obj) => new LookupFormat($obj), is_array($res) ? $res : [$res]);
     }
 
-    /**
-     * @return mixed
-     * @throws InvalidOptionalArgumentException
-     * @throws InvalidRequiredArgumentException
-     */
-    protected function fetch(LookupParams $params) {
-        $this->validate($params);
-
-        return $this->client->post('lookup', $params->toArray());
+    protected function fetch(string $type, string ...$numbers): object|array
+    {
+        return $this->client->get('lookup/' . $type, ['number' => implode(',', $numbers)]);
     }
 
-    /**
-     * @param LookupParams $params
-     * @throws InvalidOptionalArgumentException
-     * @throws InvalidRequiredArgumentException
-     */
-    public function validate($params): void {
-        (new LookupValidator($params))->validate();
+    public function validate($params): void
+    {
+        // TODO?
     }
 
     /**
      * @return LookupCnam[]
-     * @throws InvalidOptionalArgumentException
-     * @throws InvalidRequiredArgumentException
      */
-    public function cnam(string ...$numbers): array {
-        $params = new LookupParams('cnam', ...$numbers);
-        $res = $this->fetch($params);
-
-        return array_map(static function ($obj) {
-            return new LookupCnam($obj);
-        }, is_array($res) ? $res : [$res]);
+    public function cnam(string ...$numbers): array
+    {
+        $res = $this->fetch('cnam', ...$numbers);
+        return array_map(static fn($obj) => new LookupCnam($obj), is_array($res) ? $res : [$res]);
     }
 
     /**
      * @return LookupHlr[]
-     * @throws InvalidOptionalArgumentException
-     * @throws InvalidRequiredArgumentException
      */
-    public function hlr(string ...$numbers): array {
-        $params = new LookupParams('hlr', ...$numbers);
-        $res = $this->fetch($params);
-
-        return array_map(static function ($obj) {
-            return new LookupHlr($obj);
-        }, is_array($res) ? $res : [$res]);
+    public function hlr(string ...$numbers): array
+    {
+        $res = $this->fetch('hlr', ...$numbers);
+        return array_map(static fn($obj) => new LookupHlr($obj), is_array($res) ? $res : [$res]);
     }
 
     /**
      * @return LookupMnp[]
-     * @throws InvalidOptionalArgumentException
-     * @throws InvalidRequiredArgumentException
      */
-    public function mnp(string ...$numbers): array {
-        $params = (new LookupParams('mnp', ...$numbers))->setJson(true);
-        $res = $this->fetch($params);
-
-        return array_map(static function ($obj) {
-            return new LookupMnp($obj);
-        }, is_array($res) ? $res : [$res]);
+    public function mnp(string ...$numbers): array
+    {
+        $res = $this->fetch('mnp', ...$numbers);
+        return array_map(static fn($obj) => new LookupMnp($obj), is_array($res) ? $res : [$res]);
     }
 }

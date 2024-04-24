@@ -5,14 +5,24 @@ namespace Seven\Tests\Client;
 
 use Seven\Api\Response\Lookup\Carrier;
 
-class LookupTest extends BaseTest {
-    public function testFormat(): void {
+class LookupTest extends BaseTest
+{
+    public function testFormat(): void
+    {
         $res = $this->client->lookup->format('491716992343');
-        $this->assertTrue($res->isSuccess());
+        $this->assertCount(1, $res);
     }
 
-    public function testMnpMulti(): void {
+    public function testFormatMulti(): void
+    {
+        $res = $this->client->lookup->format('491716992343', '49179999999');
+        $this->assertCount(2, $res);
+    }
+
+    public function testMnpMulti(): void
+    {
         $arr = $this->client->lookup->mnp('491716992343');
+        $this->assertCount(1, $arr);
 
         foreach ($arr as $item) {
             $this->assertIsInt($item->getCode());
@@ -29,8 +39,10 @@ class LookupTest extends BaseTest {
         }
     }
 
-    public function testHlr(): void {
+    public function testHlr(): void
+    {
         $arr = $this->client->lookup->hlr('491716992343');
+        $this->assertCount(1, $arr);
 
         foreach ($arr as $item) {
             $this->assertNotEmpty($item->getCountryCode());
@@ -54,15 +66,18 @@ class LookupTest extends BaseTest {
         }
     }
 
-    private function assertCarrier(Carrier $c): void {
+    private function assertCarrier(Carrier $c): void
+    {
         $this->assertNotEmpty($c->getCountry());
         $this->assertNotEmpty($c->getName());
         $this->assertNotEmpty($c->getNetworkCode());
         $this->assertNotEmpty($c->getNetworkType());
     }
 
-    public function testCnam(): void {
+    public function testCnam(): void
+    {
         $arr = $this->client->lookup->cnam('491716992343');
+        $this->assertCount(1, $arr);
 
         foreach ($arr as $item) {
             $this->assertNotEmpty($item->getCode());
