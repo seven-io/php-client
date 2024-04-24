@@ -5,9 +5,12 @@ namespace Seven\Tests\Client;
 use Seven\Api\Constant\HooksEventType;
 use Seven\Api\Constant\HooksRequestMethod;
 use Seven\Api\Library\Util;
+use Seven\Api\Params\Hooks\SubscribeParams;
 
-class HooksTest extends BaseTest {
-    public function testGetHooks(): void {
+class HooksTest extends BaseTest
+{
+    public function testGetHooks(): void
+    {
         $res = $this->client->hooks->read();
 
         $this->assertIsBool($res->isSuccess());
@@ -23,17 +26,16 @@ class HooksTest extends BaseTest {
 
         $h = $res->getHooks()[0];
 
-        $this->assertContains($h->getEventType(), HooksEventType::values());
+        $this->assertContains($h->getEventType(), array_column(HooksEventType::cases(), 'value'));
         $this->assertGreaterThan(0, $h->getId());
-        $this->assertContains($h->getRequestMethod(), HooksRequestMethod::values());
+        $this->assertContains($h->getRequestMethod(), array_column(HooksRequestMethod::cases(), 'name'));
         $this->assertTrue(Util::isValidUrl($h->getTargetUrl()));
     }
 
-    public function testSubscribeHook(bool $delete = true): ?int {
-        $res = $this->client->hooks->subscribe(
-            self::createRandomURL('http://ho.ok/'),
-            HooksEventType::SMS_INBOUND
-        );
+    public function testSubscribeHook(bool $delete = true): ?int
+    {
+        $params = new SubscribeParams(self::createRandomURL(), HooksEventType::SMS_INBOUND);
+        $res = $this->client->hooks->subscribe($params);
 
         $id = $res->getId();
         $isSuccess = $res->isSuccess();
@@ -49,7 +51,8 @@ class HooksTest extends BaseTest {
         return $id;
     }
 
-    public function testUnsubscribeHook(?int $id = null): void {
+    public function testUnsubscribeHook(?int $id = null): void
+    {
         if (!$id) {
             $res = $this->client->hooks->read();
 

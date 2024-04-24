@@ -25,7 +25,7 @@ abstract class BaseTest extends TestCase
         $this->isSandbox = $isSandbox;
     }
 
-    public static function createRandomURL(string $uri = 'https://my.tld/'): string
+    public static function createRandomURL(string $uri = 'https://php.tld/'): string
     {
         return $uri . uniqid('', true);
     }
