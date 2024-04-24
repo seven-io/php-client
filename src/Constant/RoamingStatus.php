@@ -2,12 +2,9 @@
 
 namespace Seven\Api\Constant;
 
-use Seven\Api\Library\Reflectable;
-
-class RoamingStatus {
-    use Reflectable;
-
-    public const NotRoaming = 'not_roaming';
-    public const Roaming = 'roaming';
-    public const Unknown = 'unknown';
+enum RoamingStatus: string
+{
+    case NotRoaming = 'not_roaming';
+    case Roaming = 'roaming';
+    case Unknown = 'unknown';
 }

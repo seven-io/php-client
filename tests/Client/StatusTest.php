@@ -25,7 +25,7 @@ class StatusTest extends BaseTest
             $statusTime = $obj->getStatusTime();
 
             if ($status) {
-                $this->assertContains($status, StatusMessage::values());
+                $this->assertContains($status, array_column(StatusMessage::cases(), 'value'));
                 $this->assertNotNull($statusTime);
             } else $this->assertNull($statusTime);
         }

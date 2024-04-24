@@ -2,11 +2,8 @@
 
 namespace Seven\Api\Constant;
 
-use Seven\Api\Library\Reflectable;
-
-final class SubaccountsAction {
-    use Reflectable;
-
+enum SubaccountsAction: string
+{
     public const CREATE = 'create';
     public const DELETE = 'delete';
     public const READ = 'read';

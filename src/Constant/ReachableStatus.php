@@ -2,15 +2,12 @@
 
 namespace Seven\Api\Constant;
 
-use Seven\Api\Library\Reflectable;
-
-class ReachableStatus {
-    use Reflectable;
-
-    public const Absent = 'absent';
-    public const BadNumber = 'bad_number';
-    public const Blacklisted = 'blacklisted';
-    public const Reachable = 'reachable';
-    public const Undeliverable = 'undeliverable';
-    public const Unknown = 'unknown';
+enum ReachableStatus: string
+{
+    case Absent = 'absent';
+    case BadNumber = 'bad_number';
+    case Blacklisted = 'blacklisted';
+    case Reachable = 'reachable';
+    case Undeliverable = 'undeliverable';
+    case Unknown = 'unknown';
 }

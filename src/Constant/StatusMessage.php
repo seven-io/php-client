@@ -2,18 +2,15 @@
 
 namespace Seven\Api\Constant;
 
-use Seven\Api\Library\Reflectable;
-
-class StatusMessage {
-    use Reflectable;
-
-    public const Accepted = 'ACCEPTED';
-    public const Buffered = 'BUFFERED';
-    public const Delivered = 'DELIVERED';
-    public const Expired = 'EXPIRED';
-    public const Failed = 'FAILED';
-    public const NotDelivered = 'NOTDELIVERED';
-    public const Rejected = 'REJECTED';
-    public const Transmitted = 'TRANSMITTED';
-    public const Unknown = 'UNKNOWN';
+enum StatusMessage: string
+{
+    case Accepted = 'ACCEPTED';
+    case Buffered = 'BUFFERED';
+    case Delivered = 'DELIVERED';
+    case Expired = 'EXPIRED';
+    case Failed = 'FAILED';
+    case NotDelivered = 'NOTDELIVERED';
+    case Rejected = 'REJECTED';
+    case Transmitted = 'TRANSMITTED';
+    case Unknown = 'UNKNOWN';
 }

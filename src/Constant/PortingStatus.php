@@ -2,14 +2,11 @@
 
 namespace Seven\Api\Constant;
 
-use Seven\Api\Library\Reflectable;
-
-class PortingStatus {
-    use Reflectable;
-
-    public const AssumedNotPorted = 'assumed_not_ported';
-    public const AssumedPorted = 'assumed_ported';
-    public const NotPorted = 'not_ported';
-    public const Ported = 'ported';
-    public const Unknown = 'unknown';
+enum PortingStatus: string
+{
+    case AssumedNotPorted = 'assumed_not_ported';
+    case AssumedPorted = 'assumed_ported';
+    case NotPorted = 'not_ported';
+    case Ported = 'ported';
+    case Unknown = 'unknown';
 }

@@ -44,7 +44,7 @@ class SubaccountsValidator
     /** @throws InvalidRequiredArgumentException */
     public function action(): void
     {
-        if (!in_array($this->params->getAction(), SubaccountsAction::values()))
+        if (!in_array($this->params->getAction(), array_column(SubaccountsAction::cases(), 'value')))
             throw new InvalidRequiredArgumentException('Parameter "number" is missing.');
     }
 
