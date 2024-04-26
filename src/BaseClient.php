@@ -66,8 +66,7 @@ abstract class BaseClient
         $ch = curl_init($url);
 
         if (HttpMethod::POST === $method) {
-            var_dump($options);
-            $params = stripslashes(json_encode($options, JSON_UNESCAPED_UNICODE));
+            $params = json_encode($options, JSON_UNESCAPED_UNICODE);
 
             curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
             curl_setopt($ch, CURLOPT_POST, true);
