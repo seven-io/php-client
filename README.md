@@ -17,11 +17,9 @@ if you don't use Composer.
 ### Usage
 
 ```php
-use Seven\Api\Client;
-use Seven\Api\Params\SmsParams;
-$client = new Client('MY_VERY_SECRET_API_KEY!');
-$params = new SmsParams('HI2U', '+4901234567890');
-$client->sms($params);
+$client = new Seven\Api\Client('MY_VERY_SECRET_API_KEY!');
+$params = new Seven\Api\Params\SmsParams('HI2U', '+4901234567890');
+$client->sms->dispatch($params);
 ```
 
 See [docs](/docs) for more details.
