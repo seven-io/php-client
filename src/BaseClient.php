@@ -81,9 +81,10 @@ abstract class BaseClient
         $res = curl_exec($ch);
 
         $curl_error = curl_error($ch);
+        $curl_errno = curl_errno($ch);
         curl_close($ch);
 
-        if (false === $res) throw new UnexpectedValueException($curl_error);
+        if (false === $res) throw new UnexpectedValueException("cURL Error: " . $curl_error, $curl_errno);
 
         try {
             $res = json_decode($res, false, 512, JSON_THROW_ON_ERROR);
