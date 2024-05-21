@@ -3,7 +3,7 @@
 namespace Seven\Api\Response\Lookup;
 
 class LookupFormat {
-    protected string $carrier;
+    protected ?string $carrier;
     protected string $countryCode;
     protected string $countryIso;
     protected string $countryName;
@@ -25,7 +25,7 @@ class LookupFormat {
         $this->success = $data->success;
     }
 
-    public function getCarrier(): string {
+    public function getCarrier(): ?string {
         return $this->carrier;
     }
 
