@@ -12,7 +12,7 @@ class AnalyticsTest extends BaseTest {
 
         foreach ($res as $a) {
             $this->assertEach($a);
-            $this->assertIsLengthyString($a->getDate());
+            $this->assertNotEmpty($a->getDate());
         }
     }
 

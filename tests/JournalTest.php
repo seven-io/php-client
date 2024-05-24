@@ -25,7 +25,7 @@ class JournalTest extends BaseTest {
             $this->assertIsNumeric($j->getId());
             $this->assertGreaterThanOrEqual(0.0, $j->getPrice());
             $this->assertIsValidDateTime($j->getTimestamp());
-            $this->assertIsLengthyString($j->getTo());
+            $this->assertNotEmpty($j->getTo());
 
             if ($functionHandler) $functionHandler($j);
         }

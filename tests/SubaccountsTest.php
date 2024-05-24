@@ -42,8 +42,8 @@ class SubaccountsTest extends BaseTest {
         if ($threshold !== null) $this->assertGreaterThanOrEqual(0, $threshold);
 
         $contact = $subaccount->getContact();
-        $this->assertIsLengthyString($contact->getName());
-        $this->assertIsLengthyString($contact->getEmail());
+        $this->assertNotEmpty($contact->getName());
+        $this->assertNotEmpty($contact->getEmail());
     }
 
     /**
@@ -58,7 +58,7 @@ class SubaccountsTest extends BaseTest {
         if ($res->isSuccess()) {
             $this->assertNull($res->getError());
         } else {
-            $this->assertIsLengthyString($res->getError());
+            $this->assertNotEmpty($res->getError());
         }
 
         return $subaccount;
@@ -77,7 +77,7 @@ class SubaccountsTest extends BaseTest {
         if ($res->isSuccess()) {
             $this->assertNull($res->getError());
         } else {
-            $this->assertIsLengthyString($res->getError());
+            $this->assertNotEmpty($res->getError());
         }
 
         return $subaccount;
@@ -92,7 +92,7 @@ class SubaccountsTest extends BaseTest {
         if ($res->isSuccess()) {
             $this->assertNull($res->getError());
         } else {
-            $this->assertIsLengthyString($res->getError());
+            $this->assertNotEmpty($res->getError());
         }
     }
 
