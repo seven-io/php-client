@@ -117,22 +117,14 @@ class Client
         if ($isSuccess) return $res;
 
         $sourceObject = is_object($res) ? $res : new stdClass;
-        var_dump($sourceObject);
         $code = property_exists($sourceObject, 'code') ? $res->code : (int)$res;
-        switch ($code) {
-            case 900;
-                throw new InvalidApiKeyException;
-            case 901;
-                throw new SigningHashVerificationException;
-            case 902:
-                throw new MissingAccessRightsException;
-            case 903;
-                throw new ForbiddenIpException;
-        }
-
-        if (!$isSuccess) throw new UnexpectedApiResponseException($error);
-
-        return $res;
+        throw match ($code) {
+            900 => new InvalidApiKeyException,
+            901 => new SigningHashVerificationException,
+            902 => new MissingAccessRightsException,
+            903 => new ForbiddenIpException,
+            default => new UnexpectedApiResponseException($error),
+        };
     }
 
     /**

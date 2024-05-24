@@ -100,12 +100,24 @@ class LookupTest extends BaseTest
     {
         $arr = $this->resources->lookup->cnam('491716992343');
         $this->assertCount(1, $arr);
+        $cnam = $arr[0];
 
-        foreach ($arr as $item) {
-            $this->assertNotEmpty($item->getCode());
-            $this->assertNotEmpty($item->getName());
-            $this->assertNotEmpty($item->getNumber());
-            $this->assertTrue($item->isSuccess());
-        }
+        $this->assertIsString($cnam->getCode());
+        $this->assertNotEmpty($cnam->getCode());
+        $this->assertNotEmpty($cnam->getName());
+        $this->assertNotEmpty($cnam->getNumber());
+        $this->assertTrue($cnam->isSuccess());
+    }
+
+    public function testCnamFaulty(): void
+    {
+        $arr = $this->resources->lookup->cnam('000');
+        $this->assertCount(1, $arr);
+        $cnam = $arr[0];
+
+        $this->assertIsInt($cnam->getCode());
+        $this->assertNull($cnam->getName());
+        $this->assertNull($cnam->getNumber());
+        $this->assertNull($cnam->isSuccess());
     }
 }
