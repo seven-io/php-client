@@ -10,11 +10,6 @@ use Seven\Api\Exception\MissingAccessRightsException;
 use Seven\Api\Exception\SigningHashVerificationException;
 use Seven\Api\Exception\UnexpectedApiResponseException;
 use Seven\Api\Resource\Resource;
-use Seven\Api\Response\Subaccounts\Subaccount;
-use Seven\Api\Response\Subaccounts\SubaccountAutoCharged;
-use Seven\Api\Response\Subaccounts\SubaccountCreate;
-use Seven\Api\Response\Subaccounts\SubaccountDelete;
-use Seven\Api\Response\Subaccounts\SubaccountTransferCredits;
 
 class SubaccountsResource extends Resource {
     /**

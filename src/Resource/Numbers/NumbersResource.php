@@ -9,11 +9,6 @@ use Seven\Api\Exception\MissingAccessRightsException;
 use Seven\Api\Exception\SigningHashVerificationException;
 use Seven\Api\Exception\UnexpectedApiResponseException;
 use Seven\Api\Resource\Resource;
-use Seven\Api\Response\Numbers\ActiveNumbers;
-use Seven\Api\Response\Numbers\AvailableNumbers;
-use Seven\Api\Response\Numbers\NumberDeletion;
-use Seven\Api\Response\Numbers\NumberOrder;
-use Seven\Api\Response\Numbers\PhoneNumber;
 
 class NumbersResource extends Resource {
     /**

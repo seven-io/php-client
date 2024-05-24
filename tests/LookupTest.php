@@ -3,24 +3,20 @@ declare(strict_types=1);
 
 namespace Seven\Tests;
 
-use Seven\Api\Response\Lookup\Carrier;
+use Seven\Api\Resource\Lookup\Carrier;
 
-class LookupTest extends BaseTest
-{
-    public function testRcsCapabilities(): void
-    {
+class LookupTest extends BaseTest {
+    public function testRcsCapabilities(): void {
         $res = $this->resources->lookup->rcsCapabilities('491716992343');
         $this->assertCount(1, $res);
     }
 
-    public function testFormat(): void
-    {
+    public function testFormat(): void {
         $res = $this->resources->lookup->format('491716992343');
         $this->assertCount(1, $res);
     }
 
-    public function testFormatFaulty(): void
-    {
+    public function testFormatFaulty(): void {
         $res = $this->resources->lookup->format('000');
         $this->assertCount(1, $res);
         $format = $res[0];
@@ -35,14 +31,12 @@ class LookupTest extends BaseTest
         $this->assertFalse($format->isSuccess());
     }
 
-    public function testFormatMulti(): void
-    {
+    public function testFormatMulti(): void {
         $res = $this->resources->lookup->format('491716992343', '49179999999');
         $this->assertCount(2, $res);
     }
 
-    public function testMnpMulti(): void
-    {
+    public function testMnpMulti(): void {
         $arr = $this->resources->lookup->mnp('491716992343');
         $this->assertCount(1, $arr);
 
@@ -65,8 +59,7 @@ class LookupTest extends BaseTest
         }
     }
 
-    public function testHlr(): void
-    {
+    public function testHlr(): void {
         $arr = $this->resources->lookup->hlr('491716992343');
         $this->assertCount(1, $arr);
         $hlr = $arr[0];
@@ -91,8 +84,7 @@ class LookupTest extends BaseTest
         $this->assertNotEmpty($hlr->getValidNumber());
     }
 
-    private function assertCarrier(Carrier $c, bool $faulty = false): void
-    {
+    private function assertCarrier(Carrier $c, bool $faulty = false): void {
         if ($faulty) {
             $this->assertEmpty($c->getCountry());
             $this->assertNull($c->getName());
@@ -106,8 +98,7 @@ class LookupTest extends BaseTest
         }
     }
 
-    public function testHlrFaulty(): void
-    {
+    public function testHlrFaulty(): void {
         $arr = $this->resources->lookup->hlr('000');
         $this->assertCount(1, $arr);
         $hlr = $arr[0];
@@ -132,8 +123,7 @@ class LookupTest extends BaseTest
         $this->assertNotEmpty($hlr->getValidNumber());
     }
 
-    public function testCnam(): void
-    {
+    public function testCnam(): void {
         $arr = $this->resources->lookup->cnam('491716992343');
         $this->assertCount(1, $arr);
         $cnam = $arr[0];
@@ -145,8 +135,7 @@ class LookupTest extends BaseTest
         $this->assertTrue($cnam->isSuccess());
     }
 
-    public function testCnamFaulty(): void
-    {
+    public function testCnamFaulty(): void {
         $arr = $this->resources->lookup->cnam('000');
         $this->assertCount(1, $arr);
         $cnam = $arr[0];

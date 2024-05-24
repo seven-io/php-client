@@ -4,12 +4,12 @@ namespace Seven\Tests;
 
 use Seven\Api\Client;
 use Seven\Api\Resource\Analytics\AnalyticsResource;
-use Seven\Api\Resource\BalanceResource;
+use Seven\Api\Resource\Balance\BalanceResource;
 use Seven\Api\Resource\Contacts\ContactsResource;
 use Seven\Api\Resource\Groups\GroupsResource;
 use Seven\Api\Resource\Hooks\HooksResource;
 use Seven\Api\Resource\Journal\JournalResource;
-use Seven\Api\Resource\LookupResource;
+use Seven\Api\Resource\Lookup\LookupResource;
 use Seven\Api\Resource\Numbers\NumbersResource;
 use Seven\Api\Resource\Pricing\PricingResource;
 use Seven\Api\Resource\Rcs\RcsResource;

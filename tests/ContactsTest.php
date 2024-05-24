@@ -4,14 +4,12 @@ namespace Seven\Tests;
 
 use DateTime;
 use Seven\Api\Library\OrderDirection;
+use Seven\Api\Resource\Contacts\Contact;
 use Seven\Api\Resource\Contacts\ListParams;
-use Seven\Api\Response\Contacts\Contact;
-use Seven\Api\Response\Contacts\Properties;
+use Seven\Api\Resource\Contacts\Properties;
 
-class ContactsTest extends BaseTest
-{
-    public function testAll(): void
-    {
+class ContactsTest extends BaseTest {
+    public function testAll(): void {
         $toCreate = (new Contact)
             ->setAvatar('https://avatars.githubusercontent.com/u/37155205')
             ->setGroups([])

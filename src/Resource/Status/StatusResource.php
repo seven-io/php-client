@@ -10,7 +10,6 @@ use Seven\Api\Exception\MissingAccessRightsException;
 use Seven\Api\Exception\SigningHashVerificationException;
 use Seven\Api\Exception\UnexpectedApiResponseException;
 use Seven\Api\Resource\Resource;
-use Seven\Api\Response\Status;
 use Seven\Api\Validator\StatusValidator;
 
 class StatusResource extends Resource {

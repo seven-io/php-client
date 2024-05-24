@@ -11,7 +11,6 @@ use Seven\Api\Exception\MissingAccessRightsException;
 use Seven\Api\Exception\SigningHashVerificationException;
 use Seven\Api\Exception\UnexpectedApiResponseException;
 use Seven\Api\Resource\Resource;
-use Seven\Api\Response\ValidateForVoice;
 use Seven\Api\Validator\ValidateForVoiceValidator;
 
 class ValidateForVoiceResource extends Resource {

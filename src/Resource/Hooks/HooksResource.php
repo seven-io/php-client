@@ -9,9 +9,6 @@ use Seven\Api\Exception\MissingAccessRightsException;
 use Seven\Api\Exception\SigningHashVerificationException;
 use Seven\Api\Exception\UnexpectedApiResponseException;
 use Seven\Api\Resource\Resource;
-use Seven\Api\Response\Hooks\Hooks;
-use Seven\Api\Response\Hooks\HookSubscribe;
-use Seven\Api\Response\Hooks\HookUnsubscribe;
 
 class HooksResource extends Resource {
     /**

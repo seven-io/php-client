@@ -9,9 +9,6 @@ use Seven\Api\Exception\MissingAccessRightsException;
 use Seven\Api\Exception\SigningHashVerificationException;
 use Seven\Api\Exception\UnexpectedApiResponseException;
 use Seven\Api\Resource\Resource;
-use Seven\Api\Response\Groups\Group;
-use Seven\Api\Response\Groups\GroupDelete;
-use Seven\Api\Response\Groups\ListGroups;
 
 class GroupsResource extends Resource {
     /**

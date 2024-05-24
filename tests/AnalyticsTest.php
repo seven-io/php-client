@@ -2,7 +2,7 @@
 
 namespace Seven\Tests;
 
-use Seven\Api\Response\Analytics\AbstractAnalytic;
+use Seven\Api\Resource\Analytics\AbstractAnalytic;
 
 class AnalyticsTest extends BaseTest {
     public function testAnalyticsByDate(): void {

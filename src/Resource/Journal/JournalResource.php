@@ -10,11 +10,6 @@ use Seven\Api\Exception\MissingAccessRightsException;
 use Seven\Api\Exception\SigningHashVerificationException;
 use Seven\Api\Exception\UnexpectedApiResponseException;
 use Seven\Api\Resource\Resource;
-use Seven\Api\Response\Journal\JournalBase;
-use Seven\Api\Response\Journal\JournalInbound;
-use Seven\Api\Response\Journal\JournalOutbound;
-use Seven\Api\Response\Journal\JournalReply;
-use Seven\Api\Response\Journal\JournalVoice;
 use Seven\Api\Validator\JournalValidator;
 
 class JournalResource extends Resource {
