@@ -6,6 +6,7 @@ use Exception;
 use InvalidArgumentException;
 use Random\RandomException;
 use Seven\Api\Constant\HttpMethod;
+use Seven\Api\Exception\ForbiddenIpException;
 use Seven\Api\Exception\InvalidApiKeyException;
 use Seven\Api\Exception\UnexpectedApiResponseException;
 
@@ -52,6 +53,7 @@ class Client
      * @throws UnexpectedApiResponseException
      * @throws RandomException
      * @throws InvalidApiKeyException
+     * @throws ForbiddenIpException
      */
     protected function request(string $path, HttpMethod $method, array $payload = []): mixed
     {
@@ -102,6 +104,8 @@ class Client
         switch ($res) {
             case '900';
                 throw new InvalidApiKeyException;
+            case '903';
+                throw new ForbiddenIpException;
             default:
                 try {
                     $res = json_decode($res, false, 512, JSON_THROW_ON_ERROR);
