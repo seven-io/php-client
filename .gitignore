@@ -3,3 +3,4 @@ vendor/
 *.http
 .phpunit.result.cache
 .phpdoc/
+index.php
