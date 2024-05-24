@@ -2,13 +2,14 @@
 
 namespace Seven\Api\Response\Lookup;
 
-class LookupHlr {
+class LookupHlr
+{
     protected string $countryCode;
-    protected string $countryName;
-    protected string $countryPrefix;
+    protected ?string $countryName;
+    protected string|false $countryPrefix;
     protected Carrier $currentCarrier;
-    protected string $gsmCode;
-    protected string $gsmMessage;
+    protected ?string $gsmCode;
+    protected ?string $gsmMessage;
     protected string $internationalFormatNumber;
     protected string $internationalFormatted;
     protected bool $lookupOutcome;
@@ -22,7 +23,8 @@ class LookupHlr {
     protected string $statusMessage;
     protected string $validNumber;
 
-    public function __construct(object $data) {
+    public function __construct(object $data)
+    {
         $this->countryCode = $data->country_code;
         $this->countryName = $data->country_name;
         $this->countryPrefix = $data->country_prefix;
@@ -43,75 +45,93 @@ class LookupHlr {
         $this->validNumber = $data->valid_number;
     }
 
-    public function getCountryCode(): string {
+    public function getCountryCode(): string
+    {
         return $this->countryCode;
     }
 
-    public function getCountryName(): string {
+    public function getCountryName(): ?string
+    {
         return $this->countryName;
     }
 
-    public function getCountryPrefix(): string {
+    public function getCountryPrefix(): string|false
+    {
         return $this->countryPrefix;
     }
 
-    public function getCurrentCarrier(): Carrier {
+    public function getCurrentCarrier(): Carrier
+    {
         return $this->currentCarrier;
     }
 
-    public function getGsmCode(): string {
+    public function getGsmCode(): ?string
+    {
         return $this->gsmCode;
     }
 
-    public function getGsmMessage(): string {
+    public function getGsmMessage(): ?string
+    {
         return $this->gsmMessage;
     }
 
-    public function getInternationalFormatNumber(): string {
+    public function getInternationalFormatNumber(): string
+    {
         return $this->internationalFormatNumber;
     }
 
-    public function getInternationalFormatted(): string {
+    public function getInternationalFormatted(): string
+    {
         return $this->internationalFormatted;
     }
 
-    public function isLookupOutcome(): bool {
+    public function isLookupOutcome(): bool
+    {
         return $this->lookupOutcome;
     }
 
-    public function getLookupOutcomeMessage(): string {
+    public function getLookupOutcomeMessage(): string
+    {
         return $this->lookupOutcomeMessage;
     }
 
-    public function getNationalFormatNumber(): string {
+    public function getNationalFormatNumber(): string
+    {
         return $this->nationalFormatNumber;
     }
 
-    public function getOriginalCarrier(): Carrier {
+    public function getOriginalCarrier(): Carrier
+    {
         return $this->originalCarrier;
     }
 
-    public function getPorted(): string {
+    public function getPorted(): string
+    {
         return $this->ported;
     }
 
-    public function getReachable(): string {
+    public function getReachable(): string
+    {
         return $this->reachable;
     }
 
-    public function getRoaming(): string {
+    public function getRoaming(): string
+    {
         return $this->roaming;
     }
 
-    public function isStatus(): bool {
+    public function isStatus(): bool
+    {
         return $this->status;
     }
 
-    public function getStatusMessage(): string {
+    public function getStatusMessage(): string
+    {
         return $this->statusMessage;
     }
 
-    public function getValidNumber(): string {
+    public function getValidNumber(): string
+    {
         return $this->validNumber;
     }
 }

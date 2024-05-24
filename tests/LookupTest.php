@@ -69,35 +69,67 @@ class LookupTest extends BaseTest
     {
         $arr = $this->resources->lookup->hlr('491716992343');
         $this->assertCount(1, $arr);
+        $hlr = $arr[0];
 
-        foreach ($arr as $item) {
-            $this->assertNotEmpty($item->getCountryCode());
-            $this->assertNotEmpty($item->getCountryName());
-            $this->assertNotEmpty($item->getCountryPrefix());
-            $this->assertCarrier($item->getCurrentCarrier());
-            $this->assertIsLengthyString($item->getGsmCode());
-            $this->assertNotEmpty($item->getGsmMessage());
-            $this->assertNotEmpty($item->getInternationalFormatNumber());
-            $this->assertNotEmpty($item->getInternationalFormatted());
-            $this->assertTrue($item->isLookupOutcome());
-            $this->assertNotEmpty($item->getLookupOutcomeMessage());
-            $this->assertNotEmpty($item->getNationalFormatNumber());
-            $this->assertCarrier($item->getOriginalCarrier());
-            $this->assertNotEmpty($item->getPorted());
-            $this->assertNotEmpty($item->getReachable());
-            $this->assertNotEmpty($item->getRoaming());
-            $this->assertTrue($item->isStatus());
-            $this->assertNotEmpty($item->getStatusMessage());
-            $this->assertNotEmpty($item->getValidNumber());
+        $this->assertNotEmpty($hlr->getCountryCode());
+        $this->assertNotEmpty($hlr->getCountryName());
+        $this->assertNotEmpty($hlr->getCountryPrefix());
+        $this->assertCarrier($hlr->getCurrentCarrier());
+        $this->assertIsString($hlr->getGsmCode());
+        $this->assertNotEmpty($hlr->getGsmMessage());
+        $this->assertNotEmpty($hlr->getInternationalFormatNumber());
+        $this->assertNotEmpty($hlr->getInternationalFormatted());
+        $this->assertTrue($hlr->isLookupOutcome());
+        $this->assertNotEmpty($hlr->getLookupOutcomeMessage());
+        $this->assertNotEmpty($hlr->getNationalFormatNumber());
+        $this->assertCarrier($hlr->getOriginalCarrier());
+        $this->assertNotEmpty($hlr->getPorted());
+        $this->assertNotEmpty($hlr->getReachable());
+        $this->assertNotEmpty($hlr->getRoaming());
+        $this->assertTrue($hlr->isStatus());
+        $this->assertNotEmpty($hlr->getStatusMessage());
+        $this->assertNotEmpty($hlr->getValidNumber());
+    }
+
+    private function assertCarrier(Carrier $c, bool $faulty = false): void
+    {
+        if ($faulty) {
+            $this->assertEmpty($c->getCountry());
+            $this->assertNull($c->getName());
+            $this->assertEmpty($c->getNetworkCode());
+            $this->assertNull($c->getNetworkType());
+        } else {
+            $this->assertNotEmpty($c->getCountry());
+            $this->assertNotEmpty($c->getName());
+            $this->assertNotEmpty($c->getNetworkCode());
+            $this->assertNotEmpty($c->getNetworkType());
         }
     }
 
-    private function assertCarrier(Carrier $c): void
+    public function testHlrFaulty(): void
     {
-        $this->assertNotEmpty($c->getCountry());
-        $this->assertNotEmpty($c->getName());
-        $this->assertNotEmpty($c->getNetworkCode());
-        $this->assertNotEmpty($c->getNetworkType());
+        $arr = $this->resources->lookup->hlr('000');
+        $this->assertCount(1, $arr);
+        $hlr = $arr[0];
+
+        $this->assertEmpty($hlr->getCountryCode());
+        $this->assertNull($hlr->getCountryName());
+        $this->assertFalse($hlr->getCountryPrefix());
+        $this->assertCarrier($hlr->getCurrentCarrier(), true);
+        $this->assertNull($hlr->getGsmCode());
+        $this->assertNull($hlr->getGsmMessage());
+        $this->assertEmpty($hlr->getInternationalFormatNumber());
+        $this->assertEmpty($hlr->getInternationalFormatted());
+        $this->assertFalse($hlr->isLookupOutcome());
+        $this->assertNotEmpty($hlr->getLookupOutcomeMessage());
+        $this->assertEmpty($hlr->getNationalFormatNumber());
+        $this->assertCarrier($hlr->getOriginalCarrier(), true);
+        $this->assertNotEmpty($hlr->getPorted());
+        $this->assertNotEmpty($hlr->getReachable());
+        $this->assertNotEmpty($hlr->getRoaming());
+        $this->assertTrue($hlr->isStatus());
+        $this->assertNotEmpty($hlr->getStatusMessage());
+        $this->assertNotEmpty($hlr->getValidNumber());
     }
 
     public function testCnam(): void
