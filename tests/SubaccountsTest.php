@@ -3,7 +3,9 @@
 namespace Seven\Tests;
 
 use Seven\Api\Exception\InvalidRequiredArgumentException;
-use Seven\Api\Params\Subaccounts\CreateSubaccountParams;
+use Seven\Api\Params\Subaccounts\AutoChargeParams;
+use Seven\Api\Params\Subaccounts\CreateParams;
+use Seven\Api\Params\Subaccounts\TransferCreditsParams;
 use Seven\Api\Response\Subaccounts\Subaccount;
 
 class SubaccountsTest extends BaseTest
@@ -12,13 +14,13 @@ class SubaccountsTest extends BaseTest
     {
         $this->expectException(InvalidRequiredArgumentException::class);
 
-        $params = new CreateSubaccountParams('', '');
+        $params = new CreateParams('', '');
         $this->resources->subaccounts->create($params);
     }
 
     public function testCreate(): Subaccount
     {
-        $params = new CreateSubaccountParams(
+        $params = new CreateParams(
             'Tommy Tester',
             sprintf('tommy.tester.%d@seven.dev', time())
         );
@@ -54,8 +56,9 @@ class SubaccountsTest extends BaseTest
     public function testTransferCredits(Subaccount $subaccount): Subaccount
     {
         $id = $subaccount->getId();
-        $amount = 12.34;
-        $res = $this->resources->subaccounts->transferCredits($id, $amount);
+        $amount = 1.23;
+        $params = new TransferCreditsParams($id, $amount);
+        $res = $this->resources->subaccounts->transferCredits($params);
 
         if ($res->isSuccess()) {
             $this->assertNull($res->getError());
@@ -72,9 +75,10 @@ class SubaccountsTest extends BaseTest
     public function testUpdate(Subaccount $subaccount): Subaccount
     {
         $id = $subaccount->getId();
-        $amount = 12.34;
-        $threshold = 123.456;
-        $res = $this->resources->subaccounts->update($id, $amount, $threshold);
+        $amount = 1.23;
+        $threshold = 12.34;
+        $params = new AutoChargeParams($id, $amount, $threshold);
+        $res = $this->resources->subaccounts->autoCharge($params);
 
         if ($res->isSuccess()) {
             $this->assertNull($res->getError());

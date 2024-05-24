@@ -2,20 +2,24 @@
 
 namespace Seven\Api\Response\Subaccounts;
 
-class SubaccountAutoTopup {
+readonly class AutoTopUp
+{
     protected ?float $amount;
     protected ?float $threshold;
 
-    public function __construct(object $data) {
+    public function __construct(object $data)
+    {
         $this->amount = $data->amount;
         $this->threshold = $data->threshold;
     }
 
-    public function getAmount(): ?float {
+    public function getAmount(): ?float
+    {
         return $this->amount;
     }
 
-    public function getThreshold(): ?float {
+    public function getThreshold(): ?float
+    {
         return $this->threshold;
     }
 }

@@ -2,20 +2,24 @@
 
 namespace Seven\Api\Response\Subaccounts;
 
-class SubaccountTransferCredits {
+readonly class SubaccountTransferCredits
+{
     protected ?string $error;
     protected bool $success;
 
-    public function __construct(object $data) {
+    public function __construct(object $data)
+    {
         $this->error = $data->error;
         $this->success = $data->success;
     }
 
-    public function getError(): ?string {
+    public function getError(): ?string
+    {
         return $this->error;
     }
 
-    public function isSuccess(): bool {
+    public function isSuccess(): bool
+    {
         return $this->success;
     }
 }

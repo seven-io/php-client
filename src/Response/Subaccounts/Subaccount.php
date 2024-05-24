@@ -2,8 +2,9 @@
 
 namespace Seven\Api\Response\Subaccounts;
 
-class Subaccount {
-    protected SubaccountAutoTopup $autoTopup;
+class Subaccount
+{
+    protected AutoTopUp $autoTopup;
     protected float $balance;
     protected ?string $company;
     protected SubaccountContact $contact;
@@ -11,8 +12,9 @@ class Subaccount {
     protected float $totalUsage;
     protected ?string $username;
 
-    public function __construct(object $data) {
-        $this->autoTopup = new SubaccountAutoTopup($data->auto_topup);
+    public function __construct(object $data)
+    {
+        $this->autoTopup = new AutoTopUp($data->auto_topup);
         $this->balance = $data->balance;
         $this->company = $data->company;
         $this->contact = new SubaccountContact($data->contact);
@@ -21,31 +23,38 @@ class Subaccount {
         $this->username = $data->username;
     }
 
-    public function getAutoTopup(): object {
+    public function getAutoTopup(): object
+    {
         return $this->autoTopup;
     }
 
-    public function getBalance(): float {
+    public function getBalance(): float
+    {
         return $this->balance;
     }
 
-    public function getCompany(): ?string {
+    public function getCompany(): ?string
+    {
         return $this->company;
     }
 
-    public function getContact(): object {
+    public function getContact(): object
+    {
         return $this->contact;
     }
 
-    public function getId(): int {
+    public function getId(): int
+    {
         return $this->id;
     }
 
-    public function getTotalUsage(): float {
+    public function getTotalUsage(): float
+    {
         return $this->totalUsage;
     }
 
-    public function getUsername(): ?string {
+    public function getUsername(): ?string
+    {
         return $this->username;
     }
 }

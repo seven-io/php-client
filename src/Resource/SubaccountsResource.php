@@ -2,105 +2,58 @@
 
 namespace Seven\Api\Resource;
 
-use Seven\Api\Constant\SubaccountsAction;
-use Seven\Api\Exception\InvalidOptionalArgumentException;
 use Seven\Api\Exception\InvalidRequiredArgumentException;
-use Seven\Api\Params\Subaccounts\CreateSubaccountParams;
-use Seven\Api\Params\Subaccounts\SubaccountsParams;
+use Seven\Api\Params\Subaccounts\AutoChargeParams;
+use Seven\Api\Params\Subaccounts\CreateParams;
+use Seven\Api\Params\Subaccounts\TransferCreditsParams;
 use Seven\Api\Response\Subaccounts\Subaccount;
+use Seven\Api\Response\Subaccounts\SubaccountAutoCharged;
 use Seven\Api\Response\Subaccounts\SubaccountCreate;
 use Seven\Api\Response\Subaccounts\SubaccountDelete;
 use Seven\Api\Response\Subaccounts\SubaccountTransferCredits;
-use Seven\Api\Response\Subaccounts\SubaccountUpdate;
-use Seven\Api\Validator\SubaccountsValidator;
 
 class SubaccountsResource extends Resource
 {
     /**
-     * @throws InvalidOptionalArgumentException
      * @throws InvalidRequiredArgumentException
      */
     public function delete(int $id): SubaccountDelete
     {
-        $params = (new SubaccountsParams(SubaccountsAction::DELETE))->setId($id);
-        $res = $this->fetch($params, 'POST');
+        if ($id < 1) throw new InvalidRequiredArgumentException('Argument \'id\' must be > 0.');
 
-        return new SubaccountDelete($res);
-    }
-
-    /**
-     * @return mixed
-     * @throws InvalidOptionalArgumentException
-     * @throws InvalidRequiredArgumentException
-     */
-    protected function fetch(SubaccountsParams $params, string $method)
-    {
-        $this->validate($params);
-
-        return $this->client->$method('subaccounts', $params->toArray());
-    }
-
-    /**
-     * @param SubaccountsParams $params
-     * @throws InvalidRequiredArgumentException
-     */
-    public function validate($params): void
-    {
-        (new SubaccountsValidator($params))->validate();
+        return new SubaccountDelete($this->client->post('subaccounts', ['id' => $id, 'action' => 'delete']));
     }
 
     /**
      * @return Subaccount[]
-     * @throws InvalidOptionalArgumentException
      * @throws InvalidRequiredArgumentException
      */
-    public function read(): array
+    public function read(int $id = null): array
     {
-        $params = new SubaccountsParams(SubaccountsAction::READ);
-        $arr = $this->fetch($params, 'GET');
-
-        return array_map(static function (object $value) {
-            return new Subaccount($value);
-        }, $arr);
+        if ($id !== null && $id < 1) throw new InvalidRequiredArgumentException('Argument \'id\' must be > 0.');
+        $arr = $this->client->get('subaccounts', ['action' => 'read', 'id' => $id]);
+        return array_map(static fn(object $obj) => new Subaccount($obj), $arr);
     }
 
-    /**
-     * @throws InvalidOptionalArgumentException
-     * @throws InvalidRequiredArgumentException
-     */
-    public function create(CreateSubaccountParams $params): SubaccountCreate
+    public function create(CreateParams $params): SubaccountCreate
     {
-        $res = $this->fetch($params, 'POST');
-
-        return new SubaccountCreate($res);
+        return new SubaccountCreate($this->client->post('subaccounts', [...$params->toArray(), 'action' => 'create']));
     }
 
-    /**
-     * @throws InvalidOptionalArgumentException
-     * @throws InvalidRequiredArgumentException
-     */
-    public function transferCredits(int $id, float $amount): SubaccountTransferCredits
+    public function transferCredits(TransferCreditsParams $params): SubaccountTransferCredits
     {
-        $params = (new SubaccountsParams(SubaccountsAction::TRANSFER_CREDITS))
-            ->setAmount($amount)
-            ->setId($id);
-        $res = $this->fetch($params, 'POST');
-
+        $res = $this->client->post('subaccounts', [...$params->toArray(), 'action' => 'transfer_credits']);
         return new SubaccountTransferCredits($res);
     }
 
-    /**
-     * @throws InvalidOptionalArgumentException
-     * @throws InvalidRequiredArgumentException
-     */
-    public function update(int $id, float $amount, float $threshold): SubaccountUpdate
+    public function autoCharge(AutoChargeParams $params): SubaccountAutoCharged
     {
-        $params = (new SubaccountsParams(SubaccountsAction::UPDATE))
-            ->setAmount($amount)
-            ->setId($id)
-            ->setThreshold($threshold);
-        $res = $this->fetch($params, 'POST');
+        $res = $this->client->post('subaccounts', [...$params->toArray(), 'action' => 'update']);
+        return new SubaccountAutoCharged($res);
+    }
 
-        return new SubaccountUpdate($res);
+    public function validate($params): void
+    {
+        // TODO?
     }
 }
