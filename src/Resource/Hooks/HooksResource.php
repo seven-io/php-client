@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Seven\Api\Resource;
+namespace Seven\Api\Resource\Hooks;
 
 use Random\RandomException;
 use Seven\Api\Exception\ForbiddenIpException;
@@ -9,6 +9,7 @@ use Seven\Api\Exception\MissingAccessRightsException;
 use Seven\Api\Exception\SigningHashVerificationException;
 use Seven\Api\Exception\UnexpectedApiResponseException;
 use Seven\Api\Params\Hooks\SubscribeParams;
+use Seven\Api\Resource\Resource;
 use Seven\Api\Response\Hooks\Hooks;
 use Seven\Api\Response\Hooks\HookSubscribe;
 use Seven\Api\Response\Hooks\HookUnsubscribe;

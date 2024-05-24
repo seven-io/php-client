@@ -2,21 +2,18 @@
 
 namespace Seven\Api\Params\Hooks;
 
-use Seven\Api\Constant\HooksEventType;
-use Seven\Api\Constant\HooksRequestMethod;
 use Seven\Api\Params\ParamsInterface;
+use Seven\Api\Resource\Hooks\HooksEventType;
+use Seven\Api\Resource\Hooks\HooksRequestMethod;
 
-class SubscribeParams implements ParamsInterface
-{
+class SubscribeParams implements ParamsInterface {
     protected ?string $eventFilter = null;
     protected HooksRequestMethod $requestMethod = HooksRequestMethod::POST;
 
-    public function __construct(protected string $targetUrl, protected HooksEventType $eventType)
-    {
+    public function __construct(protected string $targetUrl, protected HooksEventType $eventType) {
     }
 
-    public function toArray(): array
-    {
+    public function toArray(): array {
         $arr = get_object_vars($this);
 
         $arr['event_filter'] = $this->eventFilter;
@@ -29,34 +26,28 @@ class SubscribeParams implements ParamsInterface
         return $arr;
     }
 
-    public function getEventFilter(): ?string
-    {
+    public function getEventFilter(): ?string {
         return $this->eventFilter;
     }
 
-    public function setEventFilter(?string $eventFilter): self
-    {
+    public function setEventFilter(?string $eventFilter): self {
         $this->eventFilter = $eventFilter;
         return $this;
     }
 
-    public function getTargetUrl(): string
-    {
+    public function getTargetUrl(): string {
         return $this->targetUrl;
     }
 
-    public function getEventType(): HooksEventType
-    {
+    public function getEventType(): HooksEventType {
         return $this->eventType;
     }
 
-    public function getRequestMethod(): HooksRequestMethod
-    {
+    public function getRequestMethod(): HooksRequestMethod {
         return $this->requestMethod;
     }
 
-    public function setRequestMethod(HooksRequestMethod $requestMethod): self
-    {
+    public function setRequestMethod(HooksRequestMethod $requestMethod): self {
         $this->requestMethod = $requestMethod;
         return $this;
     }

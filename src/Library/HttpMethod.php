@@ -1,9 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Seven\Api\Constant;
+namespace Seven\Api\Library;
 
-enum HttpMethod
-{
+enum HttpMethod {
     case DELETE;
     case GET;
     case PATCH;

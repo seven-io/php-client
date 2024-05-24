@@ -1,9 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Seven\Api\Constant;
+namespace Seven\Api\Library;
 
-enum StatusCode: int
-{
+enum StatusCode: int {
     case SmsCarrierTemporarilyUnavailable = 11;
     case Sent = 100;
     case SentPartially = 101;

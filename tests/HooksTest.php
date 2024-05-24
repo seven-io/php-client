@@ -2,15 +2,13 @@
 
 namespace Seven\Tests;
 
-use Seven\Api\Constant\HooksEventType;
-use Seven\Api\Constant\HooksRequestMethod;
 use Seven\Api\Library\Util;
 use Seven\Api\Params\Hooks\SubscribeParams;
+use Seven\Api\Resource\Hooks\HooksEventType;
+use Seven\Api\Resource\Hooks\HooksRequestMethod;
 
-class HooksTest extends BaseTest
-{
-    public function testGetHooks(): void
-    {
+class HooksTest extends BaseTest {
+    public function testGetHooks(): void {
         $res = $this->resources->hooks->read();
 
         $this->assertIsBool($res->isSuccess());
@@ -32,8 +30,7 @@ class HooksTest extends BaseTest
         $this->assertTrue(Util::isValidUrl($h->getTargetUrl()));
     }
 
-    public function testSubscribeHook(bool $delete = true): ?int
-    {
+    public function testSubscribeHook(bool $delete = true): ?int {
         $params = new SubscribeParams(self::createRandomURL(), HooksEventType::SMS_INBOUND);
         $res = $this->resources->hooks->subscribe($params);
 
@@ -51,8 +48,7 @@ class HooksTest extends BaseTest
         return $id;
     }
 
-    public function testUnsubscribeHook(?int $id = null): void
-    {
+    public function testUnsubscribeHook(?int $id = null): void {
         if (!$id) {
             $res = $this->resources->hooks->read();
 

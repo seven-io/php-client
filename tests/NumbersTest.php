@@ -2,15 +2,13 @@
 
 namespace Seven\Tests;
 
-use Seven\Api\Constant\PaymentInterval;
 use Seven\Api\Params\Numbers\ListAvailableParams;
 use Seven\Api\Params\Numbers\OrderParams;
 use Seven\Api\Params\Numbers\UpdateParams;
+use Seven\Api\Resource\Numbers\PaymentInterval;
 
-class NumbersTest extends BaseTest
-{
-    public function testAll(): void
-    {
+class NumbersTest extends BaseTest {
+    public function testAll(): void {
         $availableParams = (new ListAvailableParams)
             ->setCountry('DE')
             ->setFeaturesApplicationToPersonSms(true);

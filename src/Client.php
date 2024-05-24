@@ -5,12 +5,12 @@ namespace Seven\Api;
 use Exception;
 use InvalidArgumentException;
 use Random\RandomException;
-use Seven\Api\Constant\HttpMethod;
 use Seven\Api\Exception\ForbiddenIpException;
 use Seven\Api\Exception\InvalidApiKeyException;
 use Seven\Api\Exception\MissingAccessRightsException;
 use Seven\Api\Exception\SigningHashVerificationException;
 use Seven\Api\Exception\UnexpectedApiResponseException;
+use Seven\Api\Library\HttpMethod;
 use stdClass;
 
 class Client {

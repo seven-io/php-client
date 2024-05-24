@@ -2,19 +2,16 @@
 
 namespace Seven\Api\Params\Numbers;
 
-use Seven\Api\Constant\PaymentInterval;
 use Seven\Api\Params\ParamsInterface;
+use Seven\Api\Resource\Numbers\PaymentInterval;
 
-class OrderParams implements ParamsInterface
-{
+class OrderParams implements ParamsInterface {
     protected PaymentInterval $paymentInterval = PaymentInterval::ANNUALLY;
 
-    public function __construct(protected string $number)
-    {
+    public function __construct(protected string $number) {
     }
 
-    public function toArray(): array
-    {
+    public function toArray(): array {
         $arr = get_object_vars($this);
 
         $arr['payment_interval'] = $this->paymentInterval->value;
@@ -24,19 +21,16 @@ class OrderParams implements ParamsInterface
         return $arr;
     }
 
-    public function getPaymentInterval(): ?PaymentInterval
-    {
+    public function getPaymentInterval(): ?PaymentInterval {
         return $this->paymentInterval;
     }
 
-    public function setPaymentInterval(?PaymentInterval $paymentInterval): self
-    {
+    public function setPaymentInterval(?PaymentInterval $paymentInterval): self {
         $this->paymentInterval = $paymentInterval;
         return $this;
     }
 
-    public function getNumber(): string
-    {
+    public function getNumber(): string {
         return $this->number;
     }
 }

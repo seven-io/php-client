@@ -2,33 +2,30 @@
 
 namespace Seven\Api\Validator;
 
-use Seven\Api\Constant\PricingConstants;
 use Seven\Api\Exception\InvalidOptionalArgumentException;
 use Seven\Api\Params\PricingParams;
 
-class PricingValidator
-{
-    public function __construct(protected PricingParams $params)
-    {
+class PricingValidator {
+    public const COUNTRY_MAX_LENGTH = 3;
+
+    public function __construct(protected PricingParams $params) {
     }
 
     /** @throws InvalidOptionalArgumentException */
-    public function validate(): void
-    {
+    public function validate(): void {
         $this->country();
     }
 
     /** @throws InvalidOptionalArgumentException */
-    public function country(): void
-    {
+    public function country(): void {
         $country = $this->params->getCountry();
         if (!$country) return;
 
         $len = strlen($country);
-        if ($len > PricingConstants::COUNTRY_MAX_LENGTH) {
+        if ($len > self::COUNTRY_MAX_LENGTH) {
             throw new InvalidOptionalArgumentException(
                 "'country' exceeded length limit: Received $len chars but expected max "
-                . PricingConstants::COUNTRY_MAX_LENGTH);
+                . self::COUNTRY_MAX_LENGTH);
         }
     }
 }

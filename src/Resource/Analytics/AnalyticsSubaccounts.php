@@ -1,9 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Seven\Api\Constant;
+namespace Seven\Api\Resource\Analytics;
 
-enum AnalyticsSubaccounts: string
-{
+enum AnalyticsSubaccounts: string {
     case ALL = 'all';
     case MAIN = 'only_main';
 }

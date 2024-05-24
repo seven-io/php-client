@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Seven\Api\Resource;
+namespace Seven\Api\Resource\Sms;
 
 use Random\RandomException;
 use Seven\Api\Exception\ForbiddenIpException;
@@ -11,6 +11,7 @@ use Seven\Api\Exception\MissingAccessRightsException;
 use Seven\Api\Exception\SigningHashVerificationException;
 use Seven\Api\Exception\UnexpectedApiResponseException;
 use Seven\Api\Params\SmsParams;
+use Seven\Api\Resource\Resource;
 use Seven\Api\Response\Sms\Sms;
 use Seven\Api\Response\Sms\SmsDelete;
 use Seven\Api\Validator\SmsValidator;

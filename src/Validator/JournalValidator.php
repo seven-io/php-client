@@ -3,19 +3,18 @@
 namespace Seven\Api\Validator;
 
 use DateTime;
-use Seven\Api\Constant\JournalConstants;
 use Seven\Api\Exception\InvalidOptionalArgumentException;
 use Seven\Api\Params\JournalParams;
 
-class JournalValidator
-{
-    public function __construct(protected JournalParams $params)
-    {
+class JournalValidator {
+    public const LIMIT_MIN = 1;
+    public const LIMIT_MAX = 100;
+
+    public function __construct(protected JournalParams $params) {
     }
 
     /** @throws InvalidOptionalArgumentException */
-    public function validate(): void
-    {
+    public function validate(): void {
         $this->id();
         $this->limit();
         $this->dateFrom();
@@ -25,8 +24,7 @@ class JournalValidator
     }
 
     /** @throws InvalidOptionalArgumentException */
-    public function id(): void
-    {
+    public function id(): void {
         $id = $this->params->getId();
         if ($id === null) return;
 
@@ -37,23 +35,21 @@ class JournalValidator
     /**
      * @throws InvalidOptionalArgumentException
      */
-    public function limit(): void
-    {
+    public function limit(): void {
         $limit = $this->params->getLimit();
         if ($limit === null) return;
 
-        if ($limit < JournalConstants::LIMIT_MIN) throw new InvalidOptionalArgumentException(
-            'Limit can not be less than ' . JournalConstants::LIMIT_MIN
+        if ($limit < self::LIMIT_MIN) throw new InvalidOptionalArgumentException(
+            'Limit can not be less than ' . self::LIMIT_MIN
         );
 
-        if ($limit > JournalConstants::LIMIT_MAX) throw new InvalidOptionalArgumentException(
-            'Limit can not be more than ' . JournalConstants::LIMIT_MAX
+        if ($limit > self::LIMIT_MAX) throw new InvalidOptionalArgumentException(
+            'Limit can not be more than ' . self::LIMIT_MAX
         );
     }
 
     /** @throws InvalidOptionalArgumentException */
-    public function dateFrom(): void
-    {
+    public function dateFrom(): void {
         $dateFrom = $this->params->getDateFrom();
         if (!$dateFrom) return;
 
@@ -62,8 +58,7 @@ class JournalValidator
     }
 
     /** @throws InvalidOptionalArgumentException */
-    public function dateTo(): void
-    {
+    public function dateTo(): void {
         $dateTo = $this->params->getDateTo();
         if (!$dateTo) return;
 
@@ -72,8 +67,7 @@ class JournalValidator
     }
 
     /** @throws InvalidOptionalArgumentException */
-    public function to(): void
-    {
+    public function to(): void {
         $to = $this->params->getTo();
         if (!$to) return;
 
@@ -81,7 +75,6 @@ class JournalValidator
             throw new InvalidOptionalArgumentException('to is not a valid number.');
     }
 
-    public function state(): void
-    {
+    public function state(): void {
     }
 }

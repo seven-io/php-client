@@ -1,12 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Seven\Api\Constant;
+namespace Seven\Api\Resource\Sms;
 
 class SmsConstants {
-    public const DELAY_DATE_FORMAT = 'yyyy-mm-dd hh:ii';
-    public const DELAY_PATTERN =
-        '/[\d]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][\d]|3[0-1]) (2[0-3]|[01][\d]):[0-5][\d]/';
-
     public const LABEL_MAX_LENGTH = 100;
     public const LABEL_PATTERN = "/[0-9a-z\-@_.]/i";
 

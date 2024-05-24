@@ -1,9 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Seven\Api\Constant;
+namespace Seven\Api\Resource\Hooks;
 
-enum HooksEventType: string
-{
+enum HooksEventType: string {
     case ALL = 'all';
     case RCS = 'rcs';
     case SMS_INBOUND = 'sms_mo';

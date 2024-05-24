@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Seven\Api\Resource;
+namespace Seven\Api\Resource\Status;
 
 use Random\RandomException;
 use Seven\Api\Exception\ForbiddenIpException;
@@ -10,6 +10,7 @@ use Seven\Api\Exception\MissingAccessRightsException;
 use Seven\Api\Exception\SigningHashVerificationException;
 use Seven\Api\Exception\UnexpectedApiResponseException;
 use Seven\Api\Params\StatusParams;
+use Seven\Api\Resource\Resource;
 use Seven\Api\Response\Status;
 use Seven\Api\Validator\StatusValidator;
 

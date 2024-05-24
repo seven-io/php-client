@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Seven\Api\Resource;
+namespace Seven\Api\Resource\Analytics;
 
 use Random\RandomException;
 use Seven\Api\Exception\ForbiddenIpException;
@@ -10,6 +10,7 @@ use Seven\Api\Exception\MissingAccessRightsException;
 use Seven\Api\Exception\SigningHashVerificationException;
 use Seven\Api\Exception\UnexpectedApiResponseException;
 use Seven\Api\Params\AnalyticsParams;
+use Seven\Api\Resource\Resource;
 use Seven\Api\Response\Analytics\AbstractAnalytic;
 use Seven\Api\Response\Analytics\AnalyticByCountry;
 use Seven\Api\Response\Analytics\AnalyticByDate;

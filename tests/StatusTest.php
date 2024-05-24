@@ -2,20 +2,17 @@
 
 namespace Seven\Tests;
 
-use Seven\Api\Constant\StatusMessage;
 use Seven\Api\Exception\InvalidRequiredArgumentException;
 use Seven\Api\Params\JournalParams;
+use Seven\Api\Resource\Status\StatusMessage;
 
-class StatusTest extends BaseTest
-{
-    public function testError(): void
-    {
+class StatusTest extends BaseTest {
+    public function testError(): void {
         $this->expectException(InvalidRequiredArgumentException::class);
         $this->resources->status->get(0);
     }
 
-    public function testSuccess(): void
-    {
+    public function testSuccess(): void {
         $msgId = $this->getMessageId();
         $arr = $this->resources->status->get($msgId, $msgId);
         $this->assertCount(2, $arr);
@@ -31,8 +28,7 @@ class StatusTest extends BaseTest
         }
     }
 
-    private function getMessageId(): int
-    {
+    private function getMessageId(): int {
         $journalParams = (new JournalParams)->setLimit(1);
         $outbounds = $this->resources->journal->outbound($journalParams);
         $outbound = $outbounds[0];

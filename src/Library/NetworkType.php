@@ -1,9 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Seven\Api\Constant;
+namespace Seven\Api\Library;
 
-enum NetworkType: string
-{
+enum NetworkType: string {
     case FixedLine = 'fixed_line';
     case FixedLineOrMobile = 'fixed_line_or_mobile';
     case Mobile = 'mobile';

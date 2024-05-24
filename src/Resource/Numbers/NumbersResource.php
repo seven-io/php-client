@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Seven\Api\Resource;
+namespace Seven\Api\Resource\Numbers;
 
 use Random\RandomException;
 use Seven\Api\Exception\ForbiddenIpException;
@@ -11,6 +11,7 @@ use Seven\Api\Exception\UnexpectedApiResponseException;
 use Seven\Api\Params\Numbers\ListAvailableParams;
 use Seven\Api\Params\Numbers\OrderParams;
 use Seven\Api\Params\Numbers\UpdateParams;
+use Seven\Api\Resource\Resource;
 use Seven\Api\Response\Numbers\ActiveNumbers;
 use Seven\Api\Response\Numbers\AvailableNumbers;
 use Seven\Api\Response\Numbers\NumberDeletion;

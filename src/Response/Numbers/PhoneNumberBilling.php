@@ -2,37 +2,31 @@
 
 namespace Seven\Api\Response\Numbers;
 
-use Seven\Api\Constant\PaymentInterval;
+use Seven\Api\Resource\Numbers\PaymentInterval;
 
-class PhoneNumberBilling
-{
+class PhoneNumberBilling {
     protected PhoneNumberBillingFees $fees;
     protected PaymentInterval $paymentInterval;
 
-    public function __construct(object $data)
-    {
+    public function __construct(object $data) {
         $this->fees = $data->fees;
         $this->paymentInterval = $data->payment_interval;
     }
 
-    public function getFees(): PhoneNumberBillingFees
-    {
+    public function getFees(): PhoneNumberBillingFees {
         return $this->fees;
     }
 
-    public function setFees(PhoneNumberBillingFees $fees): PhoneNumberBilling
-    {
+    public function setFees(PhoneNumberBillingFees $fees): PhoneNumberBilling {
         $this->fees = $fees;
         return $this;
     }
 
-    public function getPaymentInterval(): PaymentInterval
-    {
+    public function getPaymentInterval(): PaymentInterval {
         return $this->paymentInterval;
     }
 
-    public function setPaymentInterval(PaymentInterval $paymentInterval): PhoneNumberBilling
-    {
+    public function setPaymentInterval(PaymentInterval $paymentInterval): PhoneNumberBilling {
         $this->paymentInterval = $paymentInterval;
         return $this;
     }

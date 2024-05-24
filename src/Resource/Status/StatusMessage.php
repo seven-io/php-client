@@ -1,9 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Seven\Api\Constant;
+namespace Seven\Api\Resource\Status;
 
-enum StatusMessage: string
-{
+enum StatusMessage: string {
     case Accepted = 'ACCEPTED';
     case Buffered = 'BUFFERED';
     case Delivered = 'DELIVERED';

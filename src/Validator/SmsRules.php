@@ -3,18 +3,16 @@
 namespace Seven\Api\Validator;
 
 use Datetime;
-use Seven\Api\Constant\SmsConstants;
 use Seven\Api\Exception\InvalidOptionalArgumentException;
 use Seven\Api\Exception\InvalidRequiredArgumentException;
 use Seven\Api\Params\SmsParams;
+use Seven\Api\Resource\Sms\SmsConstants;
 
-trait SmsRules
-{
+trait SmsRules {
     protected SmsParams $params;
 
     /** @throws InvalidOptionalArgumentException */
-    public function delay(): void
-    {
+    public function delay(): void {
         $delay = $this->params->getDelay();
 
         if (!$delay) return;
@@ -24,8 +22,7 @@ trait SmsRules
     }
 
     /** @throws InvalidOptionalArgumentException */
-    public function foreign_id(): void
-    {
+    public function foreign_id(): void {
         $foreignId = $this->params->getForeignId();
 
         if (null === $foreignId || '' === $foreignId) {
@@ -46,8 +43,7 @@ trait SmsRules
     }
 
     /** @throws InvalidOptionalArgumentException */
-    public function from(): void
-    {
+    public function from(): void {
         $from = $this->params->getFrom();
 
         if (null === $from || '' === $from) {
@@ -79,8 +75,7 @@ trait SmsRules
     }
 
     /** @throws InvalidOptionalArgumentException */
-    public function label(): void
-    {
+    public function label(): void {
         $label = $this->params->getLabel();
 
         if (null === $label || '' === $label) {
@@ -101,8 +96,7 @@ trait SmsRules
     }
 
     /** @throws InvalidRequiredArgumentException */
-    public function text(): void
-    {
+    public function text(): void {
         $text = $this->params->getText() ?? '';
 
         $length = strlen($text);
@@ -121,8 +115,7 @@ trait SmsRules
     }
 
     /** @throws InvalidRequiredArgumentException */
-    public function to(): void
-    {
+    public function to(): void {
         $to = $this->params->getTo();
 
         if (null === $to || '' === $to) {
@@ -132,8 +125,7 @@ trait SmsRules
     }
 
     /** @throws InvalidOptionalArgumentException */
-    public function ttl(): void
-    {
+    public function ttl(): void {
         $ttl = $this->params->getTtl();
 
         if (null === $ttl) {

@@ -3,23 +3,20 @@
 namespace Seven\Api\Validator;
 
 use Datetime;
-use Seven\Api\Constant\SmsConstants;
 use Seven\Api\Exception\InvalidOptionalArgumentException;
 use Seven\Api\Exception\InvalidRequiredArgumentException;
 use Seven\Api\Params\Rcs\RcsParams;
+use Seven\Api\Resource\Sms\SmsConstants;
 
-class RcsValidator
-{
-    public function __construct(protected RcsParams $params)
-    {
+class RcsValidator {
+    public function __construct(protected RcsParams $params) {
     }
 
     /**
      * @throws InvalidOptionalArgumentException
      * @throws InvalidRequiredArgumentException
      */
-    public function validate(): void
-    {
+    public function validate(): void {
         $this->delay();
         $this->foreign_id();
         $this->from();
@@ -30,8 +27,7 @@ class RcsValidator
     }
 
     /** @throws InvalidOptionalArgumentException */
-    public function delay(): void
-    {
+    public function delay(): void {
         $delay = $this->params->getDelay();
 
         if (!$delay) return;
@@ -41,8 +37,7 @@ class RcsValidator
     }
 
     /** @throws InvalidOptionalArgumentException */
-    public function foreign_id(): void
-    {
+    public function foreign_id(): void {
         $foreignId = $this->params->getForeignId();
 
         if (null === $foreignId || '' === $foreignId) {
@@ -62,13 +57,11 @@ class RcsValidator
         }
     }
 
-    public function from(): void
-    {
+    public function from(): void {
     }
 
     /** @throws InvalidOptionalArgumentException */
-    public function label(): void
-    {
+    public function label(): void {
         $label = $this->params->getLabel();
 
         if (null === $label || '' === $label) {
@@ -89,8 +82,7 @@ class RcsValidator
     }
 
     /** @throws InvalidRequiredArgumentException */
-    public function text(): void
-    {
+    public function text(): void {
         $text = $this->params->getText() ?? '';
 
         $length = strlen($text);
@@ -102,8 +94,7 @@ class RcsValidator
     }
 
     /** @throws InvalidRequiredArgumentException */
-    public function to(): void
-    {
+    public function to(): void {
         $to = $this->params->getTo();
 
         if (null === $to || '' === $to) {
@@ -113,8 +104,7 @@ class RcsValidator
     }
 
     /** @throws InvalidOptionalArgumentException */
-    public function ttl(): void
-    {
+    public function ttl(): void {
         $ttl = $this->params->getTtl();
 
         if (null === $ttl) {

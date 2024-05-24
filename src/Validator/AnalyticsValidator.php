@@ -3,9 +3,9 @@
 namespace Seven\Api\Validator;
 
 use DateTime;
-use Seven\Api\Constant\AnalyticsSubaccounts;
 use Seven\Api\Exception\InvalidOptionalArgumentException;
 use Seven\Api\Params\AnalyticsParams;
+use Seven\Api\Resource\Analytics\AnalyticsSubaccounts;
 
 class AnalyticsValidator {
     public function __construct(protected AnalyticsParams $params) {
@@ -50,13 +50,13 @@ class AnalyticsValidator {
         if (!$subaccounts) return;
 
         $invalid = false;
-        $values = array_column(AnalyticsSubaccounts::cases(), 'value');;
+        $values = array_column(AnalyticsSubaccounts::cases(), 'value');
 
-        if (!in_array($subaccounts, $values)) {
-            if (is_numeric($subaccounts)) {
-                if (!is_int((int)$subaccounts)) $invalid = true;
-            } else $invalid = true;
-        }
+        if (in_array($subaccounts, $values)) return;
+
+        if (is_numeric($subaccounts)) {
+            if (!is_int((int)$subaccounts)) $invalid = true;
+        } else $invalid = true;
 
         if ($invalid) {
             $imploded = implode(',', [...$values, '<ID>']);

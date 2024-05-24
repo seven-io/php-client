@@ -4,22 +4,19 @@ namespace Seven\Tests;
 
 use DateInterval;
 use DateTime;
-use Seven\Api\Constant\SmsConstants;
 use Seven\Api\Params\JournalParams;
+use Seven\Api\Resource\Sms\SmsConstants;
 use Seven\Api\Response\Journal\JournalBase;
 use Seven\Api\Response\Journal\JournalOutbound;
 use Seven\Api\Response\Journal\JournalVoice;
 
-class JournalTest extends BaseTest
-{
-    public function testJournalInbound(): void
-    {
+class JournalTest extends BaseTest {
+    public function testJournalInbound(): void {
         $arr = $this->resources->journal->inbound();
         $this->request($arr);
     }
 
-    private function request(array $journals, ?callable $functionHandler = null): void
-    {
+    private function request(array $journals, ?callable $functionHandler = null): void {
         $this->assertIsArray($journals);
 
         /** @var JournalBase $j */
@@ -34,8 +31,7 @@ class JournalTest extends BaseTest
         }
     }
 
-    public function testJournalOutbound(): void
-    {
+    public function testJournalOutbound(): void {
         $arr = $this->resources->journal->outbound();
         $callable = function (JournalOutbound $j) {
             $this->assertIsString($j->getConnection());
@@ -51,8 +47,7 @@ class JournalTest extends BaseTest
         $this->request($arr, $callable);
     }
 
-    public function testJournalVoice(): void
-    {
+    public function testJournalVoice(): void {
         $arr = $this->resources->journal->voice();
         $callable = function (JournalVoice $j) {
             $this->assertIsNullOrLengthyString($j->getDuration());
@@ -64,14 +59,12 @@ class JournalTest extends BaseTest
         $this->request($arr, $callable);
     }
 
-    public function testJournalReplies(): void
-    {
+    public function testJournalReplies(): void {
         $arr = $this->resources->journal->replies();
         $this->request($arr);
     }
 
-    public function testJournalParams(): void
-    {
+    public function testJournalParams(): void {
         $params = (new JournalParams)
             ->setDateFrom((new DateTime)->sub(DateInterval::createFromDateString('30 day')))
             ->setDateTo(new DateTime)
