@@ -9,6 +9,7 @@ use Seven\Api\Constant\HttpMethod;
 use Seven\Api\Exception\ForbiddenIpException;
 use Seven\Api\Exception\InvalidApiKeyException;
 use Seven\Api\Exception\MissingAccessRightsException;
+use Seven\Api\Exception\SigningHashVerificationException;
 use Seven\Api\Exception\UnexpectedApiResponseException;
 
 class Client
@@ -56,6 +57,7 @@ class Client
      * @throws InvalidApiKeyException
      * @throws ForbiddenIpException
      * @throws MissingAccessRightsException
+     * @throws SigningHashVerificationException
      */
     protected function request(string $path, HttpMethod $method, array $payload = []): mixed
     {
@@ -106,6 +108,8 @@ class Client
         switch ($res) {
             case '900';
                 throw new InvalidApiKeyException;
+            case '901';
+                throw new SigningHashVerificationException;
             case '902':
                 throw new MissingAccessRightsException;
             case '903';
