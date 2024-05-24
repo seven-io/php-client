@@ -21,9 +21,7 @@ class Client
         'Accept: application/json',
     ];
 
-    /**
-     * @throws InvalidArgumentException
-     */
+    /** @throws InvalidArgumentException */
     public function __construct(
         protected string  $apiKey,
         protected string  $sentWith = 'php-api',

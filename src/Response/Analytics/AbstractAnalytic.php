@@ -6,6 +6,7 @@ abstract class AbstractAnalytic {
     protected int $hlr;
     protected int $inbound;
     protected int $mnp;
+    protected int $rcs;
     protected int $sms;
     protected float $usageEuro;
     protected int $voice;
@@ -14,6 +15,7 @@ abstract class AbstractAnalytic {
         $this->hlr = $data->hlr;
         $this->inbound = $data->inbound;
         $this->mnp = $data->mnp;
+        $this->rcs = $data->rcs;
         $this->sms = $data->sms;
         $this->usageEuro = (float)$data->usage_eur;
         $this->voice = $data->voice;
@@ -41,5 +43,9 @@ abstract class AbstractAnalytic {
 
     public function getVoice(): int {
         return $this->voice;
+    }
+
+    public function getRCS(): int {
+        return $this->rcs;
     }
 }

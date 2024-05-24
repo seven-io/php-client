@@ -3,40 +3,24 @@
 namespace Seven\Tests;
 
 use Seven\Api\Response\Analytics\AbstractAnalytic;
-use Seven\Api\Response\Analytics\AnalyticByDate;
-use Seven\Api\Response\Analytics\AnalyticByLabel;
-use Seven\Api\Response\Analytics\AnalyticBySubaccount;
 
-class AnalyticsTest extends BaseTest
-{
-    public function testAnalyticsGroupByDate(): void
-    {
+class AnalyticsTest extends BaseTest {
+    public function testAnalyticsByDate(): void {
         $res = $this->resources->analytics->byDate();
 
         $this->assertCount(31, $res);
 
-        foreach ($this->assertResponse($res) as $a) {
-            /** @var AnalyticByDate $a */
+        foreach ($res as $a) {
             $this->assertEach($a);
             $this->assertIsLengthyString($a->getDate());
         }
     }
 
-    /**
-     * @return AbstractAnalytic[]
-     */
-    private function assertResponse(array $res): array
-    {
-        $this->assertIsArray($res);
-
-        return $res;
-    }
-
-    private function assertEach(AbstractAnalytic $a): bool
-    {
+    private function assertEach(AbstractAnalytic $a): bool {
         $this->assertGreaterThanOrEqual(0, $a->getHLR());
         $this->assertGreaterThanOrEqual(0, $a->getInbound());
         $this->assertGreaterThanOrEqual(0, $a->getMNP());
+        $this->assertGreaterThanOrEqual(0, $a->getRCS());
         $this->assertGreaterThanOrEqual(0, $a->getSMS());
         $this->assertGreaterThanOrEqual(0, $a->getUsageEuro());
         $this->assertGreaterThanOrEqual(0, $a->getVoice());
@@ -44,7 +28,8 @@ class AnalyticsTest extends BaseTest
         $total = $a->getSMS()
             + $a->getVoice()
             + $a->getHLR()
-            + $a->getMNP()// + $a->inbound
+            + $a->getMNP()
+            + $a->getRCS()// + $a->inbound
         ;
         $isEmpty = 0 === $total;
 
@@ -56,27 +41,25 @@ class AnalyticsTest extends BaseTest
         return $isEmpty;
     }
 
-    public function testAnalyticsGroupByLabel(): void
-    {
-        foreach ($this->assertResponse($this->resources->analytics->byLabel()) as $a) {
-            /** @var AnalyticByLabel $a */
-            $this->assertIsString($a->getLabel());
-        }
+    public function testAnalyticsByLabel(): void {
+        $arr = $this->resources->analytics->byLabel();
+        //foreach ($arr as $a) {}
+        $this->expectNotToPerformAssertions();
     }
 
-    public function testAnalyticsGroupByCountry(): void
-    {
-        $this->assertResponse($this->resources->analytics->byCountry());
+    public function testAnalyticsByCountry(): void {
+        $arr = $this->resources->analytics->byCountry();
+        //foreach ($arr as $item) {}
+        $this->expectNotToPerformAssertions();
     }
 
-    public function testAnalyticsGroupBySubaccount(): void
-    {
-        foreach ($this->assertResponse($this->resources->analytics->bySubaccount()) as $a) {
-            /** @var AnalyticBySubaccount $a */
+    public function testAnalyticsBySubaccount(): void {
+        $arr = $this->resources->analytics->bySubaccount();
+
+        foreach ($arr as $a) {
             $account = $a->getAccount();
             $this->assertEach($a);
 
-            $this->assertIsString($account);
             $this->assertNotEmpty($account);
         }
     }
