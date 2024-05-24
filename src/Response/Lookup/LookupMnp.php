@@ -6,9 +6,6 @@ class LookupMnp
 {
     protected int $code;
     protected Mnp $mnp;
-    /**
-     * @var int|float $price
-     */
     protected int|float $price;
     protected bool $success;
 

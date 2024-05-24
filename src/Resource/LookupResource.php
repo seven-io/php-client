@@ -10,9 +10,7 @@ use Seven\Api\Response\Lookup\LookupRcsCapabilities;
 
 class LookupResource extends Resource
 {
-    /**
-     * @return LookupFormat[]
-     */
+    /** @return LookupFormat[] */
     public function format(string ...$numbers): array
     {
         $res = $this->fetch('format', ...$numbers);
@@ -29,36 +27,28 @@ class LookupResource extends Resource
         // TODO?
     }
 
-    /**
-     * @return LookupCnam[]
-     */
+    /** @return LookupCnam[] */
     public function cnam(string ...$numbers): array
     {
         $res = $this->fetch('cnam', ...$numbers);
         return array_map(static fn($obj) => new LookupCnam($obj), is_array($res) ? $res : [$res]);
     }
 
-    /**
-     * @return LookupHlr[]
-     */
+    /** @return LookupHlr[] */
     public function hlr(string ...$numbers): array
     {
         $res = $this->fetch('hlr', ...$numbers);
         return array_map(static fn($obj) => new LookupHlr($obj), is_array($res) ? $res : [$res]);
     }
 
-    /**
-     * @return LookupMnp[]
-     */
+    /** @return LookupMnp[] */
     public function mnp(string ...$numbers): array
     {
         $res = $this->fetch('mnp', ...$numbers);
         return array_map(static fn($obj) => new LookupMnp($obj), is_array($res) ? $res : [$res]);
     }
 
-    /**
-     * @return LookupRcsCapabilities[]
-     */
+    /** @return LookupRcsCapabilities[] */
     public function rcsCapabilities(string ...$numbers): array
     {
         $res = $this->fetch('rcs', ...$numbers);

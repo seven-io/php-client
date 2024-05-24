@@ -47,16 +47,20 @@ class LookupTest extends BaseTest
         $this->assertCount(1, $arr);
 
         foreach ($arr as $item) {
-            $this->assertIsInt($item->getCode());
+            $this->assertGreaterThanOrEqual(0, $item->getCode());
             $mnp = $item->getMnp();
-            $this->assertIsString($mnp->getCountry());
-            $this->assertIsString($mnp->getInternationalFormatted());
+            $this->assertNotEmpty($mnp->getCountry());
+            $this->assertNotEmpty($mnp->getInternationalFormatted());
             $this->assertIsBool($mnp->isPorted());
-            $this->assertIsString($mnp->getMccMnc());
-            $this->assertIsString($mnp->getNationalFormat());
+            $this->assertNotEmpty($mnp->getMccMnc());
+            $this->assertNotEmpty($mnp->getNationalFormat());
             $this->assertIsString($mnp->getNetwork());
+            $this->assertNotEmpty($mnp->getNetwork());
+            $this->assertIsString($mnp->getNetworkType());
+            $this->assertNotEmpty($mnp->getNetworkType());
             $this->assertIsString($mnp->getNumber());
-            $this->assertIsNumeric($item->getPrice());
+            $this->assertNotEmpty($mnp->getNumber());
+            $this->assertGreaterThanOrEqual(0, $item->getPrice());
             $this->assertTrue($item->isSuccess());
         }
     }
