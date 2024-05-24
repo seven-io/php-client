@@ -8,6 +8,7 @@ use Random\RandomException;
 use Seven\Api\Constant\HttpMethod;
 use Seven\Api\Exception\ForbiddenIpException;
 use Seven\Api\Exception\InvalidApiKeyException;
+use Seven\Api\Exception\MissingAccessRightsException;
 use Seven\Api\Exception\UnexpectedApiResponseException;
 
 class Client
@@ -54,6 +55,7 @@ class Client
      * @throws RandomException
      * @throws InvalidApiKeyException
      * @throws ForbiddenIpException
+     * @throws MissingAccessRightsException
      */
     protected function request(string $path, HttpMethod $method, array $payload = []): mixed
     {
@@ -104,6 +106,8 @@ class Client
         switch ($res) {
             case '900';
                 throw new InvalidApiKeyException;
+            case '902':
+                throw new MissingAccessRightsException;
             case '903';
                 throw new ForbiddenIpException;
             default:
