@@ -4,11 +4,7 @@ namespace Seven\Api\Resource;
 
 use Seven\Api\Client;
 
-abstract class Resource
-{
-    public function __construct(protected Client $client)
-    {
+abstract class Resource {
+    public function __construct(protected Client $client) {
     }
-
-    abstract public function validate($params): void;
 }

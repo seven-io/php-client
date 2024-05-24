@@ -2,22 +2,30 @@
 
 namespace Seven\Api\Resource;
 
+use Random\RandomException;
+use Seven\Api\Exception\ForbiddenIpException;
+use Seven\Api\Exception\InvalidApiKeyException;
 use Seven\Api\Exception\InvalidOptionalArgumentException;
 use Seven\Api\Exception\InvalidRequiredArgumentException;
+use Seven\Api\Exception\MissingAccessRightsException;
+use Seven\Api\Exception\SigningHashVerificationException;
+use Seven\Api\Exception\UnexpectedApiResponseException;
 use Seven\Api\Params\VoiceParams;
 use Seven\Api\Response\Voice\Voice;
 use Seven\Api\Validator\VoiceValidator;
 
-class VoiceResource extends Resource
-{
+class VoiceResource extends Resource {
     /**
-     * @param VoiceParams $params
-     * @return Voice
      * @throws InvalidOptionalArgumentException
      * @throws InvalidRequiredArgumentException
+     * @throws RandomException
+     * @throws ForbiddenIpException
+     * @throws InvalidApiKeyException
+     * @throws MissingAccessRightsException
+     * @throws SigningHashVerificationException
+     * @throws UnexpectedApiResponseException
      */
-    public function call(VoiceParams $params): Voice
-    {
+    public function call(VoiceParams $params): Voice {
         $this->validate($params);
 
         $res = $this->client->post('voice', $params->toArray());
@@ -26,12 +34,10 @@ class VoiceResource extends Resource
     }
 
     /**
-     * @param VoiceParams $params
      * @throws InvalidRequiredArgumentException
      * @throws InvalidOptionalArgumentException
      */
-    public function validate($params): void
-    {
+    public function validate(VoiceParams $params): void {
         (new VoiceValidator($params))->validate();
     }
 }

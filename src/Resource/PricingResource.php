@@ -2,42 +2,35 @@
 
 namespace Seven\Api\Resource;
 
+use Random\RandomException;
+use Seven\Api\Exception\ForbiddenIpException;
+use Seven\Api\Exception\InvalidApiKeyException;
 use Seven\Api\Exception\InvalidOptionalArgumentException;
+use Seven\Api\Exception\MissingAccessRightsException;
+use Seven\Api\Exception\SigningHashVerificationException;
+use Seven\Api\Exception\UnexpectedApiResponseException;
 use Seven\Api\Params\PricingParams;
 use Seven\Api\Response\Pricing\Pricing;
 use Seven\Api\Validator\PricingValidator;
 
-class PricingResource extends Resource
-{
+class PricingResource extends Resource {
     /**
+     * @throws ForbiddenIpException
+     * @throws InvalidApiKeyException
      * @throws InvalidOptionalArgumentException
+     * @throws MissingAccessRightsException
+     * @throws RandomException
+     * @throws SigningHashVerificationException
+     * @throws UnexpectedApiResponseException
      */
-    public function get(string $country = null): Pricing
-    {
-        $params = (new PricingParams)->setCountry($country);
-        $res = $this->fetch($params);
+    public function get(PricingParams $params = new PricingParams): Pricing {
+        $this->validate($params);
+        $res = $this->client->get('pricing', $params->toArray());
         return new Pricing($res);
     }
 
-    /**
-     * @return string|object
-     * @throws InvalidOptionalArgumentException
-     */
-    protected function fetch(PricingParams $params = null)
-    {
-        if (!$params) $params = new PricingParams;
-
-        $this->validate($params);
-
-        return $this->client->get('pricing', $params->toArray());
-    }
-
-    /**
-     * @param PricingParams $params
-     * @throws InvalidOptionalArgumentException
-     */
-    public function validate($params): void
-    {
+    /** @throws InvalidOptionalArgumentException */
+    public function validate(PricingParams $params): void {
         (new PricingValidator($params))->validate();
     }
 }

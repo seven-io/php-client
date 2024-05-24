@@ -13,8 +13,7 @@ use Seven\Api\Exception\SigningHashVerificationException;
 use Seven\Api\Exception\UnexpectedApiResponseException;
 use stdClass;
 
-class Client
-{
+class Client {
     public const BASE_URI = 'https://gateway.seven.io/api';
     /** @var string[] $headers */
     protected array $headers = [
@@ -26,8 +25,7 @@ class Client
         protected string  $apiKey,
         protected string  $sentWith = 'php-api',
         protected ?string $signingSecret = null,
-    )
-    {
+    ) {
         if (!$this->apiKey) throw new InvalidArgumentException('apiKey can not be empty');
         if (!$this->sentWith) throw new InvalidArgumentException('sentWith can not be empty');
 
@@ -35,18 +33,23 @@ class Client
         $this->headers[] = 'X-Api-Key: ' . $this->apiKey;
     }
 
-    public function getApiKey(): string
-    {
+    public function getApiKey(): string {
         return $this->apiKey;
     }
 
-    public function getSentWith(): string
-    {
+    public function getSentWith(): string {
         return $this->sentWith;
     }
 
-    public function delete(string $path, array $options = []): mixed
-    {
+    /**
+     * @throws ForbiddenIpException
+     * @throws SigningHashVerificationException
+     * @throws RandomException
+     * @throws UnexpectedApiResponseException
+     * @throws InvalidApiKeyException
+     * @throws MissingAccessRightsException
+     */
+    public function delete(string $path, array $options = []): mixed {
         return $this->request($path, HttpMethod::DELETE, $options);
     }
 
@@ -58,8 +61,7 @@ class Client
      * @throws MissingAccessRightsException
      * @throws SigningHashVerificationException
      */
-    protected function request(string $path, HttpMethod $method, array $payload = []): mixed
-    {
+    protected function request(string $path, HttpMethod $method, array $payload = []): mixed {
         $url = self::BASE_URI . '/' . $path;
         $params = http_build_query($payload);
         if (HttpMethod::GET === $method) {
@@ -133,8 +135,7 @@ class Client
      * @throws MissingAccessRightsException
      * @throws InvalidApiKeyException
      */
-    public function patch(string $path, array $payload = []): mixed
-    {
+    public function patch(string $path, array $payload = []): mixed {
         return $this->request($path, HttpMethod::PATCH, $payload);
     }
 
@@ -146,8 +147,7 @@ class Client
      * @throws InvalidApiKeyException
      * @throws MissingAccessRightsException
      */
-    public function post(string $path, array $payload = []): mixed
-    {
+    public function post(string $path, array $payload = []): mixed {
         return $this->request($path, HttpMethod::POST, $payload);
     }
 
@@ -159,8 +159,7 @@ class Client
      * @throws InvalidApiKeyException
      * @throws MissingAccessRightsException
      */
-    public function get(string $path, array $params = []): mixed
-    {
+    public function get(string $path, array $params = []): mixed {
         return $this->request($path, HttpMethod::GET, $params);
     }
 }

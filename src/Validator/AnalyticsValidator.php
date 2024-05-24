@@ -7,18 +7,12 @@ use Seven\Api\Constant\AnalyticsSubaccounts;
 use Seven\Api\Exception\InvalidOptionalArgumentException;
 use Seven\Api\Params\AnalyticsParams;
 
-class AnalyticsValidator
-{
-    protected AnalyticsParams $params;
-
-    public function __construct(AnalyticsParams $params)
-    {
-        $this->params = $params;
+class AnalyticsValidator {
+    public function __construct(protected AnalyticsParams $params) {
     }
 
     /** @throws InvalidOptionalArgumentException */
-    public function validate(): void
-    {
+    public function validate(): void {
         $this->end();
         $this->label();
         $this->start();
@@ -26,8 +20,7 @@ class AnalyticsValidator
     }
 
     /** @throws InvalidOptionalArgumentException */
-    public function end(): void
-    {
+    public function end(): void {
         $end = $this->params->getEnd();
         if (!$end) return;
 
@@ -39,13 +32,11 @@ class AnalyticsValidator
             throw new InvalidOptionalArgumentException('start date can not be past end date.');
     }
 
-    public function label(): void
-    {
+    public function label(): void {
     }
 
     /** @throws InvalidOptionalArgumentException */
-    public function start(): void
-    {
+    public function start(): void {
         $start = $this->params->getStart();
         if (!$start) return;
 
@@ -54,8 +45,7 @@ class AnalyticsValidator
     }
 
     /** @throws InvalidOptionalArgumentException */
-    public function subaccounts(): void
-    {
+    public function subaccounts(): void {
         $subaccounts = $this->params->getSubaccounts();
         if (!$subaccounts) return;
 

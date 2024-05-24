@@ -2,19 +2,19 @@
 
 namespace Seven\Tests;
 
-class PricingTest extends BaseTest
-{
-    public function testGermany(): void
-    {
-        $res = $this->resources->pricing->get('de');
+use Seven\Api\Params\PricingParams;
+
+class PricingTest extends BaseTest {
+    public function testGermany(): void {
+        $params = (new PricingParams)->setCountry('de');
+        $res = $this->resources->pricing->get($params);
 
         self::assertEquals(1, $res->getCountCountries());
         self::assertGreaterThan(0, $res->getCountNetworks());
         self::assertCount(1, $res->getCountries());
     }
 
-    public function testJson(): void
-    {
+    public function testAll(): void {
         $res = $this->resources->pricing->get();
 
         self::assertGreaterThan(0, $res->getCountCountries());

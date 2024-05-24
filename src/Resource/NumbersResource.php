@@ -2,6 +2,12 @@
 
 namespace Seven\Api\Resource;
 
+use Random\RandomException;
+use Seven\Api\Exception\ForbiddenIpException;
+use Seven\Api\Exception\InvalidApiKeyException;
+use Seven\Api\Exception\MissingAccessRightsException;
+use Seven\Api\Exception\SigningHashVerificationException;
+use Seven\Api\Exception\UnexpectedApiResponseException;
 use Seven\Api\Params\Numbers\ListAvailableParams;
 use Seven\Api\Params\Numbers\OrderParams;
 use Seven\Api\Params\Numbers\UpdateParams;
@@ -11,43 +17,79 @@ use Seven\Api\Response\Numbers\NumberDeletion;
 use Seven\Api\Response\Numbers\NumberOrder;
 use Seven\Api\Response\Numbers\PhoneNumber;
 
-class NumbersResource extends Resource
-{
-    public function delete(string $number, bool $deleteImmediately = false): NumberDeletion
-    {
+class NumbersResource extends Resource {
+    /**
+     * @throws ForbiddenIpException
+     * @throws SigningHashVerificationException
+     * @throws UnexpectedApiResponseException
+     * @throws RandomException
+     * @throws InvalidApiKeyException
+     * @throws MissingAccessRightsException
+     */
+    public function delete(string $number, bool $deleteImmediately = false): NumberDeletion {
         $path = 'numbers/active/' . $number;
         if ($deleteImmediately) $path .= '?delete_immediately=true';
 
         return new NumberDeletion($this->client->delete($path));
     }
 
-    public function order(OrderParams $params): NumberOrder
-    {
+    /**
+     * @throws ForbiddenIpException
+     * @throws SigningHashVerificationException
+     * @throws UnexpectedApiResponseException
+     * @throws RandomException
+     * @throws InvalidApiKeyException
+     * @throws MissingAccessRightsException
+     */
+    public function order(OrderParams $params): NumberOrder {
         return new NumberOrder($this->client->post('numbers/order', $params->toArray()));
     }
 
-    public function update(UpdateParams $params): PhoneNumber
-    {
+    /**
+     * @throws ForbiddenIpException
+     * @throws SigningHashVerificationException
+     * @throws UnexpectedApiResponseException
+     * @throws RandomException
+     * @throws MissingAccessRightsException
+     * @throws InvalidApiKeyException
+     */
+    public function update(UpdateParams $params): PhoneNumber {
         return new PhoneNumber($this->client->patch('numbers/active/' . $params->getNumber(), $params->toArray()));
     }
 
-    public function validate($params): void
-    {
-        // TODO?
-    }
-
-    public function listActive(): ActiveNumbers
-    {
+    /**
+     * @throws ForbiddenIpException
+     * @throws SigningHashVerificationException
+     * @throws RandomException
+     * @throws UnexpectedApiResponseException
+     * @throws MissingAccessRightsException
+     * @throws InvalidApiKeyException
+     */
+    public function listActive(): ActiveNumbers {
         return new ActiveNumbers($this->client->get('numbers/active'));
     }
 
-    public function get(string $number): PhoneNumber
-    {
+    /**
+     * @throws ForbiddenIpException
+     * @throws SigningHashVerificationException
+     * @throws UnexpectedApiResponseException
+     * @throws RandomException
+     * @throws InvalidApiKeyException
+     * @throws MissingAccessRightsException
+     */
+    public function get(string $number): PhoneNumber {
         return new PhoneNumber($this->client->get('numbers/active/' . $number));
     }
 
-    public function listAvailable(ListAvailableParams $params = new ListAvailableParams): AvailableNumbers
-    {
+    /**
+     * @throws ForbiddenIpException
+     * @throws SigningHashVerificationException
+     * @throws UnexpectedApiResponseException
+     * @throws RandomException
+     * @throws MissingAccessRightsException
+     * @throws InvalidApiKeyException
+     */
+    public function listAvailable(ListAvailableParams $params = new ListAvailableParams): AvailableNumbers {
         return new AvailableNumbers($this->client->get('numbers/available', $params->toArray()));
     }
 }

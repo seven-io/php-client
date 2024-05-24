@@ -49,11 +49,8 @@ class AnalyticsResource extends Resource {
         return array_map(static fn($value) => new $class($value), $arr);
     }
 
-    /**
-     * @param AnalyticsParams $params
-     * @throws InvalidOptionalArgumentException
-     */
-    public function validate($params): void {
+    /** @throws InvalidOptionalArgumentException */
+    public function validate(AnalyticsParams $params): void {
         (new AnalyticsValidator($params))->validate();
     }
 
