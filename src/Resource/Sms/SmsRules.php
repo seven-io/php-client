@@ -1,30 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace Seven\Api\Validator;
+namespace Seven\Api\Resource\Sms;
 
 use Datetime;
 use Seven\Api\Exception\InvalidOptionalArgumentException;
 use Seven\Api\Exception\InvalidRequiredArgumentException;
-use Seven\Api\Resource\Rcs\RcsParams;
-use Seven\Api\Resource\Sms\SmsConstants;
 
-class RcsValidator {
-    public function __construct(protected RcsParams $params) {
-    }
-
-    /**
-     * @throws InvalidOptionalArgumentException
-     * @throws InvalidRequiredArgumentException
-     */
-    public function validate(): void {
-        $this->delay();
-        $this->foreign_id();
-        $this->from();
-        $this->label();
-        $this->text();
-        $this->to();
-        $this->ttl();
-    }
+trait SmsRules {
+    protected SmsParams $params;
 
     /** @throws InvalidOptionalArgumentException */
     public function delay(): void {
@@ -57,7 +40,36 @@ class RcsValidator {
         }
     }
 
+    /** @throws InvalidOptionalArgumentException */
     public function from(): void {
+        $from = $this->params->getFrom();
+
+        if (null === $from || '' === $from) {
+            return;
+        }
+
+        $length = strlen($from);
+
+        $alphaNumericMax = SmsConstants::FROM_ALPHANUMERIC_MAX;
+        $numericMax = SmsConstants::FROM_NUMERIC_MAX;
+
+        $isNumeric = is_numeric($from);
+
+        if ($length > $numericMax) {
+            throw new InvalidOptionalArgumentException(
+                "Argument 'from' may not exceed $numericMax chars.");
+        }
+
+        if ($length > $alphaNumericMax && !$isNumeric) {
+            throw new InvalidOptionalArgumentException(
+                "Argument 'from' must be numeric. if > $alphaNumericMax chars.");
+        }
+
+        if (!ctype_alnum(
+            str_ireplace(SmsConstants::FROM_ALLOWED_CHARS, '', $from))) {
+            throw new InvalidOptionalArgumentException(
+                "Argument 'from' must be alphanumeric.");
+        }
     }
 
     /** @throws InvalidOptionalArgumentException */
@@ -90,6 +102,13 @@ class RcsValidator {
         if (null === $text || !$length) {
             throw new InvalidRequiredArgumentException(
                 'You cannot send an empty message.');
+        }
+
+        $maxTextLength = SmsConstants::TEXT_MAX_LENGTH;
+
+        if ($maxTextLength < $length) {
+            throw new InvalidRequiredArgumentException(
+                "The text can not be longer than $maxTextLength characters.");
         }
     }
 

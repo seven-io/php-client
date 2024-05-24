@@ -1,11 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Seven\Api\Validator;
+namespace Seven\Api\Resource\Analytics;
 
 use DateTime;
 use Seven\Api\Exception\InvalidOptionalArgumentException;
-use Seven\Api\Resource\Analytics\AnalyticsParams;
-use Seven\Api\Resource\Analytics\AnalyticsSubaccounts;
 
 class AnalyticsValidator {
     public function __construct(protected AnalyticsParams $params) {

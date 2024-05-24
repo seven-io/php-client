@@ -11,7 +11,6 @@ use Seven\Api\Exception\MissingAccessRightsException;
 use Seven\Api\Exception\SigningHashVerificationException;
 use Seven\Api\Exception\UnexpectedApiResponseException;
 use Seven\Api\Resource\Resource;
-use Seven\Api\Validator\VoiceValidator;
 
 class VoiceResource extends Resource {
     /**

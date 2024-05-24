@@ -1,11 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace Seven\Api\Validator;
+namespace Seven\Api\Resource\ValidateForVoice;
 
 use Seven\Api\Exception\InvalidOptionalArgumentException;
 use Seven\Api\Exception\InvalidRequiredArgumentException;
 use Seven\Api\Library\Util;
-use Seven\Api\Resource\ValidateForVoice\ValidateForVoiceParams;
 
 class ValidateForVoiceValidator {
     protected ValidateForVoiceParams $params;

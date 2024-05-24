@@ -1,9 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Seven\Api\Validator;
+namespace Seven\Api\Resource\Status;
 
 use Seven\Api\Exception\InvalidRequiredArgumentException;
-use Seven\Api\Resource\Status\StatusParams;
 
 class StatusValidator {
     protected StatusParams $params;

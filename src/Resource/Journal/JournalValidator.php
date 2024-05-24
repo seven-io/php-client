@@ -1,10 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace Seven\Api\Validator;
+namespace Seven\Api\Resource\Journal;
 
 use DateTime;
 use Seven\Api\Exception\InvalidOptionalArgumentException;
-use Seven\Api\Resource\Journal\JournalParams;
 
 class JournalValidator {
     public const LIMIT_MIN = 1;
