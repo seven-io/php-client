@@ -100,10 +100,13 @@ class Client
         curl_setopt($ch, CURLOPT_HTTPHEADER, array_unique($headers));
 
         $res = curl_exec($ch);
-
-        if (false === $res) throw new UnexpectedApiResponseException(curl_error($ch));
-
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $error = curl_error($ch);
         curl_close($ch);
+
+        if ($error !== '') throw new UnexpectedApiResponseException($error);
+        if (false === $res) throw new UnexpectedApiResponseException($error);
+        if ($httpCode !== 200) throw new UnexpectedApiResponseException($error);
 
         switch ($res) {
             case '900';
