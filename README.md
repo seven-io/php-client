@@ -17,7 +17,9 @@ if you don't use Composer.
 ### Usage
 
 ```php
-use Seven\Api\Client;use Seven\Api\Resource\Sms\SmsParams;use Seven\Api\Resource\Sms\SmsResource;
+use Seven\Api\Client;
+use Seven\Api\Resource\Sms\SmsParams;
+use Seven\Api\Resource\Sms\SmsResource;
 
 $client = new Client('MY_VERY_SECRET_API_KEY!');
 $smsResource = new SmsResource($client);
