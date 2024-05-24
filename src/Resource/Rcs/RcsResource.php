@@ -41,7 +41,6 @@ class RcsResource extends Resource {
         $this->validate($params);
 
         $res = $this->client->post('rcs/messages', $params->toArray());
-        var_dump($res);
 
         return new Rcs($res);
     }

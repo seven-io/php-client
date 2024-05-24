@@ -117,7 +117,8 @@ class Client {
         if ($isSuccess) return $res;
 
         $sourceObject = is_object($res) ? $res : new stdClass;
-        $code = property_exists($sourceObject, 'code') ? $res->code : (int)$res;
+        $code = (property_exists($sourceObject, 'code') ? $res->code : property_exists($sourceObject, 'error_code'))
+            ? $res->error_code : (int)$res;
         throw match ($code) {
             900 => new InvalidApiKeyException,
             901 => new SigningHashVerificationException,
