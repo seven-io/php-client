@@ -4,3 +4,4 @@ vendor/
 .phpunit.result.cache
 .phpdoc/
 index.php
+.idea/
