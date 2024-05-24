@@ -88,7 +88,7 @@ class Client {
         if ($this->signingSecret) {
             $nonce = bin2hex(random_bytes(16));
             $timestamp = time();
-            $toHash = HttpMethod::GET->name === $method->name ? '' : json_encode($params);
+            $toHash = HttpMethod::GET->name === $method->name ? '' : $params;
             $hashMd5 = md5($toHash);
             $toSign = [$timestamp, $nonce, $method->name, $url, $hashMd5];
             $toSign = implode(chr(10), $toSign);
