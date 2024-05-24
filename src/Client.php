@@ -11,6 +11,7 @@ use Seven\Api\Exception\InvalidApiKeyException;
 use Seven\Api\Exception\MissingAccessRightsException;
 use Seven\Api\Exception\SigningHashVerificationException;
 use Seven\Api\Exception\UnexpectedApiResponseException;
+use stdClass;
 
 class Client
 {
@@ -64,7 +65,8 @@ class Client
         $url = self::BASE_URI . '/' . $path;
         $params = http_build_query($payload);
         if (HttpMethod::GET === $method) {
-            $url .= (str_ends_with($url, '?') ? '' : '?') . $params;
+            if (!str_ends_with($url, '?')) $url .= '?';
+            $url .= $params;
             $params = '';
         }
 
@@ -100,43 +102,73 @@ class Client
         curl_setopt($ch, CURLOPT_HTTPHEADER, array_unique($headers));
 
         $res = curl_exec($ch);
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $isSuccess = curl_getinfo($ch, CURLINFO_HTTP_CODE) === 200;
         $error = curl_error($ch);
         curl_close($ch);
 
         if ($error !== '') throw new UnexpectedApiResponseException($error);
         if (false === $res) throw new UnexpectedApiResponseException($error);
-        if ($httpCode !== 200) throw new UnexpectedApiResponseException($error);
 
-        switch ($res) {
-            case '900';
-                throw new InvalidApiKeyException;
-            case '901';
-                throw new SigningHashVerificationException;
-            case '902':
-                throw new MissingAccessRightsException;
-            case '903';
-                throw new ForbiddenIpException;
-            default:
-                try {
-                    $res = json_decode($res, false, 512, JSON_THROW_ON_ERROR);
-                } catch (Exception) {
-                }
+        try {
+            $res = json_decode($res, false, 512, JSON_THROW_ON_ERROR);
+        } catch (Exception) {
         }
+
+        if ($isSuccess) return $res;
+
+        $sourceObject = is_object($res) ? $res : new stdClass;
+        var_dump($sourceObject);
+        $code = property_exists($sourceObject, 'code') ? $res->code : (int)$res;
+        switch ($code) {
+            case 900;
+                throw new InvalidApiKeyException;
+            case 901;
+                throw new SigningHashVerificationException;
+            case 902:
+                throw new MissingAccessRightsException;
+            case 903;
+                throw new ForbiddenIpException;
+        }
+
+        if (!$isSuccess) throw new UnexpectedApiResponseException($error);
 
         return $res;
     }
 
+    /**
+     * @throws ForbiddenIpException
+     * @throws SigningHashVerificationException
+     * @throws UnexpectedApiResponseException
+     * @throws RandomException
+     * @throws MissingAccessRightsException
+     * @throws InvalidApiKeyException
+     */
     public function patch(string $path, array $payload = []): mixed
     {
         return $this->request($path, HttpMethod::PATCH, $payload);
     }
 
+    /**
+     * @throws ForbiddenIpException
+     * @throws SigningHashVerificationException
+     * @throws UnexpectedApiResponseException
+     * @throws RandomException
+     * @throws InvalidApiKeyException
+     * @throws MissingAccessRightsException
+     */
     public function post(string $path, array $payload = []): mixed
     {
         return $this->request($path, HttpMethod::POST, $payload);
     }
 
+    /**
+     * @throws ForbiddenIpException
+     * @throws SigningHashVerificationException
+     * @throws UnexpectedApiResponseException
+     * @throws RandomException
+     * @throws InvalidApiKeyException
+     * @throws MissingAccessRightsException
+     */
     public function get(string $path, array $params = []): mixed
     {
         return $this->request($path, HttpMethod::GET, $params);

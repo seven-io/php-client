@@ -19,6 +19,22 @@ class LookupTest extends BaseTest
         $this->assertCount(1, $res);
     }
 
+    public function testFormatFaulty(): void
+    {
+        $res = $this->resources->lookup->format('000');
+        $this->assertCount(1, $res);
+        $format = $res[0];
+        $this->assertNull($format->getCarrier());
+        $this->assertFalse($format->getCountryCode());
+        $this->assertNull($format->getCountryIso());
+        $this->assertNull($format->getCountryName());
+        $this->assertEquals('+', $format->getInternational());
+        $this->assertEquals('', $format->getInternationalFormatted());
+        $this->assertEquals('', $format->getNational());
+        $this->assertNull($format->getNetworkType());
+        $this->assertFalse($format->isSuccess());
+    }
+
     public function testFormatMulti(): void
     {
         $res = $this->resources->lookup->format('491716992343', '49179999999');
