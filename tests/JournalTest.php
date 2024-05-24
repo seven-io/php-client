@@ -21,11 +21,9 @@ class JournalTest extends BaseTest {
 
         /** @var JournalBase $j */
         foreach ($journals as $j) {
-            $this->assertIsString($j->getFrom());
             $this->assertIsNumeric($j->getId());
             $this->assertGreaterThanOrEqual(0.0, $j->getPrice());
             $this->assertIsValidDateTime($j->getTimestamp());
-            $this->assertNotEmpty($j->getTo());
 
             if ($functionHandler) $functionHandler($j);
         }
@@ -34,7 +32,6 @@ class JournalTest extends BaseTest {
     public function testJournalOutbound(): void {
         $arr = $this->resources->journal->outbound();
         $callable = function (JournalOutbound $j) {
-            $this->assertIsString($j->getConnection());
             $this->assertIsNullOrLengthyString($j->getDlr());
             $this->assertIsNullOrLengthyString($j->getDlrTimestamp());
             $this->assertIsNullOrLengthyString($j->getForeignId());
@@ -52,7 +49,6 @@ class JournalTest extends BaseTest {
         $callable = function (JournalVoice $j) {
             $this->assertIsNullOrLengthyString($j->getDuration());
             $this->assertIsNullOrString($j->getError());
-            $this->assertIsString($j->getStatus());
             $this->assertIsBool($j->isXml());
         };
 

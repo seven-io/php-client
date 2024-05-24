@@ -3,6 +3,7 @@
 namespace Seven\Api\Resource\Journal;
 
 class JournalOutbound extends JournalBase {
+    protected string $channel;
     protected string $connection;
     protected ?string $dlr;
     protected ?string $dlrTimestamp;
@@ -15,6 +16,7 @@ class JournalOutbound extends JournalBase {
     public function __construct(object $data) {
         parent::__construct($data);
 
+        $this->channel = $data->channel;
         $this->connection = $data->connection;
         $this->dlr = $data->dlr;
         $this->dlrTimestamp = $data->dlr_timestamp;
@@ -55,5 +57,9 @@ class JournalOutbound extends JournalBase {
 
     public function getType(): string {
         return $this->type;
+    }
+
+    public function getChannel(): string {
+        return $this->channel;
     }
 }
