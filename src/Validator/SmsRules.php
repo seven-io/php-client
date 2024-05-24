@@ -5,8 +5,8 @@ namespace Seven\Api\Validator;
 use Datetime;
 use Seven\Api\Exception\InvalidOptionalArgumentException;
 use Seven\Api\Exception\InvalidRequiredArgumentException;
-use Seven\Api\Params\SmsParams;
 use Seven\Api\Resource\Sms\SmsConstants;
+use Seven\Api\Resource\Sms\SmsParams;
 
 trait SmsRules {
     protected SmsParams $params;

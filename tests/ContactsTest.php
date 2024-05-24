@@ -4,7 +4,7 @@ namespace Seven\Tests;
 
 use DateTime;
 use Seven\Api\Library\OrderDirection;
-use Seven\Api\Params\Contacts\ListParams;
+use Seven\Api\Resource\Contacts\ListParams;
 use Seven\Api\Response\Contacts\Contact;
 use Seven\Api\Response\Contacts\Properties;
 

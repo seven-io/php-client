@@ -10,7 +10,6 @@ use Seven\Api\Exception\InvalidRequiredArgumentException;
 use Seven\Api\Exception\MissingAccessRightsException;
 use Seven\Api\Exception\SigningHashVerificationException;
 use Seven\Api\Exception\UnexpectedApiResponseException;
-use Seven\Api\Params\SmsParams;
 use Seven\Api\Resource\Resource;
 use Seven\Api\Response\Sms\Sms;
 use Seven\Api\Response\Sms\SmsDelete;

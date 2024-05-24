@@ -3,7 +3,7 @@
 namespace Seven\Tests;
 
 use DateTime;
-use Seven\Api\Params\SmsParams;
+use Seven\Api\Resource\Sms\SmsParams;
 
 class SmsTest extends BaseTest
 {

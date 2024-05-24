@@ -2,7 +2,7 @@
 
 namespace Seven\Tests;
 
-use Seven\Api\Params\VoiceParams;
+use Seven\Api\Resource\Voice\VoiceParams;
 use Seven\Api\Response\Voice\Voice;
 
 class VoiceTest extends BaseTest

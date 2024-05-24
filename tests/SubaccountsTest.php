@@ -3,9 +3,9 @@
 namespace Seven\Tests;
 
 use Seven\Api\Exception\InvalidRequiredArgumentException;
-use Seven\Api\Params\Subaccounts\AutoChargeParams;
-use Seven\Api\Params\Subaccounts\CreateParams;
-use Seven\Api\Params\Subaccounts\TransferCreditsParams;
+use Seven\Api\Resource\Subaccounts\AutoChargeParams;
+use Seven\Api\Resource\Subaccounts\CreateParams;
+use Seven\Api\Resource\Subaccounts\TransferCreditsParams;
 use Seven\Api\Response\Subaccounts\Subaccount;
 
 class SubaccountsTest extends BaseTest

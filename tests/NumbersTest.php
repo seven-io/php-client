@@ -2,10 +2,10 @@
 
 namespace Seven\Tests;
 
-use Seven\Api\Params\Numbers\ListAvailableParams;
-use Seven\Api\Params\Numbers\OrderParams;
-use Seven\Api\Params\Numbers\UpdateParams;
+use Seven\Api\Resource\Numbers\ListAvailableParams;
+use Seven\Api\Resource\Numbers\OrderParams;
 use Seven\Api\Resource\Numbers\PaymentInterval;
+use Seven\Api\Resource\Numbers\UpdateParams;
 
 class NumbersTest extends BaseTest {
     public function testAll(): void {

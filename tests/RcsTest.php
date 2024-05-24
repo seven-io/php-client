@@ -4,9 +4,9 @@ namespace Seven\Tests;
 
 use DateInterval;
 use DateTime;
-use Seven\Api\Params\Rcs\RcsEvent;
-use Seven\Api\Params\Rcs\RcsEventParams;
-use Seven\Api\Params\Rcs\RcsParams;
+use Seven\Api\Resource\Rcs\RcsEvent;
+use Seven\Api\Resource\Rcs\RcsEventParams;
+use Seven\Api\Resource\Rcs\RcsParams;
 
 final class RcsTest extends BaseTest
 {

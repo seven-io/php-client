@@ -3,9 +3,9 @@
 namespace Seven\Tests;
 
 use Seven\Api\Library\Util;
-use Seven\Api\Params\Hooks\SubscribeParams;
 use Seven\Api\Resource\Hooks\HooksEventType;
 use Seven\Api\Resource\Hooks\HooksRequestMethod;
+use Seven\Api\Resource\Hooks\SubscribeParams;
 
 class HooksTest extends BaseTest {
     public function testGetHooks(): void {

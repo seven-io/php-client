@@ -3,7 +3,7 @@
 namespace Seven\Api\Validator;
 
 use Seven\Api\Exception\InvalidRequiredArgumentException;
-use Seven\Api\Params\StatusParams;
+use Seven\Api\Resource\Status\StatusParams;
 
 class StatusValidator {
     protected StatusParams $params;

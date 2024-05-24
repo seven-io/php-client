@@ -9,7 +9,6 @@ use Seven\Api\Exception\InvalidOptionalArgumentException;
 use Seven\Api\Exception\MissingAccessRightsException;
 use Seven\Api\Exception\SigningHashVerificationException;
 use Seven\Api\Exception\UnexpectedApiResponseException;
-use Seven\Api\Params\AnalyticsParams;
 use Seven\Api\Resource\Resource;
 use Seven\Api\Response\Analytics\AbstractAnalytic;
 use Seven\Api\Response\Analytics\AnalyticByCountry;

@@ -4,7 +4,7 @@ namespace Seven\Api\Validator;
 
 use DateTime;
 use Seven\Api\Exception\InvalidOptionalArgumentException;
-use Seven\Api\Params\JournalParams;
+use Seven\Api\Resource\Journal\JournalParams;
 
 class JournalValidator {
     public const LIMIT_MIN = 1;

@@ -8,7 +8,6 @@ use Seven\Api\Exception\InvalidApiKeyException;
 use Seven\Api\Exception\MissingAccessRightsException;
 use Seven\Api\Exception\SigningHashVerificationException;
 use Seven\Api\Exception\UnexpectedApiResponseException;
-use Seven\Api\Params\Hooks\SubscribeParams;
 use Seven\Api\Resource\Resource;
 use Seven\Api\Response\Hooks\Hooks;
 use Seven\Api\Response\Hooks\HookSubscribe;

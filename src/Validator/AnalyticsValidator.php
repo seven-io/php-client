@@ -4,7 +4,7 @@ namespace Seven\Api\Validator;
 
 use DateTime;
 use Seven\Api\Exception\InvalidOptionalArgumentException;
-use Seven\Api\Params\AnalyticsParams;
+use Seven\Api\Resource\Analytics\AnalyticsParams;
 use Seven\Api\Resource\Analytics\AnalyticsSubaccounts;
 
 class AnalyticsValidator {

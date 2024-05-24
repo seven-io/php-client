@@ -2,7 +2,7 @@
 
 namespace Seven\Tests;
 
-use Seven\Api\Params\Groups\ListParams;
+use Seven\Api\Resource\Groups\ListParams;
 
 class GroupsTest extends BaseTest
 {

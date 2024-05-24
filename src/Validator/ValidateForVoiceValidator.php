@@ -5,7 +5,7 @@ namespace Seven\Api\Validator;
 use Seven\Api\Exception\InvalidOptionalArgumentException;
 use Seven\Api\Exception\InvalidRequiredArgumentException;
 use Seven\Api\Library\Util;
-use Seven\Api\Params\ValidateForVoiceParams;
+use Seven\Api\Resource\ValidateForVoice\ValidateForVoiceParams;
 
 class ValidateForVoiceValidator {
     protected ValidateForVoiceParams $params;

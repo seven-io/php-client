@@ -4,7 +4,7 @@ namespace Seven\Api\Validator;
 
 use Seven\Api\Exception\InvalidOptionalArgumentException;
 use Seven\Api\Exception\InvalidRequiredArgumentException;
-use Seven\Api\Params\SmsParams;
+use Seven\Api\Resource\Sms\SmsParams;
 
 class SmsValidator
 {

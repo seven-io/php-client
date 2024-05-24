@@ -2,7 +2,7 @@
 
 namespace Seven\Tests;
 
-use Seven\Api\Params\ValidateForVoiceParams;
+use Seven\Api\Resource\ValidateForVoice\ValidateForVoiceParams;
 
 class ValidateForVoiceTest extends BaseTest
 {

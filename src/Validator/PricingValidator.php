@@ -3,7 +3,7 @@
 namespace Seven\Api\Validator;
 
 use Seven\Api\Exception\InvalidOptionalArgumentException;
-use Seven\Api\Params\PricingParams;
+use Seven\Api\Resource\Pricing\PricingParams;
 
 class PricingValidator {
     public const COUNTRY_MAX_LENGTH = 3;

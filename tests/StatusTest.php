@@ -3,7 +3,7 @@
 namespace Seven\Tests;
 
 use Seven\Api\Exception\InvalidRequiredArgumentException;
-use Seven\Api\Params\JournalParams;
+use Seven\Api\Resource\Journal\JournalParams;
 use Seven\Api\Resource\Status\StatusMessage;
 
 class StatusTest extends BaseTest {

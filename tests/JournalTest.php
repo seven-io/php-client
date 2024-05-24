@@ -4,7 +4,7 @@ namespace Seven\Tests;
 
 use DateInterval;
 use DateTime;
-use Seven\Api\Params\JournalParams;
+use Seven\Api\Resource\Journal\JournalParams;
 use Seven\Api\Resource\Sms\SmsConstants;
 use Seven\Api\Response\Journal\JournalBase;
 use Seven\Api\Response\Journal\JournalOutbound;

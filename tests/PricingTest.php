@@ -2,7 +2,7 @@
 
 namespace Seven\Tests;
 
-use Seven\Api\Params\PricingParams;
+use Seven\Api\Resource\Pricing\PricingParams;
 
 class PricingTest extends BaseTest {
     public function testGermany(): void {
