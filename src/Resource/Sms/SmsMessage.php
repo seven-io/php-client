@@ -4,14 +4,14 @@ namespace Seven\Api\Resource\Sms;
 
 class SmsMessage {
     protected string $encoding;
-    protected ?string $error = null;
+    protected ?int $error = null;
     protected ?string $errorText = null;
     protected ?int $id = null;
     protected bool $isBinary;
     protected ?string $label;
     protected int $parts;
     protected float $price;
-    protected string $recipient;
+    protected ?string $recipient;
     protected string $sender;
     protected bool $success;
     protected string $text;
