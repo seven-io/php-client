@@ -30,7 +30,7 @@ class Client {
         if (!$this->sentWith) throw new InvalidArgumentException('sentWith can not be empty');
 
         $this->headers[] = 'SentWith: ' . $this->sentWith;
-        $this->headers[] = 'X-Api-Key: ' . $this->apiKey;
+        $this->setApiKey($this->apiKey);
     }
 
     public function getApiKey(): string {
@@ -39,6 +39,12 @@ class Client {
 
     public function getSentWith(): string {
         return $this->sentWith;
+    }
+
+    public function setApiKey(string $apiKey): self {
+        $this->apiKey = $apiKey;
+        $this->headers[] = 'X-Api-Key: ' . $this->apiKey;
+        return $this;
     }
 
     /**
@@ -108,6 +114,7 @@ class Client {
 
         if ($error !== '') throw new UnexpectedApiResponseException($error);
         if (false === $res) throw new UnexpectedApiResponseException($error);
+        if ('900' === $res) throw new InvalidApiKeyException;
 
         try {
             $res = json_decode($res, false, 512, JSON_THROW_ON_ERROR);
@@ -117,8 +124,11 @@ class Client {
         if ($isSuccess) return $res;
 
         $sourceObject = is_object($res) ? $res : new stdClass;
-        $code = (property_exists($sourceObject, 'code') ? $res->code : property_exists($sourceObject, 'error_code'))
-            ? $res->error_code : (int)$res;
+        $code = (property_exists($sourceObject, 'code')
+            ? $res->code
+            : property_exists($sourceObject, 'error_code'))
+                ? $res->error_code
+                : (int)$res;
         throw match ($code) {
             900 => new InvalidApiKeyException,
             901 => new SigningHashVerificationException,

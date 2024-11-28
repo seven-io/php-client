@@ -10,16 +10,15 @@ use Seven\Api\Client;
 abstract class BaseTest extends TestCase {
     protected bool $isSandbox;
     protected readonly Resources $resources;
+    protected Client $client;
 
-    public function __construct() {
-        parent::__construct();
-
+    public  function setUp(): void {
         $this->init(getenv('SEVEN_API_KEY'), false);
     }
 
     protected function init(string $apiKey, bool $isSandbox): void {
-        $client = new Client($apiKey, 'php-api-test', getenv('SEVEN_SIGNING_SECRET'));
-        $this->resources = new Resources($client);
+        $this->client = new Client($apiKey, 'php-api-test', getenv('SEVEN_SIGNING_SECRET'));
+        $this->resources = new Resources($this->client);
         $this->isSandbox = $isSandbox;
     }
 
