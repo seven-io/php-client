@@ -86,7 +86,7 @@ class RcsValidator {
 
         $length = strlen($text);
 
-        if (null === $text || !$length) {
+        if (!$length) {
             throw new InvalidRequiredArgumentException(
                 'You cannot send an empty message.');
         }
@@ -96,7 +96,7 @@ class RcsValidator {
     public function to(): void {
         $to = $this->params->getTo();
 
-        if (null === $to || '' === $to) {
+        if ('' === $to) {
             throw new InvalidRequiredArgumentException(
                 'You cannot send a message without specifying a recipient.');
         }
