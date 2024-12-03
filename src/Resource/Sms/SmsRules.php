@@ -99,7 +99,7 @@ trait SmsRules {
 
         $length = strlen($text);
 
-        if (null === $text || !$length) {
+        if (!$length) {
             throw new InvalidRequiredArgumentException(
                 'You cannot send an empty message.');
         }
