@@ -3,10 +3,17 @@
 namespace Seven\Tests;
 
 use DateTime;
+use Seven\Api\Exception\InvalidRequiredArgumentException;
 use Seven\Api\Resource\Sms\SmsParams;
 
 class SmsTest extends BaseTest
 {
+    public function testSmsValidator(): void {
+        $this->expectException(InvalidRequiredArgumentException::class);
+        $params = (new SmsParams('text', '', ''));
+        $this->resources->sms->dispatch($params);
+    }
+
     public function testSms(): void
     {
         $params = (new SmsParams('HI2U! The UNIX time is ' . time() . '.', '491716992343'));

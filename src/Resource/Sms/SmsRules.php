@@ -95,7 +95,7 @@ trait SmsRules {
 
     /** @throws InvalidRequiredArgumentException */
     public function text(): void {
-        $text = $this->params->getText() ?? '';
+        $text = $this->params->getText();
 
         $length = strlen($text);
 
@@ -115,10 +115,13 @@ trait SmsRules {
     /** @throws InvalidRequiredArgumentException */
     public function to(): void {
         $to = $this->params->getTo();
+        $valid = true;
 
-        if (null === $to || '' === $to) {
-            throw new InvalidRequiredArgumentException(
-                'You cannot send a message without specifying a recipient.');
+        if (empty($to)) $valid = false;
+        if (empty(array_filter($to, fn(string $value) => $value !== ''))) $valid = false;
+
+        if (!$valid) {
+            throw new InvalidRequiredArgumentException('You cannot send a message without specifying a recipient.');
         }
     }
 
