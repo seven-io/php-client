@@ -15,6 +15,7 @@ class RcsParams implements ParamsInterface
     protected string $text;
     protected string $to;
     protected ?int $ttl = null;
+    protected ?RcsFallbackType $fallback = null;
 
     public function __construct(string $text, string $to)
     {
@@ -108,6 +109,16 @@ class RcsParams implements ParamsInterface
     {
         $arr = get_object_vars($this);
         if ($this->delay) $arr['delay'] = $this->delay->format('Y-m-d h:i');
+        if ($this->fallback) $arr['fallback'] = $this->fallback->value;
         return $arr;
+    }
+
+    public function getFallback(): ?RcsFallbackType {
+        return $this->fallback;
+    }
+
+    public function setFallback(?RcsFallbackType $fallback): self {
+        $this->fallback = $fallback;
+        return $this;
     }
 }

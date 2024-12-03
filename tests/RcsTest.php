@@ -6,13 +6,17 @@ use DateInterval;
 use DateTime;
 use Seven\Api\Resource\Rcs\RcsEvent;
 use Seven\Api\Resource\Rcs\RcsEventParams;
+use Seven\Api\Resource\Rcs\RcsFallbackType;
 use Seven\Api\Resource\Rcs\RcsParams;
 
 final class RcsTest extends BaseTest
 {
     public function testText(): void
     {
-        $params = new RcsParams('HI2U! The UNIX time is ' . time() . '.', '491716992343');
+        $params = (new RcsParams('HI2U! The UNIX time is ' . time() . '.', '491716992343'))
+            ->setDelay(new DateTime('12-12-2050'))
+            ->setFallback(RcsFallbackType::SMS)
+        ;
         $res = $this->resources->rcs->dispatch($params);
 
         $this->assertCount(1, $res->getMessages());
