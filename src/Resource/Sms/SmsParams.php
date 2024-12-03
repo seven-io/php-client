@@ -18,7 +18,6 @@ class SmsParams implements ParamsInterface
     protected array $to = [];
     protected ?int $ttl = null;
     protected ?string $udh = null;
-    protected ?bool $utf8 = null;
 
     public function __construct(string $text, string ...$to)
     {
@@ -168,17 +167,6 @@ class SmsParams implements ParamsInterface
     public function setUdh(?string $udh): self
     {
         $this->udh = $udh;
-        return $this;
-    }
-
-    public function getUtf8(): ?bool
-    {
-        return $this->utf8;
-    }
-
-    public function setUtf8(?bool $utf8): self
-    {
-        $this->utf8 = $utf8;
         return $this;
     }
 
