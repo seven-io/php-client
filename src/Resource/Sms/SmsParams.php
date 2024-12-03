@@ -13,7 +13,6 @@ class SmsParams implements ParamsInterface
     protected ?string $foreign_id = null;
     protected ?string $from = null;
     protected ?string $label = null;
-    protected ?bool $no_reload = null;
     protected ?bool $performance_tracking = null;
     protected string $text;
     protected array $to = [];
@@ -109,17 +108,6 @@ class SmsParams implements ParamsInterface
     public function setLabel(?string $label): self
     {
         $this->label = $label;
-        return $this;
-    }
-
-    public function getNoReload(): ?bool
-    {
-        return $this->no_reload;
-    }
-
-    public function setNoReload(?bool $noReload): self
-    {
-        $this->no_reload = $noReload;
         return $this;
     }
 
