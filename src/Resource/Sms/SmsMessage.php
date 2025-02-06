@@ -36,7 +36,7 @@ class SmsMessage {
         return $this->encoding;
     }
 
-    public function getError(): ?string {
+    public function getError(): ?int {
         return $this->error;
     }
 
