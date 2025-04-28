@@ -7,6 +7,7 @@ class Hook {
     protected bool $enabled;
     protected ?string $eventFilter;
     protected string $eventType;
+    protected string $headers;
     protected int $id;
     protected string $requestMethod;
     protected string $targetUrl;
@@ -16,6 +17,7 @@ class Hook {
         $this->enabled = $data->enabled;
         $this->eventFilter = $data->event_filter;
         $this->eventType = $data->event_type;
+        $this->headers = $data->headers;
         $this->id = (int)$data->id;
         $this->requestMethod = $data->request_method;
         $this->targetUrl = $data->target_url;
@@ -27,6 +29,10 @@ class Hook {
 
     public function getEventType(): string {
         return $this->eventType;
+    }
+
+    public function getHeaders(): string {
+        return $this->headers;
     }
 
     public function getId(): int {

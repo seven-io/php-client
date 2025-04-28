@@ -6,6 +6,7 @@ use Seven\Api\Library\ParamsInterface;
 
 class SubscribeParams implements ParamsInterface {
     protected ?string $eventFilter = null;
+    protected string $headers = '';
     protected HooksRequestMethod $requestMethod = HooksRequestMethod::POST;
 
     public function __construct(protected string $targetUrl, protected HooksEventType $eventType) {
@@ -22,6 +23,15 @@ class SubscribeParams implements ParamsInterface {
         unset($arr['eventFilter'], $arr['eventType'], $arr['requestMethod'], $arr['targetUrl']);
 
         return $arr;
+    }
+
+    public function getHeaders(): string {
+        return $this->headers;
+    }
+
+    public function setHeaders(string $headers): self {
+        $this->headers = $headers;
+        return $this;
     }
 
     public function getEventFilter(): ?string {
