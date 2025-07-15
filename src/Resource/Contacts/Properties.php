@@ -34,18 +34,18 @@ class Properties {
     }
 
     public function toPayload(): array {
-        return [
-            'address' => $this->getAddress(),
-            'birthday' => $this->getBirthday()->format('Y-m-d'),
-            'city' => $this->getCity(),
-            'email' => $this->getEmail(),
-            'firstname' => $this->getFirstname(),
-            'home_number' => $this->getHomeNumber(),
-            'lastname' => $this->getLastname(),
-            'mobile_number' => $this->getMobileNumber(),
-            'notes' => $this->getNotes(),
-            'postal_code' => $this->getPostalCode(),
-        ];
+        $payload = [];
+        if ($this->getAddress() !== null) $payload['address'] = $this->getAddress();
+        if ($this->getBirthday() !== null) $payload['birthday'] = $this->getBirthday()->format('Y-m-d');
+        if ($this->getCity() !== null) $payload['city'] = $this->getCity();
+        if ($this->getEmail() !== null) $payload['email'] = $this->getEmail();
+        if ($this->getFirstname() !== null) $payload['firstname'] = $this->getFirstname();
+        if ($this->getHomeNumber() !== null) $payload['home_number'] = $this->getHomeNumber();
+        if ($this->getLastname() !== null) $payload['lastname'] = $this->getLastname();
+        if ($this->getMobileNumber() !== null) $payload['mobile_number'] = $this->getMobileNumber();
+        if ($this->getNotes() !== null) $payload['notes'] = $this->getNotes();
+        if ($this->getPostalCode() !== null) $payload['postal_code'] = $this->getPostalCode();
+        return $payload;
     }
 
     public function getAddress(): ?string {

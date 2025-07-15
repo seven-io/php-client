@@ -25,11 +25,13 @@ class Contact {
     }
 
     public function toPayload(): array {
-        return [
-            ...$this->properties->toPayload(),
-            'avatar' => $this->avatar,
-            'groups[]' => $this->groups,
-        ];
+        $payload = $this->properties->toPayload();
+        if ($this->avatar !== null) $payload['avatar'] = $this->avatar;
+        // Only include groups if not empty
+        if (!empty($this->groups)) {
+            $payload['groups'] = $this->groups;
+        }
+        return $payload;
     }
 
     public function getAvatar(): string {

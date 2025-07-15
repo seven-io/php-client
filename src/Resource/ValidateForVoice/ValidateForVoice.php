@@ -7,9 +7,9 @@ class ValidateForVoice {
     protected ?string $error = null;
     protected ?string $formattedOutput = null;
     protected ?int $id = null;
-    protected string $sender;
+    protected ?string $sender = null;
     protected bool $success;
-    protected bool $voice;
+    protected bool $voice = false;
 
     public function __construct(object $data) {
         if (property_exists($data, 'code')) $this->code = (int)$data->code;
@@ -38,7 +38,7 @@ class ValidateForVoice {
         return $this->id;
     }
 
-    public function getSender(): string {
+    public function getSender(): ?string {
         return $this->sender;
     }
 

@@ -65,19 +65,6 @@ class JournalResource extends Resource {
         return $this->fetch('outbound', JournalOutbound::class, $params);
     }
 
-    /**
-     * @return JournalReply[]
-     * @throws ForbiddenIpException
-     * @throws InvalidApiKeyException
-     * @throws InvalidOptionalArgumentException
-     * @throws MissingAccessRightsException
-     * @throws RandomException
-     * @throws SigningHashVerificationException
-     * @throws UnexpectedApiResponseException
-     */
-    public function replies(JournalParams $params = new JournalParams): array {
-        return $this->fetch('replies', JournalReply::class, $params);
-    }
 
     /**
      * @return JournalVoice[]
