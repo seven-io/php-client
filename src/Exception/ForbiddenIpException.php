@@ -6,7 +6,7 @@ use Exception;
 
 class ForbiddenIpException extends Exception
 {
-    public function __construct($message = 'The server IP is not included in the list of permitted IP addresses', $code = 0, Exception $previous = null)
+    public function __construct($message = 'The server IP is not included in the list of permitted IP addresses', $code = 903, ?Exception $previous = null)
     {
         parent::__construct($message, $code, $previous);
     }

@@ -6,7 +6,7 @@ use Exception;
 
 class MissingAccessRightsException extends Exception
 {
-    public function __construct($message = 'The API key does not have access rights to this endpoint.', $code = 0, Exception $previous = null)
+    public function __construct($message = 'The API key does not have access rights to this endpoint.', $code = 902, ?Exception $previous = null)
     {
         parent::__construct($message, $code, $previous);
     }
