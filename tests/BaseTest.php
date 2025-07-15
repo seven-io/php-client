@@ -17,7 +17,8 @@ abstract class BaseTest extends TestCase {
     }
 
     protected function init(string $apiKey, bool $isSandbox): void {
-        $this->client = new Client($apiKey, 'php-api-test', getenv('SEVEN_SIGNING_SECRET'));
+        $signingSecret = getenv('SEVEN_SIGNING_SECRET');
+        $this->client = new Client($apiKey, 'php-api-test', $signingSecret ?: null);
         $this->resources = new Resources($this->client);
         $this->isSandbox = $isSandbox;
     }

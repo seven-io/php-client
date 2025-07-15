@@ -16,7 +16,7 @@ class ContactsTest extends BaseTest {
             ->setProperties(
                 (new Properties)
                     ->setAddress('Willestr. 4-6')
-                    ->setBirthday(new DateTime('01.01.2000'))
+                    ->setBirthday(new DateTime('2000-01-01'))
                     ->setCity('Kiel')
                     ->setEmail('support@seven.io')
                     ->setFirstname('Dan')

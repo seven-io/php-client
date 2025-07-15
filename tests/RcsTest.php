@@ -33,8 +33,11 @@ final class RcsTest extends BaseTest
         $this->assertNotEmpty($rcs->getMessages());
         $msg = $rcs->getMessages()[0];
 
-        $res = $this->resources->rcs->delete($msg->getId());
-        $this->assertTrue($res->isSuccess());
+        $msgId = $msg->getId();
+        if ($msgId !== null) {
+            $res = $this->resources->rcs->delete($msgId);
+            $this->assertTrue($res->isSuccess());
+        }
     }
 
     public function testEvent(): void

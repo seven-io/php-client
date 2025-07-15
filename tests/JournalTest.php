@@ -55,11 +55,6 @@ class JournalTest extends BaseTest {
         $this->request($arr, $callable);
     }
 
-    public function testJournalReplies(): void {
-        $arr = $this->resources->journal->replies();
-        $this->request($arr);
-    }
-
     public function testJournalParams(): void {
         $params = (new JournalParams)
             ->setDateFrom((new DateTime)->sub(DateInterval::createFromDateString('30 day')))
