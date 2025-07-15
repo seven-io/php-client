@@ -5,3 +5,4 @@ vendor/
 .phpdoc/
 index.php
 .idea/
+.DS_Store
