@@ -3,19 +3,19 @@
 namespace Seven\Api\Resource\Lookup;
 
 class Carrier {
-    protected string $country;
+    protected ?string $country;
     protected ?string $name;
-    protected string $networkCode;
+    protected ?string $networkCode;
     protected ?string $networkType;
 
     public function __construct(object $data) {
-        $this->country = $data->country;
+        $this->country = $data->country ?: null;
         $this->name = $data->name;
-        $this->networkCode = $data->network_code;
+        $this->networkCode = $data->network_code ?: null;
         $this->networkType = $data->network_type;
     }
 
-    public function getCountry(): string {
+    public function getCountry(): ?string {
         return $this->country;
     }
 
@@ -23,7 +23,7 @@ class Carrier {
         return $this->name;
     }
 
-    public function getNetworkCode(): string {
+    public function getNetworkCode(): ?string {
         return $this->networkCode;
     }
 

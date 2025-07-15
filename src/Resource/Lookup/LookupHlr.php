@@ -3,7 +3,7 @@
 namespace Seven\Api\Resource\Lookup;
 
 class LookupHlr {
-    protected string $countryCode;
+    protected ?string $countryCode;
     protected ?string $countryName;
     protected string|false $countryPrefix;
     protected Carrier $currentCarrier;
@@ -23,7 +23,7 @@ class LookupHlr {
     protected string $validNumber;
 
     public function __construct(object $data) {
-        $this->countryCode = $data->country_code;
+        $this->countryCode = $data->country_code ?: null;
         $this->countryName = $data->country_name;
         $this->countryPrefix = $data->country_prefix;
         $this->currentCarrier = new Carrier($data->current_carrier);
@@ -43,7 +43,7 @@ class LookupHlr {
         $this->validNumber = $data->valid_number;
     }
 
-    public function getCountryCode(): string {
+    public function getCountryCode(): ?string {
         return $this->countryCode;
     }
 
