@@ -2,7 +2,6 @@
 
 namespace Seven\Api\Resource\Rcs;
 
-use Seven\Api\Resource\Sms\SmsMessage;
 
 class Rcs {
     protected float $balance;
@@ -18,7 +17,7 @@ class Rcs {
     public function __construct(object $data) {
         $this->balance = $data->balance;
         $this->debug = $data->debug === 'true';
-        $this->messages = array_map(fn($v) => new SmsMessage($v), $data->messages);
+        $this->messages = array_map(fn($v) => new RcsMessage($v), $data->messages);
         $this->smsType = $data->sms_type;
         $this->success = (int)$data->success;
         $this->totalPrice = $data->total_price;
