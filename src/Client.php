@@ -15,20 +15,29 @@ use stdClass;
 
 class Client {
     public const BASE_URI = 'https://gateway.seven.io/api';
+    private const SENT_WITH = 'php-api';
     /** @var string[] $headers */
     protected array $headers = [
         'Accept: application/json',
     ];
+    protected string $sentWith;
 
-    /** @throws InvalidArgumentException */
+    /**
+     * @throws InvalidArgumentException
+     * @param string $apiKey The API key for authentication
+     * @param string|null $sentWith @deprecated This parameter is deprecated and will be removed in a future version. The value is always 'php-api'.
+     * @param string|null $signingSecret The signing secret for request verification
+     */
     public function __construct(
         protected string  $apiKey,
-        protected string  $sentWith = 'php-api',
+        ?string  $sentWith = 'php-api',
         protected ?string $signingSecret = null,
     ) {
         if (!$this->apiKey) throw new InvalidArgumentException('apiKey can not be empty');
-        if (!$this->sentWith) throw new InvalidArgumentException('sentWith can not be empty');
-
+        
+        // Always use the class constant, ignore the parameter
+        $this->sentWith = self::SENT_WITH;
+        
         $this->headers[] = 'SentWith: ' . $this->sentWith;
         $this->setApiKey($this->apiKey);
     }
@@ -108,34 +117,54 @@ class Client {
         curl_setopt($ch, CURLOPT_HTTPHEADER, array_unique($headers));
 
         $res = curl_exec($ch);
-        $isSuccess = curl_getinfo($ch, CURLINFO_HTTP_CODE) === 200;
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $isSuccess = $httpCode === 200;
         $error = curl_error($ch);
         curl_close($ch);
 
         if ($error !== '') throw new UnexpectedApiResponseException($error);
         if (false === $res) throw new UnexpectedApiResponseException($error);
-        if ('900' === $res) throw new InvalidApiKeyException;
+        if (in_array($res, ['"900"', '"901"', '"902"', '"903"', '"600"'], true)) {
+            throw match ($res) {
+                '"900"' => new InvalidApiKeyException,
+                '"901"' => new SigningHashVerificationException,
+                '"902"' => new MissingAccessRightsException,
+                '"903"' => new ForbiddenIpException,
+                '"600"' => new UnexpectedApiResponseException('An error has occurred'),
+            };
+        }
 
         try {
             $res = json_decode($res, false, 512, JSON_THROW_ON_ERROR);
         } catch (Exception) {
         }
 
+        // Check for error codes even on HTTP 200 responses
+        if (is_int($res) || (is_object($res) && property_exists($res, 'code')) || (is_object($res) && property_exists($res, 'error_code'))) {
+            $sourceObject = is_object($res) ? $res : new stdClass;
+            $code = property_exists($sourceObject, 'code')
+                ? $res->code
+                : (property_exists($sourceObject, 'error_code')
+                    ? $res->error_code
+                    : (int)$res);
+            
+            if (in_array($code, [900, 901, 902, 903])) {
+                throw match ($code) {
+                    900 => new InvalidApiKeyException,
+                    901 => new SigningHashVerificationException,
+                    902 => new MissingAccessRightsException,
+                    903 => new ForbiddenIpException,
+                };
+            }
+        }
+
         if ($isSuccess) return $res;
 
-        $sourceObject = is_object($res) ? $res : new stdClass;
-        $code = (property_exists($sourceObject, 'code')
-            ? $res->code
-            : property_exists($sourceObject, 'error_code'))
-                ? $res->error_code
-                : (int)$res;
-        throw match ($code) {
-            900 => new InvalidApiKeyException,
-            901 => new SigningHashVerificationException,
-            902 => new MissingAccessRightsException,
-            903 => new ForbiddenIpException,
-            default => new UnexpectedApiResponseException($error),
-        };
+        $errorMessage = sprintf('Unexpected API response: HTTP %d', $httpCode);
+        if (is_string($res) && !empty($res)) {
+            $errorMessage .= ' - Response: ' . substr($res, 0, 500);
+        }
+        throw new UnexpectedApiResponseException($errorMessage);
     }
 
     /**
