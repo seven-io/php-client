@@ -3,6 +3,7 @@
 namespace Seven\Tests;
 
 use Seven\Api\Resource\Analytics\AbstractAnalytic;
+use Seven\Api\Resource\Analytics\AnalyticsParams;
 
 class AnalyticsTest extends BaseTest {
     public function testAnalyticsByDate(): void {
@@ -44,6 +45,14 @@ class AnalyticsTest extends BaseTest {
     public function testAnalyticsByLabel(): void {
         $arr = $this->resources->analytics->byLabel();
         //foreach ($arr as $a) {}
+        $this->expectNotToPerformAssertions();
+    }
+
+    public function testAnalyticsByLabelDated(): void {
+        $params = new AnalyticsParams();
+        $params->setStart(\DateTime::createFromFormat('U', (string)time()));
+        $params->setEnd(\DateTime::createFromFormat('U', (string)time()));
+        $arr = $this->resources->analytics->byLabel($params);
         $this->expectNotToPerformAssertions();
     }
 

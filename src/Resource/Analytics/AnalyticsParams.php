@@ -14,7 +14,12 @@ class AnalyticsParams implements ParamsInterface
 
     public function toArray(): array
     {
-        return get_object_vars($this);
+        $arr = get_object_vars($this);
+
+        if ($this->end) $arr['end'] = $this->end->format('Y-m-d');
+        if ($this->start) $arr['start'] = $this->start->format('Y-m-d');
+
+        return $arr;
     }
 
     public function getStart(): ?DateTime
