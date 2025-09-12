@@ -80,8 +80,9 @@ class Client {
         $url = self::BASE_URI . '/' . $path;
         $params = http_build_query($payload);
         if (HttpMethod::GET === $method) {
-            if (!str_ends_with($url, '?')) $url .= '?';
-            $url .= $params;
+            if ($params !== '') {
+                $url .= (str_contains($url, '?') ? '&' : '?') . $params;
+            }
             $params = '';
         }
 
