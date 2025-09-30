@@ -51,7 +51,7 @@ class VoiceMessage {
         return $this->success;
     }
 
-    public function getText(): float {
+    public function getText(): string {
         return $this->text;
     }
 }
