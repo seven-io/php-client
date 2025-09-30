@@ -37,7 +37,7 @@ class SubaccountsResource extends Resource {
      * @throws SigningHashVerificationException
      * @throws UnexpectedApiResponseException
      */
-    public function read(int $id = null): array {
+    public function read(?int $id = null): array {
         if ($id !== null && $id < 1) throw new InvalidRequiredArgumentException('Argument \'id\' must be > 0.');
         $arr = $this->client->get('subaccounts', ['action' => 'read', 'id' => $id]);
         return array_map(static fn(object $obj) => new Subaccount($obj), $arr);

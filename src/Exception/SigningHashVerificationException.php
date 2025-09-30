@@ -6,7 +6,11 @@ use Exception;
 
 class SigningHashVerificationException extends Exception
 {
-    public function __construct($message = 'Verification of the signing hash failed', $code = 901, ?Exception $previous = null)
+    public function __construct(
+        $message = 'Verification of the signing hash failed',
+        $code = 901,
+        ?Exception $previous = null
+    )
     {
         parent::__construct($message, $code, $previous);
     }
