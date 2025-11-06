@@ -7,7 +7,7 @@ class LookupHlr {
     protected ?string $countryName;
     protected string|false $countryPrefix;
     protected Carrier $currentCarrier;
-    protected ?string $gsmCode;
+    protected ?int $gsmCode;
     protected ?string $gsmMessage;
     protected string $internationalFormatNumber;
     protected string $internationalFormatted;
@@ -59,7 +59,7 @@ class LookupHlr {
         return $this->currentCarrier;
     }
 
-    public function getGsmCode(): ?string {
+    public function getGsmCode(): ?int {
         return $this->gsmCode;
     }
 

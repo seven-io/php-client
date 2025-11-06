@@ -117,10 +117,13 @@ $response = $smsResource->dispatch($params);
 use Seven\Api\Resource\Lookup\LookupResource;
 
 $lookupResource = new LookupResource($client);
-$result = $lookupResource->hlr('+491234567890');
+$results = $lookupResource->hlr('+491234567890');
+$hlr = $results[0];
 
-echo "Carrier: " . $result->getCarrier();
-echo "Country: " . $result->getCountry();
+echo "Current Carrier: " . $hlr->getCurrentCarrier()->getName() . "\n";
+echo "Country: " . $hlr->getCountryName() . "\n";
+echo "Reachable: " . $hlr->getReachable() . "\n";
+echo "Ported: " . $hlr->getPorted() . "\n";
 ```
 
 ### Check account balance

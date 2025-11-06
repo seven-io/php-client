@@ -68,7 +68,7 @@ class LookupTest extends BaseTest {
         $this->assertNotEmpty($hlr->getCountryName());
         $this->assertNotEmpty($hlr->getCountryPrefix());
         $this->assertCarrier($hlr->getCurrentCarrier());
-        $this->assertIsString($hlr->getGsmCode());
+        $this->assertIsInt($hlr->getGsmCode());
         $this->assertNotEmpty($hlr->getGsmMessage());
         $this->assertNotEmpty($hlr->getInternationalFormatNumber());
         $this->assertNotEmpty($hlr->getInternationalFormatted());
@@ -107,7 +107,7 @@ class LookupTest extends BaseTest {
         $this->assertNull($hlr->getCountryName());
         $this->assertFalse($hlr->getCountryPrefix());
         $this->assertCarrier($hlr->getCurrentCarrier(), true);
-        $this->assertTrue($hlr->getGsmCode() === null || $hlr->getGsmCode() === '0');
+        $this->assertTrue($hlr->getGsmCode() === null || $hlr->getGsmCode() === 0);
         $this->assertTrue($hlr->getGsmMessage() === null || is_string($hlr->getGsmMessage()));
         $this->assertEmpty($hlr->getInternationalFormatNumber());
         $this->assertEmpty($hlr->getInternationalFormatted());
