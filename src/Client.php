@@ -121,7 +121,6 @@ class Client {
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $isSuccess = $httpCode === 200;
         $error = curl_error($ch);
-        curl_close($ch);
 
         if ($error !== '') throw new UnexpectedApiResponseException($error);
         if (false === $res) throw new UnexpectedApiResponseException($error);
