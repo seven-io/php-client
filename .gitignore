@@ -2,6 +2,7 @@ vendor/
 .env
 *.http
 .phpunit.result.cache
+.phpunit.cache/
 .phpdoc/
 index.php
 .idea/
