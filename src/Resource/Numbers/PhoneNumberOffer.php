@@ -10,11 +10,11 @@ readonly class PhoneNumberOffer {
     protected string $numberParsed;
 
     public function __construct(object $data) {
-        $this->country = $data->country;
+        $this->country = (string)$data->country;
         $this->features = new PhoneNumberFeatures($data->features);
         $this->fees = new PhoneNumberOfferFees($data->fees);
-        $this->number = $data->number;
-        $this->numberParsed = $data->number_parsed;
+        $this->number = (string)$data->number;
+        $this->numberParsed = (string)$data->number_parsed;
     }
 
     public function getCountry(): string {

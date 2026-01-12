@@ -19,19 +19,20 @@ class RcsMessage {
     protected ?string $udh;
 
     public function __construct(object $data) {
-        $this->channel = $data->channel;
-        $this->encoding = $data->encoding;
-        $this->error = $data->error;
-        $this->errorText = $data->error_text;
-        $this->id = $data->id ? (int)$data->id : null;
-        $this->isBinary = $data->is_binary;
-        $this->parts = $data->parts;
-        $this->price = $data->price;
-        $this->recipient = $data->recipient;
-        $this->sender = $data->sender;
-        $this->success = $data->success;
-        $this->text = $data->text;
-        $this->udh = $data->udh;
+        $this->channel = (string)$data->channel;
+        $this->encoding = (string)$data->encoding;
+        $this->error = $data->error !== null ? (string)$data->error : null;
+        $this->errorText = $data->error_text !== null ? (string)$data->error_text : null;
+        $this->id = $data->id !== null ? (int)$data->id : null;
+        $this->isBinary = (bool)$data->is_binary;
+        $this->label = property_exists($data, 'label') && $data->label !== null ? (string)$data->label : null;
+        $this->parts = (int)$data->parts;
+        $this->price = (float)$data->price;
+        $this->recipient = (string)$data->recipient;
+        $this->sender = (string)$data->sender;
+        $this->success = (bool)$data->success;
+        $this->text = (string)$data->text;
+        $this->udh = $data->udh !== null ? (string)$data->udh : null;
     }
 
     public function getChannel(): string {

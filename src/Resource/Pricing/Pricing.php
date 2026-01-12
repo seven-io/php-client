@@ -11,8 +11,8 @@ class Pricing {
     protected array $countries;
 
     public function __construct(object $data) {
-        $this->countCountries = $data->countCountries;
-        $this->countNetworks = $data->countNetworks;
+        $this->countCountries = (int)$data->countCountries;
+        $this->countNetworks = (int)$data->countNetworks;
         foreach ($data->countries as $k => $country) $this->countries[$k] = new Country($country);
     }
 

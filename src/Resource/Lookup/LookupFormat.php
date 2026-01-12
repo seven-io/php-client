@@ -14,15 +14,15 @@ class LookupFormat {
     protected bool $success;
 
     public function __construct(object $data) {
-        $this->carrier = $data->carrier;
-        $this->countryIso = $data->country_iso;
-        $this->countryCode = $data->country_code;
-        $this->countryName = $data->country_name;
-        $this->international = $data->international;
-        $this->internationalFormatted = $data->international_formatted;
-        $this->national = $data->national;
-        $this->networkType = $data->network_type;
-        $this->success = $data->success;
+        $this->carrier = $data->carrier !== null ? (string)$data->carrier : null;
+        $this->countryIso = $data->country_iso !== null ? (string)$data->country_iso : null;
+        $this->countryCode = $data->country_code !== false ? (string)$data->country_code : false;
+        $this->countryName = $data->country_name !== null ? (string)$data->country_name : null;
+        $this->international = (string)$data->international;
+        $this->internationalFormatted = (string)$data->international_formatted;
+        $this->national = $data->national !== null ? (string)$data->national : null;
+        $this->networkType = $data->network_type !== null ? (string)$data->network_type : null;
+        $this->success = (bool)$data->success;
     }
 
     public function getCarrier(): ?string {

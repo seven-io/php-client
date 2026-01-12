@@ -7,8 +7,8 @@ readonly class AutoTopUp {
     protected ?float $threshold;
 
     public function __construct(object $data) {
-        $this->amount = $data->amount;
-        $this->threshold = $data->threshold;
+        $this->amount = $data->amount !== null ? (float)$data->amount : null;
+        $this->threshold = $data->threshold !== null ? (float)$data->threshold : null;
     }
 
     public function getAmount(): ?float {

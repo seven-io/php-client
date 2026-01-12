@@ -11,7 +11,7 @@ class Hooks {
 
     public function __construct(object $data) {
         foreach ($data->hooks as $k => $v) $this->hooks[$k] = new Hook($v);
-        $this->success = $data->success;
+        $this->success = $data->success === 'true' || $data->success === true;
     }
 
     public function getHooks(): array {

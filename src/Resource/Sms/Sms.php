@@ -14,12 +14,15 @@ class Sms {
     protected float $totalPrice;
 
     public function __construct(object $data) {
-        $this->balance = $data->balance;
-        $this->debug = $data->debug === 'true';
-        foreach ($data->messages as $k => $v) $this->messages[$k] = new SmsMessage($v);
-        $this->smsType = $data->sms_type;
+        $this->balance = (float)$data->balance;
+        $this->debug = $data->debug === 'true' || $data->debug === true;
+        $this->messages = [];
+        foreach ($data->messages as $k => $v) {
+            $this->messages[$k] = new SmsMessage($v);
+        }
+        $this->smsType = (string)$data->sms_type;
         $this->success = (int)$data->success;
-        $this->totalPrice = $data->total_price;
+        $this->totalPrice = (float)$data->total_price;
     }
 
     public function getBalance(): float {

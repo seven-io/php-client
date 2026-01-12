@@ -7,7 +7,7 @@ use Seven\Api\Resource\Numbers\OrderParams;
 use Seven\Api\Resource\Numbers\PaymentInterval;
 use Seven\Api\Resource\Numbers\UpdateParams;
 
-class NumbersTest extends BaseTest {
+class NumbersTest extends AbstractTestCase {
     public function testAll(): void {
         $availableParams = (new ListAvailableParams)
             ->setCountry('DE')

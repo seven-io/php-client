@@ -7,8 +7,8 @@ readonly class PhoneNumberOfferFeesPeriod {
     protected float $setup;
 
     public function __construct(object $data) {
-        $this->basicCharge = $data->basic_charge;
-        $this->setup = $data->setup;
+        $this->basicCharge = (float)$data->basic_charge;
+        $this->setup = (float)$data->setup;
     }
 
     public function getBasicCharge(): float {

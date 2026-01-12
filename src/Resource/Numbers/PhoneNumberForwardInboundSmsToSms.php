@@ -8,8 +8,8 @@ class PhoneNumberForwardInboundSmsToSms {
     protected array $numbers;
 
     public function __construct(object $data) {
-        $this->enabled = $data->enabled;
-        $this->numbers = $data->number;
+        $this->enabled = $data->enabled === 'true' || $data->enabled === true;
+        $this->numbers = (array)$data->number;
     }
 
     public function isEnabled(): bool {

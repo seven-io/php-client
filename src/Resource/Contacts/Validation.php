@@ -8,8 +8,8 @@ class Validation {
 
     public static function fromApi(object $obj): Validation {
         $validation = new Validation;
-        $validation->state = $obj->state;
-        $validation->timestamp = $obj->timestamp;
+        $validation->state = $obj->state !== null ? (string)$obj->state : null;
+        $validation->timestamp = $obj->timestamp !== null ? (string)$obj->timestamp : null;
         return $validation;
     }
 

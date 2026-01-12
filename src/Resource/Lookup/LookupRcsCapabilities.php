@@ -9,6 +9,6 @@ class LookupRcsCapabilities extends LookupFormat {
     public function __construct(object $data) {
         parent::__construct($data);
 
-        $this->rcsCapabilities = $data->rcs_capabilities;
+        $this->rcsCapabilities = (array)$data->rcs_capabilities;
     }
 }

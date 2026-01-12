@@ -162,20 +162,43 @@ $client = new Client(
 
 ### Error Handling
 
+The SDK provides specific exceptions for different API error conditions:
+
 ```php
+use Seven\Api\Exception\ApiException;
 use Seven\Api\Exception\InvalidApiKeyException;
-use Seven\Api\Exception\InsufficientBalanceException;
+use Seven\Api\Exception\MissingAccessRightsException;
+use Seven\Api\Exception\ForbiddenIpException;
 
 try {
     $response = $smsResource->dispatch($params);
 } catch (InvalidApiKeyException $e) {
     echo "Invalid API key provided";
-} catch (InsufficientBalanceException $e) {
-    echo "Not enough balance to send SMS";
+} catch (MissingAccessRightsException $e) {
+    echo "Missing access rights for this operation";
+} catch (ForbiddenIpException $e) {
+    echo "Your IP address is not allowed";
+} catch (ApiException $e) {
+    // Handles all other API error codes (100-903)
+    // Common codes: 500 = Insufficient credit, 201 = Invalid sender, 202 = Invalid recipient
+    echo "API Error: " . $e->getMessage() . " (Code: " . $e->getCode() . ")";
 } catch (\Exception $e) {
     echo "Error: " . $e->getMessage();
 }
 ```
+
+#### API Error Codes
+
+| Code | Description |
+|------|-------------|
+| 100 | SMS accepted and being sent |
+| 101 | Sending to at least one recipient failed |
+| 201 | Invalid sender |
+| 202 | Invalid recipient number |
+| 301-305 | Parameter validation errors |
+| 500 | Insufficient account credit |
+| 600 | Sending error occurred |
+| 900-903 | Authentication/authorization errors |
 
 ## 🧪 Testing
 
@@ -226,10 +249,11 @@ The SDK provides access to all seven.io API endpoints:
 | `SEVEN_API_KEY` | Your production API key |
 | `SEVEN_API_KEY_SANDBOX` | Your sandbox API key for testing |
 | `SEVEN_SIGNING_SECRET` | Webhook signing secret |
+| `SEVEN_TEST_RECIPIENT` | Custom recipient phone number for tests (default: `491716992343`) |
 
 ## 📄 Requirements
 
-- PHP 8.1 or higher
+- PHP 8.2 or higher
 - Composer (for installation)
 - ext-curl
 - ext-json

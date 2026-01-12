@@ -16,15 +16,15 @@ class JournalOutbound extends JournalBase {
     public function __construct(object $data) {
         parent::__construct($data);
 
-        $this->channel = $data->channel;
-        $this->connection = $data->connection;
-        $this->dlr = $data->dlr;
-        $this->dlrTimestamp = $data->dlr_timestamp;
-        $this->foreignId = $data->foreign_id;
-        $this->label = $data->label;
-        $this->latency = $data->latency;
-        $this->mccMnc = $data->mccmnc;
-        $this->type = $data->type;
+        $this->channel = (string)$data->channel;
+        $this->connection = (string)$data->connection;
+        $this->dlr = $data->dlr !== null ? (string)$data->dlr : null;
+        $this->dlrTimestamp = $data->dlr_timestamp !== null ? (string)$data->dlr_timestamp : null;
+        $this->foreignId = $data->foreign_id !== null ? (string)$data->foreign_id : null;
+        $this->label = $data->label !== null ? (string)$data->label : null;
+        $this->latency = $data->latency !== null ? (string)$data->latency : null;
+        $this->mccMnc = $data->mccmnc !== null ? (string)$data->mccmnc : null;
+        $this->type = (string)$data->type;
     }
 
     public function getConnection(): string {

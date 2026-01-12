@@ -7,8 +7,8 @@ class Balance {
     protected string $currency;
 
     public function __construct(object $data) {
-        $this->amount = $data->amount;
-        $this->currency = $data->currency;
+        $this->amount = (float)$data->amount;
+        $this->currency = (string)$data->currency;
     }
 
     public function getAmount(): float {

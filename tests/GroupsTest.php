@@ -4,7 +4,7 @@ namespace Seven\Tests;
 
 use Seven\Api\Resource\Groups\ListParams;
 
-class GroupsTest extends BaseTest
+class GroupsTest extends AbstractTestCase
 {
     public function testAll(): void
     {

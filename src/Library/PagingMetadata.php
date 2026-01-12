@@ -9,10 +9,10 @@ readonly class PagingMetadata {
     protected int $offset;
 
     public function __construct(object $data) {
-        $this->count = $data->count;
-        $this->hasMore = $data->has_more;
-        $this->limit = $data->limit;
-        $this->offset = $data->offset;
+        $this->count = (int)$data->count;
+        $this->hasMore = $data->has_more === 'true' || $data->has_more === true;
+        $this->limit = (int)$data->limit;
+        $this->offset = (int)$data->offset;
     }
 
     public function getCount(): int {

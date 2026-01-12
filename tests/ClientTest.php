@@ -5,7 +5,7 @@ namespace Seven\Tests;
 use InvalidArgumentException;
 use Seven\Api\Client;
 
-class ClientTest extends BaseTest
+class ClientTest extends AbstractTestCase
 {
     public function testClient(): void
     {

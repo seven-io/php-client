@@ -7,8 +7,8 @@ readonly class SubaccountAutoCharged {
     protected bool $success;
 
     public function __construct(object $data) {
-        $this->error = $data->error;
-        $this->success = $data->success;
+        $this->error = $data->error !== null ? (string)$data->error : null;
+        $this->success = $data->success === 'true' || $data->success === true;
     }
 
     public function getError(): ?string {

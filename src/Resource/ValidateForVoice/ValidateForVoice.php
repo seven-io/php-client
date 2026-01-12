@@ -13,13 +13,13 @@ class ValidateForVoice {
 
     public function __construct(object $data) {
         if (property_exists($data, 'code')) $this->code = (int)$data->code;
-        if (property_exists($data, 'error')) $this->error = $data->error;
+        if (property_exists($data, 'error')) $this->error = $data->error !== null ? (string)$data->error : null;
         if (property_exists($data, 'formatted_output'))
-            $this->formattedOutput = $data->formatted_output;
-        if (property_exists($data, 'id')) $this->id = $data->id;
-        if (property_exists($data, 'sender')) $this->sender = $data->sender;
-        if (property_exists($data, 'voice')) $this->voice = $data->voice;
-        $this->success = $data->success;
+            $this->formattedOutput = $data->formatted_output !== null ? (string)$data->formatted_output : null;
+        if (property_exists($data, 'id')) $this->id = $data->id !== null ? (int)$data->id : null;
+        if (property_exists($data, 'sender')) $this->sender = $data->sender !== null ? (string)$data->sender : null;
+        if (property_exists($data, 'voice')) $this->voice = (bool)$data->voice;
+        $this->success = (bool)$data->success;
     }
 
     public function getCode(): ?int {

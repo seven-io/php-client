@@ -8,7 +8,7 @@ class AnalyticBySubaccount extends AbstractAnalytic {
     public function __construct(object $data) {
         parent::__construct($data);
 
-        $this->account = $data->account;
+        $this->account = (string)$data->account;
     }
 
     public function getAccount(): string {

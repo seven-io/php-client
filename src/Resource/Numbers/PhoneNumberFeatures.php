@@ -8,9 +8,9 @@ class PhoneNumberFeatures {
     protected bool $voice;
 
     public function __construct(object $data) {
-        $this->applicationToPersonSms = $data->a2p_sms;
-        $this->sms = $data->sms;
-        $this->voice = $data->voice;
+        $this->applicationToPersonSms = $data->a2p_sms === 'true' || $data->a2p_sms === true;
+        $this->sms = $data->sms === 'true' || $data->sms === true;
+        $this->voice = $data->voice === 'true' || $data->voice === true;
     }
 
     public function isApplicationToPersonSms(): bool {

@@ -13,12 +13,12 @@ class Subaccount {
 
     public function __construct(object $data) {
         $this->autoTopup = new AutoTopUp($data->auto_topup);
-        $this->balance = $data->balance;
-        $this->company = $data->company;
+        $this->balance = (float)$data->balance;
+        $this->company = $data->company !== null ? (string)$data->company : null;
         $this->contact = new SubaccountContact($data->contact);
-        $this->id = $data->id;
-        $this->totalUsage = $data->total_usage;
-        $this->username = $data->username;
+        $this->id = (int)$data->id;
+        $this->totalUsage = (float)$data->total_usage;
+        $this->username = $data->username !== null ? (string)$data->username : null;
     }
 
     public function getAutoTopup(): object {

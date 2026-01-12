@@ -7,8 +7,8 @@ class PhoneNumberBilling {
     protected PaymentInterval $paymentInterval;
 
     public function __construct(object $data) {
-        $this->fees = $data->fees;
-        $this->paymentInterval = $data->payment_interval;
+        $this->fees = new PhoneNumberBillingFees($data->fees);
+        $this->paymentInterval = PaymentInterval::from((string)$data->payment_interval);
     }
 
     public function getFees(): PhoneNumberBillingFees {

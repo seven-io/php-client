@@ -10,8 +10,8 @@ class SmsDelete {
     protected bool $success;
 
     public function __construct(object $data) {
-        $this->deleted = $data->deleted;
-        $this->success = $data->success;
+        $this->deleted = $data->deleted !== null ? (array)$data->deleted : null;
+        $this->success = $data->success === 'true' || $data->success === true;
     }
 
     public function getDeleted(): ?array {

@@ -10,7 +10,7 @@ use Seven\Api\Resource\Journal\JournalParams;
 use Seven\Api\Resource\Journal\JournalVoice;
 use Seven\Api\Resource\Sms\SmsConstants;
 
-class JournalTest extends BaseTest {
+class JournalTest extends AbstractTestCase {
     public function testJournalInbound(): void {
         $arr = $this->resources->journal->inbound();
         $this->request($arr);

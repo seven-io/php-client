@@ -7,8 +7,8 @@ readonly class NumberOrder {
     protected bool $success;
 
     public function __construct(object $obj) {
-        $this->error = $obj->error;
-        $this->success = $obj->success;
+        $this->error = $obj->error !== null ? (string)$obj->error : null;
+        $this->success = $obj->success === 'true' || $obj->success === true;
     }
 
     public function getError(): ?string {

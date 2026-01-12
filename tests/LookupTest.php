@@ -5,7 +5,7 @@ namespace Seven\Tests;
 
 use Seven\Api\Resource\Lookup\Carrier;
 
-class LookupTest extends BaseTest {
+class LookupTest extends AbstractTestCase {
     public function testRcsCapabilities(): void {
         $res = $this->resources->lookup->rcsCapabilities('491716992343');
         $this->assertCount(1, $res);

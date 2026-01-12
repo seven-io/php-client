@@ -7,7 +7,7 @@ use Seven\Api\Resource\Hooks\HooksEventType;
 use Seven\Api\Resource\Hooks\HooksRequestMethod;
 use Seven\Api\Resource\Hooks\SubscribeParams;
 
-class HooksTest extends BaseTest {
+class HooksTest extends AbstractTestCase {
     public function testGetHooks(): void {
         $res = $this->resources->hooks->read();
 

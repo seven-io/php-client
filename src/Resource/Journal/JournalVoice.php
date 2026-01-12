@@ -11,10 +11,10 @@ class JournalVoice extends JournalBase {
     public function __construct(object $data) {
         parent::__construct($data);
 
-        $this->duration = $data->duration;
-        $this->error = $data->error;
-        $this->status = $data->status;
-        $this->xml = $data->xml;
+        $this->duration = $data->duration !== null ? (string)$data->duration : null;
+        $this->error = $data->error !== null ? (string)$data->error : null;
+        $this->status = (string)$data->status;
+        $this->xml = $data->xml === 'true' || $data->xml === true;
     }
 
     public function getDuration(): ?string {

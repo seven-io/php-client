@@ -8,7 +8,7 @@ class AnalyticByCountry extends AbstractAnalytic {
     public function __construct(object $data) {
         parent::__construct($data);
 
-        $this->country = $data->country;
+        $this->country = (string)$data->country;
     }
 
     public function getCountry(): string {

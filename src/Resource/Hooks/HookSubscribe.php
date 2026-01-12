@@ -7,8 +7,8 @@ class HookSubscribe {
     protected bool $success;
 
     public function __construct(object $data) {
-        $this->id = $data->id;
-        $this->success = $data->success;
+        $this->id = $data->id !== null ? (int)$data->id : null;
+        $this->success = $data->success === 'true' || $data->success === true;
     }
 
     public function getId(): ?int {

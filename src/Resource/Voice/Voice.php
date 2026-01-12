@@ -13,9 +13,12 @@ class Voice {
     protected float $totalPrice;
 
     public function __construct(object $data) {
-        $this->debug = $data->debug;
-        $this->balance = $data->balance;
-        foreach ($data->messages as $k => $v) $this->messages[$k] = new VoiceMessage($v);
+        $this->debug = (bool)$data->debug;
+        $this->balance = (float)$data->balance;
+        $this->messages = [];
+        foreach ($data->messages as $k => $v) {
+            $this->messages[$k] = new VoiceMessage($v);
+        }
         $this->success = (int)$data->success;
         $this->totalPrice = (float)$data->total_price;
     }

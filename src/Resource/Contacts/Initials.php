@@ -8,8 +8,8 @@ class Initials {
 
     public static function fromApi(object $obj): Initials {
         $initials = new Initials;
-        $initials->color = $obj->color;
-        $initials->initials = $obj->initials;
+        $initials->color = (string)$obj->color;
+        $initials->initials = (string)$obj->initials;
         return $initials;
     }
 }

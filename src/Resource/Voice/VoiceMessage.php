@@ -13,14 +13,14 @@ class VoiceMessage {
     protected string $text;
 
     public function __construct(object $data) {
-        $this->error = $data->error;
-        $this->errorText = $data->error_text;
+        $this->error = $data->error !== null ? (string)$data->error : null;
+        $this->errorText = $data->error_text !== null ? (string)$data->error_text : null;
         $this->id = (int)$data->id;
-        $this->price = $data->price;
-        $this->recipient = $data->recipient;
-        $this->sender = $data->sender;
-        $this->success = $data->success;
-        $this->text = $data->text;
+        $this->price = (float)$data->price;
+        $this->recipient = (string)$data->recipient;
+        $this->sender = (string)$data->sender;
+        $this->success = (bool)$data->success;
+        $this->text = (string)$data->text;
     }
 
     public function getError(): ?string {

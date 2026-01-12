@@ -6,7 +6,7 @@ use DateTime;
 use Seven\Api\Resource\Analytics\AbstractAnalytic;
 use Seven\Api\Resource\Analytics\AnalyticsParams;
 
-class AnalyticsTest extends BaseTest {
+class AnalyticsTest extends AbstractTestCase {
     public function testAnalyticsByDate(): void {
         $res = $this->resources->analytics->byDate();
 

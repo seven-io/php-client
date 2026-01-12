@@ -2,7 +2,7 @@
 
 namespace Seven\Tests;
 
-class BalanceTest extends BaseTest
+class BalanceTest extends AbstractTestCase
 {
     public function testBalance(): void
     {

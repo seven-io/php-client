@@ -11,8 +11,8 @@ readonly class PhoneNumberOfferFees {
     public function __construct(object $data) {
         $this->annually = new PhoneNumberOfferFeesPeriod($data->annually);
         $this->monthly = new PhoneNumberOfferFeesPeriod($data->monthly);
-        $this->inboundSms = $data->sms_mo;
-        $this->inboundVoice = $data->voice_mo;
+        $this->inboundSms = (float)$data->sms_mo;
+        $this->inboundVoice = (float)$data->voice_mo;
     }
 
     public function getAnnually(): PhoneNumberOfferFeesPeriod {

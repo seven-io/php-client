@@ -8,7 +8,7 @@ use Seven\Api\Resource\Subaccounts\CreateParams;
 use Seven\Api\Resource\Subaccounts\Subaccount;
 use Seven\Api\Resource\Subaccounts\TransferCreditsParams;
 
-class SubaccountsTest extends BaseTest {
+class SubaccountsTest extends AbstractTestCase {
     public function testCreateFail(): void {
         $this->expectException(InvalidRequiredArgumentException::class);
 

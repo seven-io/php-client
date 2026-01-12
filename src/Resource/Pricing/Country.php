@@ -12,9 +12,9 @@ class Country {
     protected array $networks;
 
     public function __construct(object $data) {
-        $this->countryCode = $data->countryCode;
-        $this->countryName = $data->countryName;
-        $this->countryPrefix = $data->countryPrefix;
+        $this->countryCode = (string)$data->countryCode;
+        $this->countryName = (string)$data->countryName;
+        $this->countryPrefix = (string)$data->countryPrefix;
         foreach ($data->networks as $k => $network) $this->networks[$k] = new Network($network);
     }
 

@@ -6,7 +6,7 @@ use DateTime;
 use Seven\Api\Exception\InvalidRequiredArgumentException;
 use Seven\Api\Resource\Sms\SmsParams;
 
-class SmsTest extends BaseTest
+class SmsTest extends AbstractTestCase
 {
     public function testSmsValidator(): void {
         $this->expectException(InvalidRequiredArgumentException::class);
@@ -16,7 +16,7 @@ class SmsTest extends BaseTest
 
     public function testSms(): void
     {
-        $params = (new SmsParams('HI2U! The UNIX time is ' . time() . '.', '491716992343'));
+        $params = (new SmsParams('HI2U! The UNIX time is ' . time() . '.', $this->testRecipient));
         $params->setText('Müller');
         $params->setDelay(new DateTime('2050-12-31'));
         $res = $this->resources->sms->dispatch($params);
@@ -33,7 +33,7 @@ class SmsTest extends BaseTest
 
     public function testSmsFiles(): void
     {
-        $p = (new SmsParams('HI2U! The UNIX time is ' . time() . '.', '491716992343'));
+        $p = (new SmsParams('HI2U! The UNIX time is ' . time() . '.', $this->testRecipient));
         $text = '';
         $start = 1;
         $end = 3;
@@ -59,8 +59,7 @@ class SmsTest extends BaseTest
 
     public function testDelete(): void
     {
-        $params = (new SmsParams('HI2U! The UNIX time is ' . time() . '.', '491716992343'))
-            ->addTo('4917987654321')
+        $params = (new SmsParams('HI2U! The UNIX time is ' . time() . '.', $this->testRecipient))
             ->setDelay(new DateTime('2050-12-31'));
         $sms = $this->resources->sms->dispatch($params);
         $this->assertNotEmpty($sms->getMessages());

@@ -13,14 +13,14 @@ class Hook {
     protected string $targetUrl;
 
     public function __construct(object $data) {
-        $this->created = $data->created;
-        $this->enabled = $data->enabled;
-        $this->eventFilter = $data->event_filter;
-        $this->eventType = $data->event_type;
-        $this->headers = $data->headers;
+        $this->created = (string)$data->created;
+        $this->enabled = $data->enabled === 'true' || $data->enabled === true;
+        $this->eventFilter = $data->event_filter !== null ? (string)$data->event_filter : null;
+        $this->eventType = (string)$data->event_type;
+        $this->headers = (string)$data->headers;
         $this->id = (int)$data->id;
-        $this->requestMethod = $data->request_method;
-        $this->targetUrl = $data->target_url;
+        $this->requestMethod = (string)$data->request_method;
+        $this->targetUrl = (string)$data->target_url;
     }
 
     public function getCreated(): string {

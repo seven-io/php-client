@@ -6,7 +6,7 @@ class RcsDeleted {
     protected bool $success;
 
     public function __construct(object $data) {
-        $this->success = $data->success;
+        $this->success = $data->success === 'true' || $data->success === true;
     }
 
     public function isSuccess(): bool {

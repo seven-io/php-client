@@ -4,7 +4,7 @@ namespace Seven\Tests;
 
 use Seven\Api\Resource\ValidateForVoice\ValidateForVoiceParams;
 
-class ValidateForVoiceTest extends BaseTest {
+class ValidateForVoiceTest extends AbstractTestCase {
     public function testValidateForVoice(): void {
         $params = (new ValidateForVoiceParams('491716992343'))
             ->setCallback('https://seven.dev/callback/validate_for_voice');

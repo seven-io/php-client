@@ -8,8 +8,8 @@ class PhoneNumberForwardInboundSmsToMail {
     protected bool $enabled;
 
     public function __construct(object $data) {
-        $this->addresses = $data->address;
-        $this->enabled = $data->enabled;
+        $this->addresses = (array)$data->address;
+        $this->enabled = $data->enabled === 'true' || $data->enabled === true;
     }
 
     public function getAddresses(): array {

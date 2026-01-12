@@ -8,7 +8,7 @@ class AnalyticByLabel extends AbstractAnalytic {
     public function __construct(object $data) {
         parent::__construct($data);
 
-        $this->label = $data->label;
+        $this->label = (string)$data->label;
     }
 
     public function getLabel(): string {

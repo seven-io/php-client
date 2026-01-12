@@ -8,7 +8,7 @@ class AnalyticByDate extends AbstractAnalytic {
     public function __construct(object $data) {
         parent::__construct($data);
 
-        $this->date = $data->date;
+        $this->date = (string)$data->date;
     }
 
     public function getDate(): string {

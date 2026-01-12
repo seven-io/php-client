@@ -9,10 +9,10 @@ class LookupMnp {
     protected bool $success;
 
     public function __construct(object $data) {
-        $this->code = $data->code;
+        $this->code = (int)$data->code;
         $this->mnp = new Mnp($data->mnp);
-        $this->price = $data->price;
-        $this->success = $data->success;
+        $this->price = is_int($data->price) ? $data->price : (float)$data->price;
+        $this->success = (bool)$data->success;
     }
 
     public function getCode(): int {

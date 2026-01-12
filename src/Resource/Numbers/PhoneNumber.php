@@ -14,13 +14,13 @@ class PhoneNumber {
 
     public function __construct(object $data) {
         $this->billing = new PhoneNumberBilling($data->billing);
-        $this->country = $data->country;
-        $this->created = $data->created;
-        $this->expires = $data->expires;
+        $this->country = (string)$data->country;
+        $this->created = (string)$data->created;
+        $this->expires = $data->expires !== null ? (string)$data->expires : null;
         $this->features = new PhoneNumberFeatures($data->features);
         $this->forwardInboundSms = new PhoneNumberForwardInboundSms($data->forward_sms_mo);
-        $this->friendlyName = $data->friendly_name;
-        $this->number = $data->number;
+        $this->friendlyName = (string)$data->friendly_name;
+        $this->number = (string)$data->number;
     }
 
     public function getBilling(): PhoneNumberBilling {

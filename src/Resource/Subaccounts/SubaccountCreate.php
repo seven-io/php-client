@@ -8,9 +8,9 @@ readonly class SubaccountCreate {
     protected bool $success;
 
     public function __construct(object $data) {
-        $this->error = $data->error;
+        $this->error = $data->error !== null ? (string)$data->error : null;
         $this->subaccount = $data->subaccount ? new Subaccount($data->subaccount) : null;
-        $this->success = $data->success;
+        $this->success = $data->success === 'true' || $data->success === true;
     }
 
     public function getError(): ?string {

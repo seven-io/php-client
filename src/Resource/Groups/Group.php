@@ -9,10 +9,10 @@ class Group {
     protected int $membersCount;
 
     public function __construct(object $data) {
-        $this->created = $data->created;
-        $this->id = $data->id;
-        $this->membersCount = $data->members_count;
-        $this->name = $data->name;
+        $this->created = (string)$data->created;
+        $this->id = (int)$data->id;
+        $this->membersCount = (int)$data->members_count;
+        $this->name = (string)$data->name;
     }
 
     public function getId(): int {

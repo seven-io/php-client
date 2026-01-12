@@ -6,17 +6,17 @@ use Seven\Api\Exception\InvalidApiKeyException;
 use Seven\Api\Resource\Voice\Voice;
 use Seven\Api\Resource\Voice\VoiceParams;
 
-class VoiceTest extends BaseTest {
+class VoiceTest extends AbstractTestCase {
     public function testVoiceWithBadApiKey(): void {
         $this->client->setApiKey('BAD API KEY');
-        $params = new VoiceParams('The current time is' . time(), '491716992343');
+        $params = new VoiceParams('The current time is' . time(), $this->testRecipient);
         $this->expectException(InvalidApiKeyException::class);
         $res = $this->resources->voice->call($params);
         var_dump($res);
     }
 
     public function testVoice(): void {
-        $params = new VoiceParams('The current time is' . time(), '491716992343');
+        $params = new VoiceParams('The current time is' . time(), $this->testRecipient);
         $res = $this->resources->voice->call($params);
 
         $this->assertVoice($res);

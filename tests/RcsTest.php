@@ -9,11 +9,11 @@ use Seven\Api\Resource\Rcs\RcsEventParams;
 use Seven\Api\Resource\Rcs\RcsFallbackType;
 use Seven\Api\Resource\Rcs\RcsParams;
 
-final class RcsTest extends BaseTest
+final class RcsTest extends AbstractTestCase
 {
     public function testText(): void
     {
-        $params = (new RcsParams('HI2U! The UNIX time is ' . time() . '.', '491716992343'))
+        $params = (new RcsParams('HI2U! The UNIX time is ' . time() . '.', $this->testRecipient))
             ->setDelay(new DateTime('12-12-2050'))
             ->setFallback(RcsFallbackType::SMS)
         ;
@@ -27,7 +27,7 @@ final class RcsTest extends BaseTest
 
     public function testDelete(): void
     {
-        $params = (new RcsParams('HI', '491716992343'))
+        $params = (new RcsParams('HI', $this->testRecipient))
             ->setDelay((new DateTime)->add(DateInterval::createFromDateString('1 day')));
         $rcs = $this->resources->rcs->dispatch($params);
         $this->assertNotEmpty($rcs->getMessages());
@@ -42,7 +42,7 @@ final class RcsTest extends BaseTest
 
     public function testEvent(): void
     {
-        $params = new RcsEventParams('4915237035388', RcsEvent::IS_TYPING);
+        $params = new RcsEventParams($this->testRecipient, RcsEvent::IS_TYPING);
         $res = $this->resources->rcs->event($params);
 
         $this->assertTrue($res->isSuccess());

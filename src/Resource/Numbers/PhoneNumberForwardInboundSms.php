@@ -7,8 +7,8 @@ class PhoneNumberForwardInboundSms {
     protected PhoneNumberForwardInboundSmsToSms $sms;
 
     public function __construct(object $data) {
-        $this->email = $data->email;
-        $this->sms = $data->sms;
+        $this->email = new PhoneNumberForwardInboundSmsToMail($data->email);
+        $this->sms = new PhoneNumberForwardInboundSmsToSms($data->sms);
     }
 
     public function getEmail(): PhoneNumberForwardInboundSmsToMail {

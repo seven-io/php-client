@@ -6,7 +6,7 @@ class GroupDelete {
     protected bool $success;
 
     public function __construct(object $obj) {
-        $this->success = $obj->success;
+        $this->success = $obj->success === 'true' || $obj->success === true;
     }
 
     public function getSuccess(): bool {

@@ -14,10 +14,10 @@ class Contact {
 
     public static function fromApi(object $obj): Contact {
         $contact = new Contact;
-        $contact->avatar = $obj->avatar;
-        $contact->created = $obj->created;
-        $contact->groups = $obj->groups;
-        $contact->id = $obj->id;
+        $contact->avatar = (string)$obj->avatar;
+        $contact->created = (string)$obj->created;
+        $contact->groups = (array)$obj->groups;
+        $contact->id = (int)$obj->id;
         $contact->initials = Initials::fromApi($obj->initials);
         $contact->properties = Properties::fromApi($obj->properties);
         $contact->validation = Validation::fromApi($obj->validation);

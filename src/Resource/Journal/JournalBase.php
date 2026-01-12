@@ -11,12 +11,12 @@ abstract class JournalBase {
     protected string $to;
 
     public function __construct(object $data) {
-        $this->from = $data->from;
-        $this->id = $data->id;
+        $this->from = (string)$data->from;
+        $this->id = (string)$data->id;
         $this->price = (float)$data->price;
-        $this->text = $data->text;
-        $this->timestamp = $data->timestamp;
-        $this->to = $data->to;
+        $this->text = (string)$data->text;
+        $this->timestamp = (string)$data->timestamp;
+        $this->to = (string)$data->to;
     }
 
     public function getFrom(): string {

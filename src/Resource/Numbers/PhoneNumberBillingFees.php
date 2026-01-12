@@ -9,10 +9,10 @@ class PhoneNumberBillingFees {
     protected float $voiceInbound;
 
     public function __construct(object $data) {
-        $this->basicCharge = $data->basic_charge;
-        $this->setup = $data->setup;
-        $this->smsInbound = $data->sms_mo;
-        $this->voiceInbound = $data->voice_mo;
+        $this->basicCharge = (float)$data->basic_charge;
+        $this->setup = (float)$data->setup;
+        $this->smsInbound = (float)$data->sms_mo;
+        $this->voiceInbound = (float)$data->voice_mo;
     }
 
     public function getBasicCharge(): float {

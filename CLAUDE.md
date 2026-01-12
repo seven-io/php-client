@@ -103,9 +103,10 @@ src/
 - `SEVEN_API_KEY` - Production API key for live testing
 - `SEVEN_API_KEY_SANDBOX` - Sandbox API key for safe testing (preferred)
 - `SEVEN_SIGNING_SECRET` - Optional webhook signing secret
+- `SEVEN_TEST_RECIPIENT` - Custom recipient phone number for tests (default: `491716992343`)
 
 ### Test Structure
-- All tests extend `tests/BaseTest.php`
+- All tests extend `tests/AbstractTestCase.php`
 - Uses `tests/Resources.php` as a resource factory for consistent test setup
 - Tests are organized by resource type (SmsTest.php, VoiceTest.php, etc.)
 - Tests can switch between production and sandbox environments
@@ -117,7 +118,7 @@ src/
 2. Create parameter classes implementing `ParamsInterface`
 3. Create response/data classes for API responses
 4. Add validator classes if complex validation is needed
-5. Add corresponding test class extending `BaseTest`
+5. Add corresponding test class extending `AbstractTestCase`
 
 ### Exception Handling
 The client automatically handles API error codes:

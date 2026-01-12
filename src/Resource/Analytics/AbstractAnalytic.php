@@ -12,13 +12,13 @@ abstract class AbstractAnalytic {
     protected int $voice;
 
     public function __construct(object $data) {
-        $this->hlr = $data->hlr;
-        $this->inbound = $data->inbound;
-        $this->mnp = $data->mnp;
-        $this->rcs = $data->rcs;
-        $this->sms = $data->sms;
+        $this->hlr = (int)$data->hlr;
+        $this->inbound = (int)$data->inbound;
+        $this->mnp = (int)$data->mnp;
+        $this->rcs = (int)$data->rcs;
+        $this->sms = (int)$data->sms;
         $this->usageEuro = (float)$data->usage_eur;
-        $this->voice = $data->voice;
+        $this->voice = (int)$data->voice;
     }
 
     public function getHLR(): int {

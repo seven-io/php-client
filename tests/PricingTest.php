@@ -4,7 +4,7 @@ namespace Seven\Tests;
 
 use Seven\Api\Resource\Pricing\PricingParams;
 
-class PricingTest extends BaseTest {
+class PricingTest extends AbstractTestCase {
     public function testGermany(): void {
         $params = (new PricingParams)->setCountry('de');
         $res = $this->resources->pricing->get($params);

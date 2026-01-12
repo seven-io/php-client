@@ -19,17 +19,17 @@ class Properties {
 
     public static function fromApi(object $obj): Properties {
         $properties = new Properties;
-        $properties->address = $obj->address;
-        if ($obj->birthday) $properties->birthday = new DateTime($obj->birthday);
-        $properties->city = $obj->city;
-        $properties->email = $obj->email;
-        $properties->firstname = $obj->firstname;
-        $properties->fullname = $obj->fullname;
-        $properties->homeNumber = $obj->home_number;
-        $properties->lastname = $obj->lastname;
-        $properties->mobileNumber = $obj->mobile_number;
-        $properties->notes = $obj->notes;
-        $properties->postalCode = $obj->postal_code;
+        $properties->address = $obj->address !== null ? (string)$obj->address : null;
+        if ($obj->birthday) $properties->birthday = new DateTime((string)$obj->birthday);
+        $properties->city = $obj->city !== null ? (string)$obj->city : null;
+        $properties->email = $obj->email !== null ? (string)$obj->email : null;
+        $properties->firstname = $obj->firstname !== null ? (string)$obj->firstname : null;
+        $properties->fullname = $obj->fullname !== null ? (string)$obj->fullname : null;
+        $properties->homeNumber = $obj->home_number !== null ? (string)$obj->home_number : null;
+        $properties->lastname = $obj->lastname !== null ? (string)$obj->lastname : null;
+        $properties->mobileNumber = $obj->mobile_number !== null ? (string)$obj->mobile_number : null;
+        $properties->notes = $obj->notes !== null ? (string)$obj->notes : null;
+        $properties->postalCode = $obj->postal_code !== null ? (string)$obj->postal_code : null;
         return $properties;
     }
 

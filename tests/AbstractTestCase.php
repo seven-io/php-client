@@ -7,10 +7,13 @@ use Exception;
 use PHPUnit\Framework\TestCase;
 use Seven\Api\Client;
 
-abstract class BaseTest extends TestCase {
+abstract class AbstractTestCase extends TestCase {
+    protected const DEFAULT_TEST_RECIPIENT = '491716992343';
+
     protected bool $isSandbox;
     protected readonly Resources $resources;
     protected Client $client;
+    protected string $testRecipient;
 
     public  function setUp(): void {
         $this->init(getenv('SEVEN_API_KEY'), false);
@@ -21,6 +24,7 @@ abstract class BaseTest extends TestCase {
         $this->client = new Client($apiKey, 'php-api-test', $signingSecret ?: null);
         $this->resources = new Resources($this->client);
         $this->isSandbox = $isSandbox;
+        $this->testRecipient = getenv('SEVEN_TEST_RECIPIENT') ?: self::DEFAULT_TEST_RECIPIENT;
     }
 
     public static function createRandomURL(string $uri = 'https://php.tld/'): string {

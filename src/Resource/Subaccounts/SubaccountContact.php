@@ -7,8 +7,8 @@ readonly class SubaccountContact {
     protected string $name;
 
     public function __construct(object $data) {
-        $this->email = $data->email;
-        $this->name = $data->name;
+        $this->email = (string)$data->email;
+        $this->name = (string)$data->name;
     }
 
     public function getEmail(): string {

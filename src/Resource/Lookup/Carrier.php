@@ -9,10 +9,10 @@ class Carrier {
     protected ?string $networkType;
 
     public function __construct(object $data) {
-        $this->country = $data->country ?: null;
-        $this->name = $data->name;
-        $this->networkCode = $data->network_code ?: null;
-        $this->networkType = $data->network_type;
+        $this->country = $data->country ? (string)$data->country : null;
+        $this->name = $data->name !== null ? (string)$data->name : null;
+        $this->networkCode = $data->network_code ? (string)$data->network_code : null;
+        $this->networkType = $data->network_type !== null ? (string)$data->network_type : null;
     }
 
     public function getCountry(): ?string {

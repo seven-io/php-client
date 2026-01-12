@@ -13,14 +13,14 @@ class Mnp {
     protected string $number;
 
     public function __construct(object $data) {
-        $this->country = $data->country;
-        $this->internationalFormatted = $data->international_formatted;
-        $this->isPorted = $data->isPorted;
-        $this->mccMnc = $data->mccmnc;
-        $this->nationalFormat = $data->national_format;
-        $this->network = $data->network;
-        $this->networkType = $data->network_type;
-        $this->number = $data->number;
+        $this->country = (string)$data->country;
+        $this->internationalFormatted = (string)$data->international_formatted;
+        $this->isPorted = $data->isPorted !== null ? (bool)$data->isPorted : null;
+        $this->mccMnc = (string)$data->mccmnc;
+        $this->nationalFormat = (string)$data->national_format;
+        $this->network = $data->network !== null ? (string)$data->network : null;
+        $this->networkType = $data->network_type !== null ? (string)$data->network_type : null;
+        $this->number = (string)$data->number;
     }
 
     public function getCountry(): string {

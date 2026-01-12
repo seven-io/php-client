@@ -17,12 +17,12 @@ class Network {
     protected float $price;
 
     public function __construct(object $data) {
-        $this->mcc = $data->mcc;
-        $this->mncs = $data->mncs;
-        $this->networkName = $data->networkName;
-        $this->price = $data->price;
-        $this->features = $data->features;
-        $this->comment = $data->comment;
+        $this->mcc = (string)$data->mcc;
+        $this->mncs = $data->mncs !== null ? (array)$data->mncs : null;
+        $this->networkName = $data->networkName !== null ? (string)$data->networkName : null;
+        $this->price = (float)$data->price;
+        $this->features = (array)$data->features;
+        $this->comment = $data->comment !== null ? (string)$data->comment : null;
     }
 
     public function getComment(): ?string {

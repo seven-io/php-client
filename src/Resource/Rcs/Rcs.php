@@ -15,12 +15,12 @@ class Rcs {
     protected float $totalPrice;
 
     public function __construct(object $data) {
-        $this->balance = $data->balance;
-        $this->debug = $data->debug === 'true';
+        $this->balance = (float)$data->balance;
+        $this->debug = $data->debug === 'true' || $data->debug === true;
         $this->messages = array_map(fn($v) => new RcsMessage($v), $data->messages);
-        $this->smsType = $data->sms_type;
+        $this->smsType = (string)$data->sms_type;
         $this->success = (int)$data->success;
-        $this->totalPrice = $data->total_price;
+        $this->totalPrice = (float)$data->total_price;
     }
 
     public function getBalance(): float {

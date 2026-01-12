@@ -5,6 +5,7 @@ namespace Seven\Api;
 use Exception;
 use InvalidArgumentException;
 use Random\RandomException;
+use Seven\Api\Exception\ApiException;
 use Seven\Api\Exception\ForbiddenIpException;
 use Seven\Api\Exception\InvalidApiKeyException;
 use Seven\Api\Exception\MissingAccessRightsException;
@@ -140,21 +141,38 @@ class Client {
         }
 
         // Check for error codes even on HTTP 200 responses
-        if (is_int($res) || (is_object($res) && property_exists($res, 'code')) || (is_object($res) && property_exists($res, 'error_code'))) {
-            $sourceObject = is_object($res) ? $res : new stdClass;
-            $code = property_exists($sourceObject, 'code')
-                ? $res->code
-                : (property_exists($sourceObject, 'error_code')
-                    ? $res->error_code
-                    : (int)$res);
-            
-            if (in_array($code, [900, 901, 902, 903])) {
-                throw match ($code) {
-                    900 => new InvalidApiKeyException,
-                    901 => new SigningHashVerificationException,
-                    902 => new MissingAccessRightsException,
-                    903 => new ForbiddenIpException,
-                };
+        // The API may return just a numeric code instead of a JSON object on errors
+        $isNumericResponse = is_int($res) || (is_string($res) && is_numeric($res));
+        $hasErrorCodeProperty = is_object($res) && (property_exists($res, 'code') || property_exists($res, 'error_code'));
+
+        if ($isNumericResponse || $hasErrorCodeProperty) {
+            $code = null;
+            if (is_object($res)) {
+                if (property_exists($res, 'code')) {
+                    $code = (int)$res->code;
+                } elseif (property_exists($res, 'error_code')) {
+                    $code = (int)$res->error_code;
+                }
+            } else {
+                $code = (int)$res;
+            }
+
+            if ($code !== null) {
+                // Handle specific authentication/authorization errors with dedicated exceptions
+                if (in_array($code, [900, 901, 902, 903])) {
+                    throw match ($code) {
+                        900 => new InvalidApiKeyException,
+                        901 => new SigningHashVerificationException,
+                        902 => new MissingAccessRightsException,
+                        903 => new ForbiddenIpException,
+                    };
+                }
+
+                // Handle other API error codes when response is just a code (not a full object)
+                // Code 100 means "accepted" but without a full response, we can't construct response objects
+                if ($isNumericResponse && ApiException::isKnownErrorCode($code)) {
+                    throw new ApiException($code);
+                }
             }
         }
 

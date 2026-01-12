@@ -9,12 +9,12 @@ class LookupCnam {
     protected ?bool $success = null;
 
     public function __construct(object $data) {
-        $this->code = $data->code;
+        $this->code = is_string($data->code) ? $data->code : (int)$data->code;
 
         if (is_string($data->code)) {
-            $this->name = $data->name;
-            $this->number = $data->number;
-            $this->success = 'true' === $data->success;
+            $this->name = $data->name !== null ? (string)$data->name : null;
+            $this->number = $data->number !== null ? (string)$data->number : null;
+            $this->success = $data->success === 'true' || $data->success === true;
         }
     }
 

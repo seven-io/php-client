@@ -11,8 +11,8 @@ class Status {
 
     public function __construct(object $data) {
         $this->id = (int)$data->id;
-        $this->status = $data->status;
-        $this->statusTime = $data->status_time ? new DateTime($data->status_time) : null;
+        $this->status = $data->status !== null ? (string)$data->status : null;
+        $this->statusTime = $data->status_time ? new DateTime((string)$data->status_time) : null;
     }
 
     public function getStatusTime(): ?DateTime {
