@@ -13,8 +13,8 @@ class VoiceMessage {
     protected string $text;
 
     public function __construct(object $data) {
-        $this->error = $data->error !== null ? (string)$data->error : null;
-        $this->errorText = $data->error_text !== null ? (string)$data->error_text : null;
+        $this->error = property_exists($data, 'error') && $data->error !== null ? (string)$data->error : null;
+        $this->errorText = property_exists($data, 'error_text') && $data->error_text !== null ? (string)$data->error_text : null;
         $this->id = (int)$data->id;
         $this->price = (float)$data->price;
         $this->recipient = (string)$data->recipient;

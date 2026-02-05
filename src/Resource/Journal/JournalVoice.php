@@ -11,8 +11,8 @@ class JournalVoice extends JournalBase {
     public function __construct(object $data) {
         parent::__construct($data);
 
-        $this->duration = $data->duration !== null ? (string)$data->duration : null;
-        $this->error = $data->error !== null ? (string)$data->error : null;
+        $this->duration = property_exists($data, 'duration') && $data->duration !== null ? (string)$data->duration : null;
+        $this->error = property_exists($data, 'error') && $data->error !== null ? (string)$data->error : null;
         $this->status = (string)$data->status;
         $this->xml = $data->xml === 'true' || $data->xml === true;
     }

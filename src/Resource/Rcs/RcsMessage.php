@@ -21,8 +21,8 @@ class RcsMessage {
     public function __construct(object $data) {
         $this->channel = (string)$data->channel;
         $this->encoding = (string)$data->encoding;
-        $this->error = $data->error !== null ? (string)$data->error : null;
-        $this->errorText = $data->error_text !== null ? (string)$data->error_text : null;
+        $this->error = property_exists($data, 'error') && $data->error !== null ? (string)$data->error : null;
+        $this->errorText = property_exists($data, 'error_text') && $data->error_text !== null ? (string)$data->error_text : null;
         $this->id = $data->id !== null ? (int)$data->id : null;
         $this->isBinary = (bool)$data->is_binary;
         $this->label = property_exists($data, 'label') && $data->label !== null ? (string)$data->label : null;
