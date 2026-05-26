@@ -10,6 +10,11 @@ updates:
       interval: "weekly"
       day: "monday"
     open-pull-requests-limit: 5
+    cooldown:
+      default-days: 5
+      semver-major-days: 14
+      semver-minor-days: 7
+      semver-patch-days: 3
     groups:
       security-all:
         applies-to: security-updates
@@ -18,3 +23,15 @@ updates:
         applies-to: version-updates
         patterns: ["*"]
         update-types: ["minor", "patch"]
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 2
+    # github-actions only supports default-days for cooldown; semver-*-days
+    # is rejected by Dependabot (actions tags don't reliably follow semver).
+    cooldown:
+      default-days: 5
+    groups:
+      actions-all:
+        patterns: ["*"]
