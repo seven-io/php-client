@@ -21,7 +21,8 @@ class Client {
     protected array $headers = [
         'Accept: application/json',
     ];
-    protected string $sentWith;
+    protected ?string $sentWith;
+    protected ?string $signingSecret;
 
     /**
      * @throws InvalidArgumentException
@@ -38,6 +39,7 @@ class Client {
         
         // Always use the class constant, ignore the parameter
         $this->sentWith = self::SENT_WITH;
+        $this->signingSecret = $signingSecret;
         
         $this->headers[] = 'SentWith: ' . $this->sentWith;
         $this->setApiKey($this->apiKey);
