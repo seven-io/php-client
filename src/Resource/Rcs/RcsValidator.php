@@ -8,6 +8,9 @@ use Seven\Api\Exception\InvalidRequiredArgumentException;
 use Seven\Api\Resource\Sms\SmsConstants;
 
 class RcsValidator {
+    private const MAX_ROOT_SUGGESTIONS = 11;
+    private const MAX_RICHCARD_SUGGESTIONS = 4;
+
     public function __construct(protected RcsParams $params) {
     }
 
@@ -17,10 +20,12 @@ class RcsValidator {
      */
     public function validate(): void {
         $this->delay();
+        $this->fallback();
         $this->foreign_id();
         $this->from();
         $this->label();
-        $this->text();
+        $this->content();
+        $this->suggestions();
         $this->to();
         $this->ttl();
     }
@@ -33,6 +38,19 @@ class RcsValidator {
 
         if ($delay < new DateTime)
             throw new InvalidOptionalArgumentException('Delay must be a value from the future');
+    }
+
+    /** @throws InvalidRequiredArgumentException */
+    public function fallback(): void {
+        $fallback = $this->params->getFallback();
+
+        if (!$fallback instanceof RcsFallbackParams) {
+            return;
+        }
+
+        if (RcsFallbackType::SMS === $fallback->getType() && '' === trim((string)$fallback->getText())) {
+            throw new InvalidRequiredArgumentException('An SMS fallback object requires text.');
+        }
     }
 
     /** @throws InvalidOptionalArgumentException */
@@ -81,14 +99,42 @@ class RcsValidator {
     }
 
     /** @throws InvalidRequiredArgumentException */
-    public function text(): void {
-        $text = $this->params->getText() ?? '';
+    public function content(): void {
+        $hasText = '' !== trim($this->params->getText() ?? '');
+        $hasCarousel = null !== $this->params->getCarousel();
+        $hasRichcard = null !== $this->params->getRichcard();
+        $hasFile = null !== $this->params->getFile();
 
-        $length = strlen($text);
+        $setContentTypes = 0;
+        foreach ([$hasText, $hasCarousel, $hasRichcard, $hasFile] as $set) {
+            if ($set) {
+                ++$setContentTypes;
+            }
+        }
 
-        if (!$length) {
+        if (0 === $setContentTypes) {
             throw new InvalidRequiredArgumentException(
-                'You cannot send an empty message.');
+                'You must provide one content type: text, carousel, richcard or file.');
+        }
+
+        if ($setContentTypes > 1) {
+            throw new InvalidRequiredArgumentException(
+                'Only one content type is allowed: text, carousel, richcard or file.');
+        }
+
+        if ($hasCarousel) {
+            $carousel = $this->params->getCarousel();
+            foreach ($carousel->getRichcards() as $richcard) {
+                $this->validateRichcardSuggestions($richcard);
+            }
+        }
+
+        if ($hasRichcard) {
+            $this->validateRichcardSuggestions($this->params->getRichcard());
+        }
+
+        if ($hasFile) {
+            $this->validateFile($this->params->getFile());
         }
     }
 
@@ -126,6 +172,81 @@ class RcsValidator {
         if ($ttl > $max) {
             throw new InvalidOptionalArgumentException(
                 "ttl may not exceed $max.");
+        }
+    }
+
+    /** @throws InvalidRequiredArgumentException */
+    public function suggestions(): void {
+        $suggestions = $this->params->getSuggestions();
+
+        if (null === $suggestions) {
+            return;
+        }
+
+        if (count($suggestions) > self::MAX_ROOT_SUGGESTIONS) {
+            throw new InvalidRequiredArgumentException(
+                'RCS messages support at most 11 root-level suggestions.');
+        }
+
+        foreach ($suggestions as $suggestion) {
+            $this->validateSuggestion($suggestion);
+        }
+    }
+
+    /** @throws InvalidRequiredArgumentException */
+    private function validateRichcardSuggestions(?RcsRichcardParams $richcard): void {
+        if (null === $richcard) {
+            return;
+        }
+
+        $suggestions = $richcard->getSuggestions();
+        if (null === $suggestions) {
+            return;
+        }
+
+        if (count($suggestions) > self::MAX_RICHCARD_SUGGESTIONS) {
+            throw new InvalidRequiredArgumentException(
+                'A richcard supports at most 4 suggestions.');
+        }
+
+        foreach ($suggestions as $suggestion) {
+            $this->validateSuggestion($suggestion);
+        }
+    }
+
+    /** @throws InvalidRequiredArgumentException */
+    private function validateSuggestion(RcsSuggestionParams $suggestion): void {
+        $type = $suggestion->getType();
+
+        if (RcsSuggestionType::DIAL === $type && '' === trim((string)$suggestion->getPhoneNumber())) {
+            throw new InvalidRequiredArgumentException('A dial suggestion requires phoneNumber.');
+        }
+
+        if (RcsSuggestionType::VIEW_LOCATION === $type && null === $suggestion->getLocation()) {
+            throw new InvalidRequiredArgumentException('A viewLocation suggestion requires location.');
+        }
+
+        if (RcsSuggestionType::CREATE_CALENDAR_EVENT === $type && null === $suggestion->getCalendarEvent()) {
+            throw new InvalidRequiredArgumentException('A createCalendarEvent suggestion requires calendarEvent.');
+        }
+
+        if (RcsSuggestionType::OPEN_URL === $type && '' === trim((string)$suggestion->getUrl())) {
+            throw new InvalidRequiredArgumentException('An openUrl suggestion requires url.');
+        }
+    }
+
+    /** @throws InvalidRequiredArgumentException */
+    private function validateFile(?RcsFileParams $file): void {
+        if (null === $file) {
+            return;
+        }
+
+        $hasFileUrl = '' !== trim((string)$file->getFileUrl());
+        $hasFileContents = '' !== trim((string)$file->getFileContents());
+
+        if (!$hasFileUrl && !$hasFileContents) {
+            throw new InvalidRequiredArgumentException(
+                'A file content requires either fileUrl or fileContents.');
         }
     }
 }

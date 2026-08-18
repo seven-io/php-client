@@ -15,12 +15,32 @@ class RcsParams implements ParamsInterface
     protected string $text;
     protected string $to;
     protected ?int $ttl = null;
-    protected ?RcsFallbackType $fallback = null;
+    protected RcsFallbackType|RcsFallbackParams|null $fallback = null;
+    protected ?RcsCarouselParams $carousel = null;
+    protected ?RcsRichcardParams $richcard = null;
+    protected ?RcsFileParams $file = null;
+    /** @var RcsSuggestionParams[]|null */
+    protected ?array $suggestions = null;
 
     public function __construct(string $text, string $to)
     {
         $this->text = $text;
         $this->to = $to;
+    }
+
+    public static function carousel(RcsCarouselParams $carousel, string $to): self
+    {
+        return (new self('', $to))->setCarousel($carousel);
+    }
+
+    public static function richcard(RcsRichcardParams $richcard, string $to): self
+    {
+        return (new self('', $to))->setRichcard($richcard);
+    }
+
+    public static function file(RcsFileParams $file, string $to): self
+    {
+        return (new self('', $to))->setFile($file);
     }
 
     public function getTo(): string
@@ -108,17 +128,92 @@ class RcsParams implements ParamsInterface
     public function toArray(): array
     {
         $arr = get_object_vars($this);
-        if ($this->delay) $arr['delay'] = $this->delay->format('Y-m-d h:i');
-        if ($this->fallback) $arr['fallback'] = $this->fallback->value;
+
+        if ($this->delay) {
+            $arr['delay'] = $this->delay->format('Y-m-d h:i');
+        }
+
+        if ($this->fallback instanceof RcsFallbackType) {
+            $arr['fallback'] = $this->fallback->value;
+        }
+
+        if ($this->fallback instanceof RcsFallbackParams) {
+            $arr['fallback'] = $this->fallback->toArray();
+        }
+
+        if ($this->carousel) {
+            $arr['carousel'] = $this->carousel->toArray();
+        }
+
+        if ($this->richcard) {
+            $arr['richcard'] = $this->richcard->toArray();
+        }
+
+        if ($this->file) {
+            $arr['file'] = $this->file->toArray();
+        }
+
+        if (is_array($this->suggestions)) {
+            $arr['suggestions'] = array_map(fn(RcsSuggestionParams $v) => $v->toArray(), $this->suggestions);
+        }
+
+        if ('' === $this->text) {
+            unset($arr['text']);
+        }
+
         return $arr;
     }
 
-    public function getFallback(): ?RcsFallbackType {
+    public function getFallback(): RcsFallbackType|RcsFallbackParams|null {
         return $this->fallback;
     }
 
-    public function setFallback(?RcsFallbackType $fallback): self {
+    public function setFallback(RcsFallbackType|RcsFallbackParams|null $fallback): self {
         $this->fallback = $fallback;
+        return $this;
+    }
+
+    public function getCarousel(): ?RcsCarouselParams
+    {
+        return $this->carousel;
+    }
+
+    public function setCarousel(?RcsCarouselParams $carousel): self
+    {
+        $this->carousel = $carousel;
+        return $this;
+    }
+
+    public function getRichcard(): ?RcsRichcardParams
+    {
+        return $this->richcard;
+    }
+
+    public function setRichcard(?RcsRichcardParams $richcard): self
+    {
+        $this->richcard = $richcard;
+        return $this;
+    }
+
+    public function getFile(): ?RcsFileParams
+    {
+        return $this->file;
+    }
+
+    public function setFile(?RcsFileParams $file): self
+    {
+        $this->file = $file;
+        return $this;
+    }
+
+    public function getSuggestions(): ?array
+    {
+        return $this->suggestions;
+    }
+
+    public function setSuggestions(RcsSuggestionParams ...$suggestions): self
+    {
+        $this->suggestions = $suggestions;
         return $this;
     }
 }
